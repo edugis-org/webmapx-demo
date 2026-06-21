@@ -2993,6 +2993,7 @@
             "type": "symbol",
             "source": "source",
             "source-layer": "housenumber",
+            "minzoom": 16,
             "paint": {
               "text-color": "rgba(212, 177, 146, 1)"
             },
@@ -3019,6 +3020,8 @@
         "title": "topografie: 1:1000.000",
         "type": "raster",
         "source": "top500raster-source",
+        "minzoom": 7.5,
+        "maxzoom": 11,
         "metadata": {
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top1000raster/default.png",
@@ -3030,6 +3033,7 @@
         "title": "topografie: 1:250.000",
         "type": "raster",
         "source": "top250raster-source",
+        "minzoom": 8.5,
         "metadata": {
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top250raster/default.png",
@@ -3041,6 +3045,7 @@
         "title": "topografie: 1:50.000",
         "type": "raster",
         "source": "top50raster-source",
+        "minzoom": 11.5,
         "metadata": {
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top50raster/default.png",
@@ -3052,6 +3057,7 @@
         "title": "topografie: 1:25.000",
         "type": "raster",
         "source": "top25raster-source",
+        "minzoom": 12.5,
         "metadata": {
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top25raster/default.png",
@@ -3063,6 +3069,7 @@
         "title": "topografie: 1:10.000",
         "type": "raster",
         "source": "top10nl-source",
+        "minzoom": 13.5,
         "metadata": {
           "abstract": "Topografische kaart 1:10 000 (TOP10NL). TOP10NL is het digitale topografische basisbestand van het Kadaster. Dit is het meest gedetailleerde product binnen de Basisregistratie Topografie (BRT). Omdat de kaart zo gedetailleerd is, is deze alleen zichtbaar bij ver inzoomen.",
           "getFeatureInfoUrl": "",
@@ -4745,6 +4752,7 @@
             "type": "fill",
             "source": "source",
             "source-layer": "percelen.perceel",
+            "minzoom": 14.5,
             "paint": {
               "fill-color": "rgba(0,0,0,0)",
               "fill-opacity": 1,
@@ -4781,6 +4789,7 @@
             "type": "symbol",
             "source": "source",
             "source-layer": "percelen.perceel",
+            "minzoom": 15,
             "paint": {
               "text-color": "black"
             },
@@ -4834,6 +4843,7 @@
             "type": "symbol",
             "source": "source",
             "source-layer": "percelen.gt_gemeenteperceelsectie",
+            "minzoom": 12,
             "paint": {
               "text-color": "green"
             },
@@ -5909,6 +5919,7 @@
         "title": "Percelen (Kadaster 2006)",
         "type": "raster",
         "source": "percelenwms-source",
+        "minzoom": 14,
         "metadata": {
           "getFeatureInfoUrl": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/kadaster.map&LAYERS=perceel",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
@@ -12227,6 +12238,7 @@
             "type": "fill-extrusion",
             "source": "source",
             "source-layer": "nldata.gebouw3d",
+            "minzoom": 14,
             "paint": {
               "fill-extrusion-color": [
                 "case",
@@ -12881,6 +12893,7 @@
             "type": "fill",
             "source": "source",
             "source-layer": "nldata.gebouw3d",
+            "minzoom": 12,
             "paint": {
               "fill-color": [
                 "case",
@@ -13202,6 +13215,8 @@
         "title": "Energielabel panden",
         "type": "raster",
         "source": "pandennergielabel-source",
+        "minzoom": 13,
+        "maxzoom": 22,
         "metadata": {
           "label": "Energielabel panden"
         }
@@ -13211,6 +13226,7 @@
         "title": "Kadastrale kaart",
         "type": "raster",
         "source": "kadastralekaart-source",
+        "minzoom": 16,
         "metadata": {
           "legendurl": "https://geodata.nationaalgeoregister.nl/kadastralekaart/wms/v4_0?REQUEST=GETLEGENDGRAPHIC&SERVICE=WMS&VERSION=1.1.1&LAYER=kadastralekaart&LAYERS=kadastralekaart&FORMAT=image/jpeg&STYLES=",
           "label": "Kadastrale kaart"
@@ -13221,6 +13237,7 @@
         "title": "Rijksmonumenten (punten)",
         "type": "raster",
         "source": "monument-source",
+        "minzoom": 13,
         "metadata": {
           "legendurl": "https://data.geo.cultureelerfgoed.nl/openbaar/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetLegendGraphic&layer=rijksmonumentpunten&format=image/png&STYLE=",
           "getFeatureInfoUrl": "https://data.geo.cultureelerfgoed.nl/openbaar/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&layers=rijksmonumentpunten&query_layers=rijksmonumentpunten",
@@ -13965,6 +13982,7 @@
         "title": "Hoogte (AHN)",
         "type": "raster",
         "source": "hoogteahn-new-20231210-source",
+        "minzoom": 0,
         "metadata": {
           "legendurl": "https://mapserver.edugis.nl/legends/nederland/ahn-nederland1.png",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/ahn_pdok/service?layers=dsm_05m&query_layers=dsm_05m&service=WMS&request=GetFeatureInfo&version=1.1.1",
@@ -14422,6 +14440,8 @@
         "title": "cbs bodemgebruik 2017",
         "type": "raster",
         "source": "cbsbodemgebruik2017-source",
+        "minzoom": 4.5,
+        "maxzoom": 11.5,
         "metadata": {
           "getFeatureInfoFormat": "application/json",
           "label": "cbs bodemgebruik 2017"
@@ -14432,6 +14452,7 @@
         "title": "cbs bodemgebruik 2017 detail",
         "type": "raster",
         "source": "cbsbodemgebruik2017categorie-source",
+        "minzoom": 11.5,
         "metadata": {
           "getFeatureInfoFormat": "application/json",
           "abstract": "Het Bestand Bodemgebruik 2017 bevat digitale geometrie van het bodemgebruik in Nederland. Voorbeelden van het bodemgebruik zijn verkeersterreinen, bebouwing, recreatieterreinen en binnen- en buitenwater. De begrenzingen zijn voor een groot deel gebaseerd op de Top10NL (BRT). Bij het interpreteren zijn luchtfoto&#x27;s leidend. De gegevens zijn ingewonnen in de zomer van 2017.",
@@ -14694,6 +14715,7 @@
             "type": "fill",
             "source": "source",
             "source-layer": "public.brp_gewaspercelen",
+            "minzoom": 9,
             "paint": {
               "fill-color": [
                 "case",
@@ -16945,6 +16967,7 @@
             "type": "line",
             "source": "source",
             "source-layer": "fct_infra_2019.elektra_kabel",
+            "minzoom": 11,
             "paint": {
               "line-color": [
                 "case",
@@ -17076,6 +17099,7 @@
             "type": "circle",
             "source": "source",
             "source-layer": "fct_infra_2019.elektra_punt",
+            "minzoom": 11,
             "paint": {
               "circle-radius": 5,
               "circle-color": [
@@ -18120,6 +18144,7 @@
         "title": "Zonpotentie velden",
         "type": "raster",
         "source": "zonpotentie-source",
+        "minzoom": 9.5,
         "metadata": {
           "getFeatureInfoFormat": "application/json",
           "label": "Zonpotentie velden"
@@ -18130,6 +18155,7 @@
         "title": "Energielabels",
         "type": "raster",
         "source": "rvolabel2017-source",
+        "minzoom": 12,
         "metadata": {
           "label": "Energielabels"
         }
@@ -18139,6 +18165,7 @@
         "title": "Dakvlakken",
         "type": "raster",
         "source": "dakdelen-2018-source",
+        "minzoom": 16.5,
         "metadata": {
           "legendurl": "https://pico.geodan.nl/cgi-bin/qgis_mapserv.fcgi?DPI=120&map=/usr/lib/cgi-bin/projects/dakdelen2.qgs&transparent=false&LAYERS=dakdelen2&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&STYLES=&",
           "getFeatureInfoUrl": "https://pico.geodan.nl/cgi-bin/qgis_mapserv.fcgi?DPI=120&map=/usr/lib/cgi-bin/projects/dakdelen2.qgs&query_layers=dakdelen2&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&STYLES=",

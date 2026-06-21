@@ -1245,6 +1245,8 @@
         "title": "Landbedekking",
         "type": "raster",
         "source": "worldlandcover-source",
+        "minzoom": 0,
+        "maxzoom": 22.5,
         "metadata": {
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/landcover/wms?version=1.1.1&request=GetFeatureInfo&styles=&layers=landcover&query_layers=landcover",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
@@ -3459,6 +3461,8 @@
         "title": "Bevolkingsdichtheid | Raster",
         "type": "raster",
         "source": "bevolking2015-source",
+        "minzoom": 0,
+        "maxzoom": 22.5,
         "metadata": {
           "abstract": "gegevens: 2015",
           "getFeatureInfoUrl": "https://map.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/population.map&version=1.1.1&request=GetFeatureInfo&styles=&layers=Bevolkingsdichtheid_2015&query_layers=Bevolkingsdichtheid_2015&srs=EPSG:900913",
