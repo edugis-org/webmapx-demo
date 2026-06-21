@@ -19157,12 +19157,8 @@
     ]
   },
   "state": {
-    "activeBackground": "osmbright",
+    "activeBackground": "openstreetmap",
     "activeLayers": [
-      {
-        "ref": "osmbright",
-        "visible": true
-      },
       {
         "ref": "openstreetmap",
         "visible": true
@@ -19177,7 +19173,7 @@
       }
     ],
     "activeExclusiveLayers": {
-      "basemap": "osmbright"
+      "basemap": "openstreetmap"
     }
   },
   "tools": {
@@ -19215,17 +19211,20 @@
                 {
                   "label": "Standaard (OSM)",
                   "layerId": "openstreetmap",
-                  "checked": true
+                  "checked": true,
+                  "selectionGroup": "basemap"
                 },
                 {
                   "label": "Helder (OSM)",
                   "layerId": "osmbright",
                   "selectionGroup": "basemap",
-                  "checked": true
+                  "checked": false
                 },
                 {
                   "label": "Grijs (OSM)",
-                  "layerId": "openstreetmapgray"
+                  "layerId": "openstreetmapgray",
+                  "selectionGroup": "basemap",
+                  "checked": false
                 },
                 {
                   "label": "Donker (OSM)",
@@ -19253,7 +19252,9 @@
                 },
                 {
                   "label": "Wateren (NL BRT)",
-                  "layerId": "brt-achtergrondkaart-water-tms-id"
+                  "layerId": "brt-achtergrondkaart-water-tms-id",
+                  "selectionGroup": "basemap",
+                  "checked": false
                 },
                 {
                   "label": "Standaard (Bing)",
