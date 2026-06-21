@@ -74,7 +74,7 @@
       {
         "id": "bingmaproad-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Road?output=json&include=ImageryProviders&uriScheme=https&key={key-bing}",
         "maxzoom": 19
       },
@@ -103,7 +103,7 @@
       {
         "id": "bingmapaerial-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial?output=json&include=ImageryProviders&uriScheme=https&key={key-bing}",
         "maxzoom": 18
       },
@@ -146,7 +146,7 @@
       {
         "id": "bingmaphybrid-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/AerialWithLabels?output=json&include=ImageryProviders&uriScheme=https&key={key-bing}",
         "maxzoom": 18
       },
@@ -175,7 +175,7 @@
       {
         "id": "top500raster-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/brt/topraster/wms/v1_0?layers=top1000raster"
         ],
@@ -191,7 +191,7 @@
       {
         "id": "top250raster-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/brt/topraster/wms/v1_0?layers=top250raster"
         ],
@@ -207,7 +207,7 @@
       {
         "id": "top50raster-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/brt/topraster/wms/v1_0?layers=top50raster"
         ],
@@ -223,7 +223,7 @@
       {
         "id": "top25raster-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/brt/topraster/wms/v1_0?layers=top25raster"
         ],
@@ -239,7 +239,7 @@
       {
         "id": "top10nl-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/brt/top10nl/wms/v1_0?layers=top10nl"
         ],
@@ -255,7 +255,7 @@
       {
         "id": "waterschappen-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/hwh/waterschapsgrenzenimso/wms/v1_0?layers=waterschap"
         ],
@@ -269,7 +269,7 @@
       {
         "id": "percelenwms-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://t3.edugis.nl/tiles/tilecache.py?map=maps/edugis/cache/kadaster.map&LAYERS=perceel&width=256&height=256"
         ],
@@ -285,7 +285,7 @@
       {
         "id": "pandennergielabel-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://pico.geodan.nl/cgi-bin/qgis_mapserv.fcgi?DPI=120&map=/usr/lib/cgi-bin/projects/rvoLabel2017.qgs&LAYERS=rvoLabel2017"
         ],
@@ -301,7 +301,7 @@
       {
         "id": "kadastralekaart-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://geodata.nationaalgeoregister.nl/kadastralekaart/wms/v4_0?LAYERS=kadastralekaart"
         ],
@@ -317,7 +317,7 @@
       {
         "id": "monument-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.geo.cultureelerfgoed.nl/openbaar/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=rijksmonumentpunten&STYLES=&CRS=EPSG%3A3857&BBOX={bbox-epsg-3857}"
         ],
@@ -331,7 +331,7 @@
       {
         "id": "werelderfgoed-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://services.rce.geovoorziening.nl/rce/ows?layers=WorldHeritage&STYLES=Erfgoedetalage_Werelderfgoed"
         ],
@@ -345,7 +345,7 @@
       {
         "id": "stadsendorpsgezichten-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://services.rce.geovoorziening.nl/rce/ows?LAYERS=Townscapes&STYLES=Erfgoedetalage_StadsEnDorpsgezicht"
         ],
@@ -359,7 +359,7 @@
       {
         "id": "bodemkaartbro-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/bzk/bro-bodemkaart/wms/v1_0?layers=soilarea"
         ],
@@ -374,7 +374,7 @@
       {
         "id": "bodemdaling-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://tiles.edugis.nl/mapproxy/bodemdaling/service?layers=total_1119"
         ],
@@ -406,7 +406,7 @@
       {
         "id": "bodemdaling2-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://tiles.edugis.nl/mapproxy/bodemdaling/service?layers=total_1119"
         ],
@@ -420,7 +420,7 @@
       {
         "id": "oliegasvelden-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://www.nlog.nl/arcgis/services/nlog/gdw_ng_field_utm/MapServer/WmsServer?layers=0"
         ]
@@ -428,7 +428,7 @@
       {
         "id": "fysichgeografischeregios-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://service.pdok.nl/ez/fysischgeografischeregios/wms/v1_0?layers=fysischgeografischeregios"
         ]
@@ -436,7 +436,7 @@
       {
         "id": "cbsbodemgebruik2017-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://tiles.edugis.nl/mapproxy/cbs_bbg2017/service?layers=bestandbodemgebruik_2017_hoofdgroep"
         ],
@@ -453,7 +453,7 @@
       {
         "id": "cbsbodemgebruik2017categorie-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://tiles.edugis.nl/mapproxy/cbs_bbg2017/service?layers=bestandbodemgebruik_2017_categorie"
         ],
@@ -564,7 +564,7 @@
       {
         "id": "lichtvervuiling-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/dmg/wms?layers=licht_20150315_gm_hhavondbew"
         ],
@@ -579,7 +579,7 @@
       {
         "id": "licht-20150315-gm-hhavondbew-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/dmg/wms?layers=licht_20150315_gm_hhavondbew"
         ],
@@ -594,7 +594,7 @@
       {
         "id": "licht-20150315-gm-hhnachtbew-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/dmg/wms?layers=licht_20150315_gm_hhnachtbew"
         ],
@@ -609,7 +609,7 @@
       {
         "id": "dmg-licht-20150315-gm-hhnachtonbew-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/dmg/wms?layers=licht_20150315_gm_hhnachtonbew"
         ],
@@ -624,7 +624,7 @@
       {
         "id": "dmg-licht-emissie-iss-nl-2012-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/dmg/wms?layers=licht_emissie_iss_nl_2012"
         ],
@@ -639,7 +639,7 @@
       {
         "id": "dmg-licht-lichtemissie-2012-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/dmg/wms?layers=licht_lichtemissie_2012"
         ],
@@ -654,7 +654,7 @@
       {
         "id": "lucht-actueel-lki-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/lucht/wms?layers=actueel_lki"
         ],
@@ -669,7 +669,7 @@
       {
         "id": "fijnstofpm10actueel-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/lucht/wms?layers=actueel_pm10&STYLES=lucht_pm10"
         ],
@@ -684,7 +684,7 @@
       {
         "id": "stiksofoxideno2actueel-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/lucht/wms?layers=actueel_no2&STYLES=lucht_no2"
         ],
@@ -699,7 +699,7 @@
       {
         "id": "luchtactueel-03-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/lucht/wms?layers=actueel_o3&STYLES=lucht_o3"
         ],
@@ -714,7 +714,7 @@
       {
         "id": "geluidbelasting-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/alo/wms?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=rivm_20220601_Geluid_lden_allebronnen_2020&&BUFFER=1&EXCEPTIONS=INIMAGE"
         ],
@@ -729,7 +729,7 @@
       {
         "id": "rivm-nsl-20180324-gm-pm102016-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/alo/wms?layers=rivm_nsl_20180324_gm_pm102016"
         ],
@@ -744,7 +744,7 @@
       {
         "id": "rivm-r19-gm-n-depositie-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/ank/wms?layers=rivm_r19_gm_n-depositie"
         ],
@@ -758,7 +758,7 @@
       {
         "id": "rivm-nsl-20180324-gm-no22016-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/alo/wms?layers=rivm_nsl_20180324_gm_NO22016"
         ],
@@ -772,7 +772,7 @@
       {
         "id": "gcn-conc-so2-2016-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/gcn/wms?layers=conc_so2_2016"
         ],
@@ -786,7 +786,7 @@
       {
         "id": "nsl-20141204-gm-ec2013-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/alo/wms?layers=rivm_nsl_20180324_gm_ec2016"
         ],
@@ -800,7 +800,7 @@
       {
         "id": "gcn-depo-potz-2016-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/gcn/wms?layers=depo_potz_2016"
         ],
@@ -814,7 +814,7 @@
       {
         "id": "rivm-r88-20170621-gm-actueel-uhi-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/ank/ows?layers=Stedelijk_hitte_eiland_effect_01062022_v2"
         ],
@@ -829,7 +829,7 @@
       {
         "id": "zonpotentie-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://data.rivm.nl/geo/alo/wms?layers=Greenspread_20181101_v_zonnevelden"
         ],
@@ -844,7 +844,7 @@
       {
         "id": "rvolabel2017-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://tiles.edugis.nl/mapproxy/picolabels/wms?layers=rvoLabel2017"
         ],
@@ -859,7 +859,7 @@
       {
         "id": "dakdelen-2018-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://tiles.edugis.nl/mapproxy/picodakdelen/wms?LAYERS=dakdelen2"
         ],

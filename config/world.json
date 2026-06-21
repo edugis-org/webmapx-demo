@@ -48,7 +48,7 @@
       {
         "id": "bingmapaerial-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=12327",
           "https://ecn.t1.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=12327",
@@ -82,7 +82,7 @@
       {
         "id": "bingmaproad-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://ecn.t0.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=12327&mkt=nl-BE&shading=hill",
           "https://ecn.t1.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=12327&mkt=nl-BE&shading=hill",
@@ -96,7 +96,7 @@
       {
         "id": "bingmaphybrid-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://ecn.t0.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=12327&mkt=nl-BE",
           "https://ecn.t1.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=12327&mkt=nl-BE",
@@ -170,7 +170,7 @@
       {
         "id": "bevolking2015-source",
         "type": "raster",
-        "service": "xyz",
+        "service": "wms",
         "url": [
           "https://t1.edugis.nl/tiles/tilecache.py?map=maps/edugis/cache/population.map&LAYERS=Bevolkingsdichtheid_2015&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&STYLES=&SRS=EPSG%3A900913&WIDTH=256&HEIGHT=256&request=GetMap&service=WMS&bbox={bbox-epsg-3857}",
           "https://t2.edugis.nl/tiles/tilecache.py?map=maps/edugis/cache/population.map&LAYERS=Bevolkingsdichtheid_2015&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&STYLES=&SRS=EPSG%3A900913&WIDTH=256&HEIGHT=256&request=GetMap&service=WMS&bbox={bbox-epsg-3857}",
