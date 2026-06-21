@@ -4957,8 +4957,7 @@
               ],
               "selectionMode": "single",
               "selectionGroup": "basemap",
-              "allowNone": false,
-              "expanded": true
+              "allowNone": false
             },
             {
               "label": "Geografische lijnen",
