@@ -19643,6 +19643,10 @@
                                 "cbs_vergrijzing_gemeenten_65plus_2009",
                                 "cbs_vergrijzing_provincies_65plus_1988",
                                 "cbs_vergrijzing_provincies_65plus_2009"
+                              ],
+                              "tilecacheUrl": [
+                                "https://t1.edugis.nl/tiles/tilecache.py",
+                                "https://t2.edugis.nl/tiles/tilecache.py"
                               ]
                             }
                           ]
@@ -19653,7 +19657,11 @@
                             {
                               "label": "Leeftijd (2010)",
                               "type": "getcapabilities",
-                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_leeftijd_2010.xml"
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_leeftijd_2010.xml",
+                              "tilecacheUrl": [
+                                "https://t1.edugis.nl/tiles/tilecache.py",
+                                "https://t2.edugis.nl/tiles/tilecache.py"
+                              ]
                             }
                           ]
                         },
@@ -19666,6 +19674,10 @@
                             "cbs_vergrijzing_gemeenten_65plus_2009",
                             "cbs_vergrijzing_provincies_65plus_1988",
                             "cbs_vergrijzing_provincies_65plus_2009"
+                          ],
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
                           ]
                         }
                       ]
@@ -19692,7 +19704,11 @@
                             {
                               "label": "Huishoudens (2010)",
                               "type": "getcapabilities",
-                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_huishoudens_2010.xml"
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_huishoudens_2010.xml",
+                              "tilecacheUrl": [
+                                "https://t1.edugis.nl/tiles/tilecache.py",
+                                "https://t2.edugis.nl/tiles/tilecache.py"
+                              ]
                             }
                           ]
                         },
@@ -19702,7 +19718,11 @@
                             {
                               "label": "Huishoudens (2005)",
                               "type": "getcapabilities",
-                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_huishoudens.xml"
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_huishoudens.xml",
+                              "tilecacheUrl": [
+                                "https://t1.edugis.nl/tiles/tilecache.py",
+                                "https://t2.edugis.nl/tiles/tilecache.py"
+                              ]
                             }
                           ]
                         }
@@ -19769,7 +19789,11 @@
                         {
                           "label": "Wonen (2010)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/wonen_2010.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/wonen_2010.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19779,7 +19803,11 @@
                         {
                           "label": "Wonen (2005)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/wonen.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/wonen.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     }
@@ -19816,7 +19844,11 @@
                         {
                           "label": "Bevolkingsdichtheid 2010",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/bevolkings_dichtheid_2010.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolkings_dichtheid_2010.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19826,7 +19858,11 @@
                         {
                           "label": "Bevolkingsdichtheid 2005",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/bevolkings_dichtheid.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolkings_dichtheid.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19836,7 +19872,11 @@
                         {
                           "label": "Bevolkingsdichtheid 1830 - 1960",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/gemeenten_historisch.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/gemeenten_historisch.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     }
@@ -19883,7 +19923,11 @@
                         {
                           "label": "Welvaart (2010)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/welvaart_2010.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/welvaart_2010.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19893,7 +19937,11 @@
                         {
                           "label": "Welvaart (2005)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/welvaart.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/welvaart.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19903,7 +19951,11 @@
                         {
                           "label": "Investeringen (2005)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_investering_2005.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_investering_2005.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     }
@@ -19915,7 +19967,11 @@
                     {
                       "label": "Werken (2005)",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/bevolking_arbeid.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/bevolking_arbeid.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -19928,7 +19984,11 @@
                         {
                           "label": "Herkomst (2005)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_herkomst.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_herkomst.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19938,7 +19998,11 @@
                         {
                           "label": "Herkomst (2010)",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_herkomst_2010.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_herkomst_2010.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     }
@@ -19953,7 +20017,11 @@
                         {
                           "label": "Politiek 2006",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19963,7 +20031,11 @@
                         {
                           "label": "Politiek 2010",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen_2010.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen_2010.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     },
@@ -19973,7 +20045,11 @@
                         {
                           "label": "Politiek 2012",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen_2012.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen_2012.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     }
@@ -20014,6 +20090,10 @@
                       "allowedLayers": [
                         "ligplaatsen",
                         "standplaatsen"
+                      ],
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
                       ]
                     }
                   ]
@@ -20028,6 +20108,10 @@
                       "allowedLayers": [
                         "gebruiksdoel",
                         "panden_oppervlakte"
+                      ],
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
                       ]
                     }
                   ]
@@ -20059,7 +20143,11 @@
                     {
                       "label": "Aggregaties",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/bag_aggregaties.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/bag_aggregaties.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 }
@@ -20108,7 +20196,11 @@
                     {
                       "label": "Buiten- en Voorschoolse opvang",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_bso.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_bso.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20137,7 +20229,11 @@
                         {
                           "label": "Onderwijs",
                           "type": "getcapabilities",
-                          "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_onderwijs.xml"
+                          "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_onderwijs.xml",
+                          "tilecacheUrl": [
+                            "https://t1.edugis.nl/tiles/tilecache.py",
+                            "https://t2.edugis.nl/tiles/tilecache.py"
+                          ]
                         }
                       ]
                     }
@@ -20149,7 +20245,11 @@
                     {
                       "label": "Zorg",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_zorg.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_zorg.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20159,7 +20259,11 @@
                     {
                       "label": "Openbaar vervoer",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_ov.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_ov.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20208,6 +20312,10 @@
                       "allowedLayers": [
                         "Hoogtelijnen",
                         "Hoogtelabels"
+                      ],
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
                       ]
                     },
                     {
@@ -20231,7 +20339,11 @@
                     {
                       "label": "geologie",
                       "type": "getcapabilities",
-                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/geologie.map"
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/geologie.map",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     },
                     {
                       "label": "Geomorfologische kaart",
@@ -20290,7 +20402,11 @@
                     {
                       "label": "cbsbodemgebruik",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/cbs_bodemgebruik.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/cbs_bodemgebruik.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     },
                     {
                       "label": "Landelijk Grondgebruik Nederland (LGN)",
@@ -20308,7 +20424,11 @@
                     {
                       "label": "ruimtegebruik",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/ehs.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/ehs.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20385,6 +20505,10 @@
                       "deniedLayers": [
                         "nationale_landschappen",
                         "natura2000"
+                      ],
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
                       ]
                     }
                   ]
@@ -20479,7 +20603,11 @@
                     {
                       "label": "Noordzee",
                       "type": "getcapabilities",
-                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?request=getcapabilities&version=1.1.1&service=wms&map=maps/edugis/cache/noordzee.map"
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?request=getcapabilities&version=1.1.1&service=wms&map=maps/edugis/cache/noordzee.map",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20489,7 +20617,11 @@
                     {
                       "label": "Overstromingsrisico",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/waterdieptes.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/waterdieptes.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20499,7 +20631,11 @@
                     {
                       "label": "Overstromingsschade",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/overstromingsschade.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/overstromingsschade.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20509,7 +20645,11 @@
                     {
                       "label": "Overstromingsmodel",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/water_overstromingsmodel.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/water_overstromingsmodel.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20528,7 +20668,11 @@
                     {
                       "label": "Zuiderzeeland",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/zuiderzeeland.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/zuiderzeeland.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20538,7 +20682,11 @@
                     {
                       "label": "Zeeuwse delta",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/zeeuwse_delta.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/zeeuwse_delta.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 }
@@ -20553,7 +20701,11 @@
                     {
                       "label": "Landbouw (2005)",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/landbouw.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/landbouw.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20563,7 +20715,11 @@
                     {
                       "label": "Landbouw (2010)",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/landbouw_2010.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/landbouw_2010.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 }
@@ -20666,7 +20822,11 @@
                     {
                       "label": "Luchtvervuiling (2006)",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/milieu.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/milieu.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 }
@@ -20681,7 +20841,11 @@
                     {
                       "label": "Bevolkingsgroei",
                       "type": "getcapabilities",
-                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/provincies_inwoners.map"
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/provincies_inwoners.map",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20706,7 +20870,11 @@
                     {
                       "label": "De Nieuwe Kaart",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/nkn.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/nkn.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 },
@@ -20716,7 +20884,11 @@
                     {
                       "label": "Nederland nu en later",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/lus.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/lus.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 }
@@ -20802,6 +20974,10 @@
                         "Delfland 17e eeuw (Blaeu)",
                         "Brabant 17e eeuw (Blaeu)",
                         "Limburg 17e eeuw (Blaeu)"
+                      ],
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
                       ]
                     }
                   ]
@@ -21216,6 +21392,10 @@
                         "Delfland 17e eeuw (Blaeu)",
                         "Brabant 17e eeuw (Blaeu)",
                         "Limburg 17e eeuw (Blaeu)"
+                      ],
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
                       ]
                     }
                   ]
@@ -21226,7 +21406,11 @@
                     {
                       "label": "Zuid-Limburg",
                       "type": "getcapabilities",
-                      "url": "https://kaart.edugis.nl/data/nederland/zuid_limburg.xml"
+                      "url": "https://kaart.edugis.nl/data/nederland/zuid_limburg.xml",
+                      "tilecacheUrl": [
+                        "https://t1.edugis.nl/tiles/tilecache.py",
+                        "https://t2.edugis.nl/tiles/tilecache.py"
+                      ]
                     }
                   ]
                 }
