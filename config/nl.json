@@ -19484,11 +19484,16 @@
                     },
                     {
                       "label": "COROP-gebieden",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://tiles.edugis.nl/mapproxy/COROP_gebieden/service?"
                     },
                     {
                       "label": "Postcodegebieden",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://map.edugis.nl/cgi-bin/qgis_mapserv.fcgi?dpi=90&map=data/eduqgis/files/adm_indelingen_overig.qgs",
+                      "deniedLayers": [
+                        "adm_indelingen_overig"
+                      ]
                     },
                     {
                       "label": "Provincies, gemeenten, wijken en buurten (2005)",
@@ -19537,7 +19542,8 @@
                       "children": [
                         {
                           "label": "provgemwijk2010",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/adm_grenzen_2010.xml"
                         }
                       ]
                     },
@@ -19630,7 +19636,14 @@
                           "children": [
                             {
                               "label": "Leeftijd (2005)",
-                              "separator": true
+                              "type": "getcapabilities",
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_leeftijd.xml",
+                              "deniedLayers": [
+                                "cbs_vergrijzing_gemeenten_65plus_1988",
+                                "cbs_vergrijzing_gemeenten_65plus_2009",
+                                "cbs_vergrijzing_provincies_65plus_1988",
+                                "cbs_vergrijzing_provincies_65plus_2009"
+                              ]
                             }
                           ]
                         },
@@ -19639,13 +19652,21 @@
                           "children": [
                             {
                               "label": "Leeftijd (2010)",
-                              "separator": true
+                              "type": "getcapabilities",
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_leeftijd_2010.xml"
                             }
                           ]
                         },
                         {
                           "label": "Leeftijdsopbouw overig",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_leeftijd.xml",
+                          "allowedLayers": [
+                            "cbs_vergrijzing_gemeenten_65plus_1988",
+                            "cbs_vergrijzing_gemeenten_65plus_2009",
+                            "cbs_vergrijzing_provincies_65plus_1988",
+                            "cbs_vergrijzing_provincies_65plus_2009"
+                          ]
                         }
                       ]
                     }
@@ -19670,7 +19691,8 @@
                           "children": [
                             {
                               "label": "Huishoudens (2010)",
-                              "separator": true
+                              "type": "getcapabilities",
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_huishoudens_2010.xml"
                             }
                           ]
                         },
@@ -19679,7 +19701,8 @@
                           "children": [
                             {
                               "label": "Huishoudens (2005)",
-                              "separator": true
+                              "type": "getcapabilities",
+                              "url": "https://kaart.edugis.nl/data/nederland/bevolking_huishoudens.xml"
                             }
                           ]
                         }
@@ -19745,7 +19768,8 @@
                       "children": [
                         {
                           "label": "Wonen (2010)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/wonen_2010.xml"
                         }
                       ]
                     },
@@ -19754,7 +19778,8 @@
                       "children": [
                         {
                           "label": "Wonen (2005)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/wonen.xml"
                         }
                       ]
                     }
@@ -19777,7 +19802,11 @@
                       "children": [
                         {
                           "label": "Bevolkingsdichtheid 2017",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://map.edugis.nl/cgi-bin/qgis_mapserv.fcgi?dpi=90&map=data/eduqgis/files/Bevolkingsdichtheid.qgs",
+                          "deniedLayers": [
+                            "Bevolkingsdichtheid"
+                          ]
                         }
                       ]
                     },
@@ -19786,7 +19815,8 @@
                       "children": [
                         {
                           "label": "Bevolkingsdichtheid 2010",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolkings_dichtheid_2010.xml"
                         }
                       ]
                     },
@@ -19795,7 +19825,8 @@
                       "children": [
                         {
                           "label": "Bevolkingsdichtheid 2005",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolkings_dichtheid.xml"
                         }
                       ]
                     },
@@ -19804,7 +19835,8 @@
                       "children": [
                         {
                           "label": "Bevolkingsdichtheid 1830 - 1960",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/gemeenten_historisch.xml"
                         }
                       ]
                     }
@@ -19850,7 +19882,8 @@
                       "children": [
                         {
                           "label": "Welvaart (2010)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/welvaart_2010.xml"
                         }
                       ]
                     },
@@ -19859,7 +19892,8 @@
                       "children": [
                         {
                           "label": "Welvaart (2005)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/welvaart.xml"
                         }
                       ]
                     },
@@ -19868,7 +19902,8 @@
                       "children": [
                         {
                           "label": "Investeringen (2005)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_investering_2005.xml"
                         }
                       ]
                     }
@@ -19879,7 +19914,8 @@
                   "children": [
                     {
                       "label": "Werken (2005)",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/bevolking_arbeid.xml"
                     }
                   ]
                 },
@@ -19891,7 +19927,8 @@
                       "children": [
                         {
                           "label": "Herkomst (2005)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_herkomst.xml"
                         }
                       ]
                     },
@@ -19900,7 +19937,8 @@
                       "children": [
                         {
                           "label": "Herkomst (2010)",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/bevolking_herkomst_2010.xml"
                         }
                       ]
                     }
@@ -19914,7 +19952,8 @@
                       "children": [
                         {
                           "label": "Politiek 2006",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen.xml"
                         }
                       ]
                     },
@@ -19923,7 +19962,8 @@
                       "children": [
                         {
                           "label": "Politiek 2010",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen_2010.xml"
                         }
                       ]
                     },
@@ -19932,7 +19972,8 @@
                       "children": [
                         {
                           "label": "Politiek 2012",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/verkiezingen_2012.xml"
                         }
                       ]
                     }
@@ -19968,7 +20009,12 @@
                     },
                     {
                       "label": "Ligplaatsen en standplaatsen",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/kadaster.xml",
+                      "allowedLayers": [
+                        "ligplaatsen",
+                        "standplaatsen"
+                      ]
                     }
                   ]
                 },
@@ -19977,7 +20023,12 @@
                   "children": [
                     {
                       "label": "verblijfsobjecten",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/kadaster.xml",
+                      "allowedLayers": [
+                        "gebruiksdoel",
+                        "panden_oppervlakte"
+                      ]
                     }
                   ]
                 },
@@ -20007,7 +20058,8 @@
                   "children": [
                     {
                       "label": "Aggregaties",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/bag_aggregaties.xml"
                     }
                   ]
                 }
@@ -20055,7 +20107,8 @@
                   "children": [
                     {
                       "label": "Buiten- en Voorschoolse opvang",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_bso.xml"
                     }
                   ]
                 },
@@ -20083,7 +20136,8 @@
                       "children": [
                         {
                           "label": "Onderwijs",
-                          "separator": true
+                          "type": "getcapabilities",
+                          "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_onderwijs.xml"
                         }
                       ]
                     }
@@ -20094,7 +20148,8 @@
                   "children": [
                     {
                       "label": "Zorg",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_zorg.xml"
                     }
                   ]
                 },
@@ -20103,7 +20158,8 @@
                   "children": [
                     {
                       "label": "Openbaar vervoer",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/voorzieningen_ov.xml"
                     }
                   ]
                 },
@@ -20147,7 +20203,12 @@
                     },
                     {
                       "label": "hoogte",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/hoogte.map",
+                      "allowedLayers": [
+                        "Hoogtelijnen",
+                        "Hoogtelabels"
+                      ]
                     },
                     {
                       "label": "Gemiddelde bodemdaling",
@@ -20169,7 +20230,8 @@
                   "children": [
                     {
                       "label": "geologie",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/geologie.map"
                     },
                     {
                       "label": "Geomorfologische kaart",
@@ -20219,11 +20281,16 @@
                     },
                     {
                       "label": "cbsbodemgebruik2012",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://tiles.edugis.nl/mapproxy/bbg2012/service",
+                      "deniedLayers": [
+                        "bbg2012"
+                      ]
                     },
                     {
                       "label": "cbsbodemgebruik",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/cbs_bodemgebruik.xml"
                     },
                     {
                       "label": "Landelijk Grondgebruik Nederland (LGN)",
@@ -20240,7 +20307,8 @@
                   "children": [
                     {
                       "label": "ruimtegebruik",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/ehs.xml"
                     }
                   ]
                 },
@@ -20312,7 +20380,12 @@
                     },
                     {
                       "label": "specialestatus",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/gebieden_speciale_status.xml",
+                      "deniedLayers": [
+                        "nationale_landschappen",
+                        "natura2000"
+                      ]
                     }
                   ]
                 }
@@ -20405,7 +20478,8 @@
                     },
                     {
                       "label": "Noordzee",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?request=getcapabilities&version=1.1.1&service=wms&map=maps/edugis/cache/noordzee.map"
                     }
                   ]
                 },
@@ -20414,7 +20488,8 @@
                   "children": [
                     {
                       "label": "Overstromingsrisico",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/waterdieptes.xml"
                     }
                   ]
                 },
@@ -20423,7 +20498,8 @@
                   "children": [
                     {
                       "label": "Overstromingsschade",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/overstromingsschade.xml"
                     }
                   ]
                 },
@@ -20432,7 +20508,8 @@
                   "children": [
                     {
                       "label": "Overstromingsmodel",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/water_overstromingsmodel.xml"
                     }
                   ]
                 },
@@ -20450,7 +20527,8 @@
                   "children": [
                     {
                       "label": "Zuiderzeeland",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/zuiderzeeland.xml"
                     }
                   ]
                 },
@@ -20459,7 +20537,8 @@
                   "children": [
                     {
                       "label": "Zeeuwse delta",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/zeeuwse_delta.xml"
                     }
                   ]
                 }
@@ -20473,7 +20552,8 @@
                   "children": [
                     {
                       "label": "Landbouw (2005)",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/landbouw.xml"
                     }
                   ]
                 },
@@ -20482,7 +20562,8 @@
                   "children": [
                     {
                       "label": "Landbouw (2010)",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/landbouw_2010.xml"
                     }
                   ]
                 }
@@ -20584,7 +20665,8 @@
                   "children": [
                     {
                       "label": "Luchtvervuiling (2006)",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/milieu.xml"
                     }
                   ]
                 }
@@ -20598,7 +20680,8 @@
                   "children": [
                     {
                       "label": "Bevolkingsgroei",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/provincies_inwoners.map"
                     }
                   ]
                 },
@@ -20607,7 +20690,13 @@
                   "children": [
                     {
                       "label": "ruimtelijkeplannen",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://tiles.edugis.nl/mapproxy/ruimtelijkeplannen/service?REQUEST=GetCapabilities",
+                      "allowedLayers": [
+                        "BP_Bestemmingsplangebied",
+                        "BP_Enkelbestemming",
+                        "BP_Dubbelbestemming"
+                      ]
                     }
                   ]
                 },
@@ -20616,7 +20705,8 @@
                   "children": [
                     {
                       "label": "De Nieuwe Kaart",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/nkn.xml"
                     }
                   ]
                 },
@@ -20625,7 +20715,8 @@
                   "children": [
                     {
                       "label": "Nederland nu en later",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/lus.xml"
                     }
                   ]
                 }
@@ -20693,7 +20784,25 @@
                   "children": [
                     {
                       "label": "Historische kaarten",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/blaeu.map",
+                      "allowedLayers": [
+                        "Nederland 17e eeuw (Blaeu)",
+                        "Amsterdam 17e eeuw (Blaeu)",
+                        "Noord-Holland 17e eeuw (Blaeu)",
+                        "Friesland 17e eeuw (Blaeu)",
+                        "Groningen 17e eeuw (Blaeu)",
+                        "Drenthe 17e eeuw (Blaeu)",
+                        "Overijssel 17e eeuw (Blaeu)",
+                        "Gelderland 17e eeuw (Blaeu)",
+                        "Utrecht 17e eeuw (Blaeu)",
+                        "Noord-Holland Zuid 17e eeuw (Blaeu)",
+                        "Zeeland 17e eeuw (Blaeu)",
+                        "Zuid-Holland 17e eeuw (Blaeu)",
+                        "Delfland 17e eeuw (Blaeu)",
+                        "Brabant 17e eeuw (Blaeu)",
+                        "Limburg 17e eeuw (Blaeu)"
+                      ]
                     }
                   ]
                 },
@@ -21088,7 +21197,26 @@
                   "children": [
                     {
                       "label": "Overige historische kaarten",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/blaeu.map",
+                      "deniedLayers": [
+                        "amsterdam_1945",
+                        "Nederland 17e eeuw (Blaeu)",
+                        "Amsterdam 17e eeuw (Blaeu)",
+                        "Noord-Holland 17e eeuw (Blaeu)",
+                        "Friesland 17e eeuw (Blaeu)",
+                        "Groningen 17e eeuw (Blaeu)",
+                        "Drenthe 17e eeuw (Blaeu)",
+                        "Overijssel 17e eeuw (Blaeu)",
+                        "Gelderland 17e eeuw (Blaeu)",
+                        "Utrecht 17e eeuw (Blaeu)",
+                        "Noord-Holland Zuid 17e eeuw (Blaeu)",
+                        "Zeeland 17e eeuw (Blaeu)",
+                        "Zuid-Holland 17e eeuw (Blaeu)",
+                        "Delfland 17e eeuw (Blaeu)",
+                        "Brabant 17e eeuw (Blaeu)",
+                        "Limburg 17e eeuw (Blaeu)"
+                      ]
                     }
                   ]
                 },
@@ -21097,7 +21225,8 @@
                   "children": [
                     {
                       "label": "Zuid-Limburg",
-                      "separator": true
+                      "type": "getcapabilities",
+                      "url": "https://kaart.edugis.nl/data/nederland/zuid_limburg.xml"
                     }
                   ]
                 }
