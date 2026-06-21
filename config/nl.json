@@ -19424,9 +19424,11 @@
             },
             {
               "label": "Administratieve indelingen",
+              "expanded": true,
               "children": [
                 {
                   "label": "Provincie, gemeente, wijk, buurt (2023)",
+                  "expanded": true,
                   "children": [
                     {
                       "label": "Landsgrens",
@@ -19455,6 +19457,7 @@
                     },
                     {
                       "label": "Labels",
+                      "expanded": true,
                       "children": [
                         {
                           "label": "Provincienamen (2023)",
