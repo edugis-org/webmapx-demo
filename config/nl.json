@@ -2723,7 +2723,8 @@
         "url": "styles/openmaptiles/osmbright.json",
         "metadata": {
           "reference": true,
-          "label": "Helder (OSM)"
+          "label": "Helder (OSM)",
+          "language": "browser"
         }
       },
       {
@@ -2743,7 +2744,8 @@
         "url": "styles/openmaptiles/dark-matter.json",
         "metadata": {
           "reference": true,
-          "label": "Donker (OSM)"
+          "label": "Donker (OSM)",
+          "language": "browser"
         }
       },
       {
@@ -2753,7 +2755,8 @@
         "url": "styles/openmaptiles/klokantech-basic.json",
         "metadata": {
           "reference": true,
-          "label": "Eenvoudig (OSM)"
+          "label": "Eenvoudig (OSM)",
+          "language": "browser"
         }
       },
       {
@@ -2763,7 +2766,8 @@
         "url": "styles/openmaptiles/positron.json",
         "metadata": {
           "reference": true,
-          "label": "Eenvoudig grijs (OSM)"
+          "label": "Eenvoudig grijs (OSM)",
+          "language": "browser"
         }
       },
       {
