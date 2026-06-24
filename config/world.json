@@ -3348,7 +3348,6 @@
           {
             "id": "countrypopdensity-layer",
             "type": "fill",
-            "minzoom": -2,
             "source": "source",
             "source-layer": "public.world_population_moredetailed",
             "paint": {
@@ -3462,7 +3461,6 @@
         "title": "Bevolkingsdichtheid | Raster",
         "type": "raster",
         "source": "bevolking2015-source",
-        "minzoom": 0,
         "maxzoom": 22.5,
         "metadata": {
           "abstract": "gegevens: 2015",
