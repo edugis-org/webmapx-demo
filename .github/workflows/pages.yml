@@ -1,0 +1,62 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build webmapx
+        run: |
+          git clone --depth 1 https://github.com/edugis-org/webmapx.git /tmp/webmapx
+          cd /tmp/webmapx
+          npm ci
+          npm run build
+
+      - name: Assemble site
+        run: |
+          mkdir -p dist/testpages dist/assets dist/config dist/styles dist/demo
+          # testpages (setup + preview) and their bundled assets from webmapx build
+          cp -R /tmp/webmapx/dist/testpages/. dist/testpages/
+          cp -R /tmp/webmapx/dist/assets/. dist/assets/
+          # demo configs and styles from this repo
+          cp -R config/. dist/config/
+          cp -R styles/. dist/styles/
+          # landing page and demo app from this repo
+          cp index.html dist/index.html
+          cp -R demo/. dist/demo/
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

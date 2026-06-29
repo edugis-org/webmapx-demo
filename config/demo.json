@@ -1,0 +1,59 @@
+{
+  "map": {
+    "type": "maplibre",
+    "center": [5, 52],
+    "zoom": 6
+  },
+  "tools": {
+    "mainToolbar": {
+      "type": "toolbar",
+      "enabled": true,
+      "position": "top-left",
+      "orientation": "vertical",
+      "panel": { "enabled": true, "position": "right" },
+      "items": [
+        { "type": "draw",        "id": "draw",        "enabled": true },
+        { "type": "measure",     "id": "measure",     "enabled": true },
+        { "type": "info",        "id": "info",        "enabled": true },
+        { "type": "search",      "id": "search",      "enabled": true },
+        { "type": "print",       "id": "print",       "enabled": true },
+        { "type": "importLayer", "id": "importLayer", "enabled": true },
+        { "type": "geolocation", "id": "geolocation", "enabled": true },
+        { "type": "buffer",      "id": "buffer",      "enabled": true },
+        { "type": "layerOverview","id": "layerOverview","enabled": true }
+      ]
+    },
+    "attribution": { "type": "attributionControl", "enabled": true, "position": "edge-bottom-right" },
+    "coordinates": { "type": "coordinates", "enabled": true, "position": "bottom-center" },
+    "navigation":  { "type": "navigation",  "enabled": true, "position": "bottom-right" },
+    "scale":       { "type": "scaleControl","enabled": true, "position": "bottom-left" },
+    "zoomLevel":   { "type": "zoomLevel",   "enabled": true, "position": "bottom-right" },
+    "fullscreen":  { "type": "fullscreen",  "enabled": true, "position": "top-right" }
+  },
+  "layerData": {
+    "sources": [
+      {
+        "id": "osm-source",
+        "type": "raster",
+        "service": "xyz",
+        "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "tileSize": 256,
+        "attribution": "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+      }
+    ],
+    "layers": [
+      {
+        "id": "openstreetmap",
+        "type": "raster",
+        "source": "osm-source",
+        "title": "OpenStreetMap",
+        "metadata": { "background-group": "base", "background-group-policy": "single" }
+      }
+    ]
+  },
+  "state": {
+    "activeLayers": [
+      { "ref": "openstreetmap", "visible": true }
+    ]
+  }
+}

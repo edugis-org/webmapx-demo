@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebMapX — config-driven web map UI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      line-height: 1.5;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: #0f1923;
+      color: #fff;
+      padding: 3rem 1.5rem 0;
+      text-align: center;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -.02em; }
+    .hero h1 span { color: #4da6ff; }
+    .hero p {
+      margin: 1rem auto 2rem;
+      max-width: 600px;
+      font-size: 1.1rem;
+      color: #aac;
+    }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block; padding: .65rem 1.4rem; border-radius: 6px;
+      font-size: .95rem; font-weight: 600; text-decoration: none; cursor: pointer;
+    }
+    .btn-primary { background: #4da6ff; color: #000; }
+    .btn-primary:hover { background: #6db8ff; }
+    .btn-ghost { border: 1px solid #445; color: #ccd; }
+    .btn-ghost:hover { border-color: #778; color: #fff; }
+
+    /* ── Demo grid ── */
+    .demos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 0;
+      background: #0f1923;
+    }
+    .demo-card {
+      position: relative;
+      height: 340px;
+      overflow: hidden;
+      border: 1px solid #1e2d3d;
+    }
+    .demo-card iframe {
+      width: 100%; height: 100%; border: none; display: block;
+      pointer-events: none; /* prevent interaction — click opens full demo */
+    }
+    .demo-card-overlay {
+      position: absolute; inset: 0;
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: flex-end;
+    }
+    .demo-card-label {
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      width: 100%; padding: .75rem 1rem .6rem;
+      color: #fff; font-size: .85rem; font-weight: 500;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .demo-card-label .badges { display: flex; gap: .4rem; }
+    .badge {
+      font-size: .7rem; padding: .15rem .45rem; border-radius: 3px;
+      font-weight: 600; letter-spacing: .03em; text-transform: uppercase;
+    }
+    .badge-engine { background: #1a5276; color: #7ec8e3; }
+    .badge-tool   { background: #1e3d20; color: #7ec87f; }
+    .demo-card-overlay:hover .demo-card-label { background: linear-gradient(transparent, rgba(0,40,80,.85)); }
+
+    /* ── Paths section ── */
+    .paths {
+      max-width: 1000px; margin: 0 auto; padding: 4rem 1.5rem;
+    }
+    .paths h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: .5rem; }
+    .paths-subtitle { color: #666; margin-bottom: 2.5rem; }
+
+    .path-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .path-card {
+      background: #fff; border: 1px solid #e0e0e0; border-radius: 10px;
+      padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
+    }
+    .path-card h3 { font-size: 1rem; font-weight: 700; }
+    .path-card .tag {
+      display: inline-block; font-size: .7rem; font-weight: 700;
+      padding: .15rem .5rem; border-radius: 3px; margin-bottom: .25rem;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .tag-cdn { background: #e8f4fd; color: #1a5276; }
+    .tag-npm { background: #fdf0e8; color: #7d3c00; }
+    .tag-dev { background: #f0fdf4; color: #1a5226; }
+    .tag-plugin { background: #f5f0fd; color: #4a1a7a; }
+    .path-card p { font-size: .9rem; color: #555; flex: 1; }
+    pre {
+      background: #f0f0f0; border-radius: 6px; padding: .75rem 1rem;
+      font-size: .8rem; overflow-x: auto; white-space: pre;
+    }
+    .path-card .links { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .path-card .links a { font-size: .85rem; color: #0070f3; text-decoration: none; font-weight: 500; }
+    .path-card .links a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      background: #0f1923; color: #778; text-align: center;
+      padding: 2rem 1rem; font-size: .85rem;
+    }
+    footer a { color: #aac; text-decoration: none; }
+    footer a:hover { color: #fff; }
+    footer .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: .75rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Web<span>Map</span>X</h1>
+  <p>Config-driven web map UI. Drop a JSON file, get a full map with toolbar, legend, and tools — no build step required.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="testpages/setup.html">Build your config</a>
+    <a class="btn btn-ghost" href="https://github.com/edugis-org/webmapx" target="_blank">GitHub</a>
+    <a class="btn btn-ghost" href="https://www.npmjs.com/package/@edugis-org/webmapx" target="_blank">npm</a>
+  </div>
+</section>
+
+<!-- Demo grid -->
+<section class="demos" id="demos"></section>
+
+<!-- Paths -->
+<section class="paths">
+  <h2>Get started</h2>
+  <p class="paths-subtitle">Pick the approach that fits your workflow.</p>
+  <div class="path-cards">
+
+    <div class="path-card">
+      <div>
+        <span class="tag tag-cdn">CDN</span>
+        <h3>Use on any page</h3>
+      </div>
+      <p>One script tag. No npm, no build tools. Works in any HTML file served from a static host.</p>
+      <pre>&lt;script type="module"&gt;
+import { WebMapX } from
+  'https://cdn.jsdelivr.net/npm/
+   @edugis-org/webmapx@latest/
+   dist-lib/webmapx.js';
+WebMapX.mount('#map',
+  { config: './mymap.json' });
+&lt;/script&gt;</pre>
+      <div class="links">
+        <a href="https://github.com/edugis-org/webmapx/blob/main/docs/developer/cdn-quickstart.md" target="_blank">CDN quickstart →</a>
+        <a href="testpages/setup.html">Build config →</a>
+      </div>
+    </div>
+
+    <div class="path-card">
+      <div>
+        <span class="tag tag-npm">npm</span>
+        <h3>Use in a Vite / webpack project</h3>
+      </div>
+      <p>Install from npm, import in your app. Tree-shaken, typed, works with any modern bundler.</p>
+      <pre>npm install @edugis-org/webmapx
+          maplibre-gl</pre>
+      <pre>import { WebMapX } from
+  '@edugis-org/webmapx';
+WebMapX.mount('#map',
+  { config: './mymap.json' });</pre>
+      <div class="links">
+        <a href="https://github.com/edugis-org/webmapx/blob/main/docs/developer/npm-quickstart.md" target="_blank">npm quickstart →</a>
+      </div>
+    </div>
+
+    <div class="path-card">
+      <div>
+        <span class="tag tag-dev">Dev / contributor</span>
+        <h3>Run locally</h3>
+      </div>
+      <p>Clone the repo, run the dev server, modify tools and engines with hot reload.</p>
+      <pre>git clone https://github.com/
+  edugis-org/webmapx.git
+cd webmapx
+npm install && npm run dev</pre>
+      <div class="links">
+        <a href="https://github.com/edugis-org/webmapx/blob/main/docs/developer/github-quickstart.md" target="_blank">Dev guide →</a>
+        <a href="https://github.com/edugis-org/webmapx" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="path-card">
+      <div>
+        <span class="tag tag-plugin">Plugin</span>
+        <h3>Extend with custom tools</h3>
+      </div>
+      <p>Build your own tools as ES modules. Load them from any CDN — no fork needed.</p>
+      <pre>config: {
+  plugins: [
+    'https://cdn.example.com/
+     my-tool.js'
+  ]
+}</pre>
+      <div class="links">
+        <a href="https://github.com/edugis-org/webmapx/blob/main/docs/developer/plugin-authoring.md" target="_blank">Plugin guide →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/edugis-org/webmapx" target="_blank">GitHub</a>
+    <a href="https://www.npmjs.com/package/@edugis-org/webmapx" target="_blank">npm</a>
+    <a href="https://github.com/edugis-org/webmapx/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
+    <a href="https://github.com/edugis-org/webmapx/blob/main/docs/DEVELOPER_GUIDE.md" target="_blank">Docs</a>
+    <a href="testpages/setup.html">Config builder</a>
+  </div>
+  <div>WebMapX — ISC license</div>
+</footer>
+
+<script>
+  const DEMOS = [
+    {
+      config: 'config/nl.json',
+      label: 'Netherlands — vector tiles + choropleth',
+      engine: 'MapLibre',
+      tools: ['legend', 'coordinates', 'measure'],
+    },
+    {
+      config: 'config/world.json',
+      label: 'World — satellite imagery',
+      engine: 'MapLibre',
+      tools: ['layer switcher'],
+    },
+    {
+      config: 'config/tijdzones.json',
+      label: 'Time zones — data layer',
+      engine: 'MapLibre',
+      tools: ['info', 'legend'],
+    },
+    {
+      config: 'config/belgie.json',
+      label: 'Belgium — multiple layers',
+      engine: 'MapLibre',
+      tools: ['layer switcher', 'legend'],
+    },
+  ];
+
+  const grid = document.getElementById('demos');
+
+  for (const demo of DEMOS) {
+    const card = document.createElement('div');
+    card.className = 'demo-card';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = `demo/index.html?config=../${demo.config}`;
+    iframe.loading = 'lazy';
+    iframe.title = demo.label;
+    card.appendChild(iframe);
+
+    const overlay = document.createElement('div');
+    overlay.className = 'demo-card-overlay';
+    overlay.title = 'Open full demo';
+    overlay.addEventListener('click', () => {
+      window.open(`demo/index.html?config=../${demo.config}`, '_blank');
+    });
+
+    const lbl = document.createElement('div');
+    lbl.className = 'demo-card-label';
+
+    const name = document.createElement('span');
+    name.textContent = demo.label;
+    lbl.appendChild(name);
+
+    const badges = document.createElement('div');
+    badges.className = 'badges';
+    const eb = document.createElement('span');
+    eb.className = 'badge badge-engine';
+    eb.textContent = demo.engine;
+    badges.appendChild(eb);
+    for (const t of demo.tools) {
+      const tb = document.createElement('span');
+      tb.className = 'badge badge-tool';
+      tb.textContent = t;
+      badges.appendChild(tb);
+    }
+    lbl.appendChild(badges);
+    overlay.appendChild(lbl);
+    card.appendChild(overlay);
+    grid.appendChild(card);
+  }
+</script>
+
+</body>
+</html>
