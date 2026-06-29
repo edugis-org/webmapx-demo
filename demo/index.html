@@ -23,7 +23,7 @@
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@edugis-org/webmapx@latest/dist-lib/webmapx.css">
+  <link rel="stylesheet" href="../dist-lib/webmapx.css">
 
   <style>
     html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
@@ -36,7 +36,7 @@
   <div id="error"></div>
 
   <script type="module">
-    import { WebMapX } from 'https://cdn.jsdelivr.net/npm/@edugis-org/webmapx@latest/dist-lib/webmapx.js';
+    import { WebMapX } from '../dist-lib/webmapx.js';
 
     const params = new URLSearchParams(window.location.search);
     const configParam = params.get('config') ?? '../config/demo.json';

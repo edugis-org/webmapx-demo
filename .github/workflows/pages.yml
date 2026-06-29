@@ -31,19 +31,25 @@ jobs:
           cd /tmp/webmapx
           npm ci
           npm run build
+          npm run build:lib
 
       - name: Assemble site
         run: |
-          mkdir -p dist/testpages dist/assets dist/config dist/styles dist/demo
+          mkdir -p dist/testpages dist/assets dist/dist-lib dist/config dist/styles dist/demo
           # testpages (setup + preview) and their bundled assets from webmapx build
           cp -R /tmp/webmapx/dist/testpages/. dist/testpages/
           cp -R /tmp/webmapx/dist/assets/. dist/assets/
+          # lib build for demo app
+          cp -R /tmp/webmapx/dist-lib/. dist/dist-lib/
           # demo configs and styles from this repo
           cp -R config/. dist/config/
           cp -R styles/. dist/styles/
           # landing page and demo app from this repo
           cp index.html dist/index.html
           cp -R demo/. dist/demo/
+          # apikeys for demo page (optional — silently ignored if missing)
+          mkdir -p dist/demo/config
+          echo '${{ secrets.APIKEYS_JSON }}' > dist/demo/config/apikeys.json
 
       - uses: actions/upload-pages-artifact@v4
         with:
