@@ -17,7 +17,7 @@
         { "type": "info",        "id": "info",        "enabled": true },
         { "type": "search",      "id": "search",      "enabled": true },
         { "type": "print",       "id": "print",       "enabled": true },
-        { "type": "importLayer", "id": "importLayer", "enabled": true },
+        { "type": "import-layer", "id": "import-layer", "enabled": true },
         { "type": "geolocation", "id": "geolocation", "enabled": true },
         { "type": "buffer",      "id": "buffer",      "enabled": true },
         { "type": "layerOverview","id": "layerOverview","enabled": true }
