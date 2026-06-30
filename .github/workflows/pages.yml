@@ -48,6 +48,8 @@ jobs:
           cp index.html dist/index.html
           cp favicon.png dist/favicon.png
           cp -R demo/. dist/demo/
+          cp -R /tmp/webmapx/dist/data/. dist/demo/data/
+          cp -R /tmp/webmapx/dist/data/. dist/testpages/data/
           # apikeys for demo page (optional — silently ignored if missing)
           mkdir -p dist/demo/config
           echo '${{ secrets.APIKEYS_JSON }}' > dist/demo/config/apikeys.json
