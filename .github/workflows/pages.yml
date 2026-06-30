@@ -46,6 +46,7 @@ jobs:
           cp -R styles/. dist/styles/
           # landing page and demo app from this repo
           cp index.html dist/index.html
+          cp favicon.ico dist/favicon.ico
           cp -R demo/. dist/demo/
           # apikeys for demo page (optional — silently ignored if missing)
           mkdir -p dist/demo/config
