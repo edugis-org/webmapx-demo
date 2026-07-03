@@ -158,7 +158,7 @@ WebMapX.mount('#map',
   { config: './mymap.json' });
 &lt;/script&gt;</pre>
       <div class="links">
-        <a href="https://github.com/edugis-org/webmapx/blob/main/docs/developer/cdn-quickstart.md" target="_blank">CDN quickstart →</a>
+        <a href="demo/cdn-quickstart.html" target="_blank">CDN quickstart →</a>
         <a href="testpages/setup.html">Build config →</a>
       </div>
     </div>
@@ -231,10 +231,10 @@ npm install && npm run dev</pre>
 <script>
   const DEMOS = [
     {
-      config: 'config/nl.json',
-      label: 'Netherlands — vector tiles + choropleth',
-      engine: 'MapLibre',
-      tools: ['legend', 'coordinates', 'measure'],
+      config: 'config/demo-ol-chorepleth.json',
+      label: 'Netherlands — choropleth, vector tiles',
+      engine: 'OpenLayers',
+      tools: ['legend'],
     },
     {
       config: 'config/world.json',
@@ -243,8 +243,8 @@ npm install && npm run dev</pre>
       tools: ['layer switcher'],
     },
     {
-      config: 'config/tijdzones.json',
-      label: 'Time zones — data layer',
+      config: 'config/demo-mlgl-globe.json',
+      label: 'Time zones — globe view',
       engine: 'MapLibre',
       tools: ['info', 'legend'],
     },
