@@ -1,19 +1,19 @@
 {
   "version": 1,
   "project": {
-    "id": "layers",
-    "title": "layers",
+    "id": "demo_ol_chorepleth",
+    "title": "demo-ol-chorepleth",
     "description": "Converted from an EduGIS map configuration."
   },
   "map": {
+    "type": "openlayers",
     "center": [
-      5.375,
-      52.168000000000006
+      4.697207810828167,
+      52.02133886150884
     ],
-    "zoom": 6.5,
+    "zoom": 5.5,
     "minZoom": 0,
     "maxZoom": 22,
-    "type": "openlayers",
     "label": "layers",
     "style": {
       "version": 8,
@@ -4052,7 +4052,7 @@
         "id": "osmbright",
         "title": "Helder (OSM)",
         "type": "style",
-        "url": "styles/openmaptiles/osmbright.json",
+        "url": "https://tiles.openfreemap.org/styles/bright",
         "metadata": {
           "reference": true,
           "label": "Helder (OSM)",
@@ -4075,7 +4075,7 @@
         "id": "darkmatter",
         "title": "Donker (OSM)",
         "type": "style",
-        "url": "styles/openmaptiles/dark-matter.json",
+        "url": "https://tiles.openfreemap.org/styles/dark",
         "metadata": {
           "reference": true,
           "label": "Donker (OSM)",
@@ -4088,7 +4088,7 @@
         "id": "klokantechbasic",
         "title": "Eenvoudig (OSM)",
         "type": "style",
-        "url": "styles/openmaptiles/klokantech-basic.json",
+        "url": "https://tiles.openfreemap.org/styles/liberty",
         "metadata": {
           "reference": true,
           "label": "Eenvoudig (OSM)",
@@ -4101,7 +4101,7 @@
         "id": "positron",
         "title": "Eenvoudig grijs (OSM)",
         "type": "style",
-        "url": "styles/openmaptiles/positron.json",
+        "url": "https://tiles.openfreemap.org/styles/positron",
         "metadata": {
           "reference": true,
           "label": "Eenvoudig grijs (OSM)",
@@ -20596,6 +20596,9 @@
     "activeExclusiveLayers": {
       "basemap": "openstreetmap"
     }
+  },
+  "_devTools": {
+    "configedit": false
   },
   "tools": {
     "mainToolbar": {
