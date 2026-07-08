@@ -12,7 +12,7 @@
       50.542
     ],
     "zoom": 7.2,
-    "type": "maplibre",
+    "type": "leaflet",
     "style": {
       "version": 8,
       "sources": {},
@@ -1889,22 +1889,10 @@
           "title": "Feature info"
         },
         {
-          "id": "3d",
-          "type": "3d",
-          "enabled": true,
-          "title": "3D"
-        },
-        {
           "id": "draw",
           "type": "draw",
           "enabled": true,
           "title": "Draw"
-        },
-        {
-          "id": "import-layer",
-          "type": "import-layer",
-          "enabled": true,
-          "title": "Import layer"
         }
       ]
     },
@@ -1962,5 +1950,9 @@
         }
       ]
     }
+  },
+  "engine": "leaflet",
+  "_devTools": {
+    "configedit": false
   }
 }
