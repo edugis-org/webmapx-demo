@@ -257,16 +257,19 @@ npm install && npm run dev</pre>
   ];
 
   const grid = document.getElementById('demos');
+  const entries = [];
 
   for (const demo of DEMOS) {
     const card = document.createElement('div');
     card.className = 'demo-card';
 
     const iframe = document.createElement('iframe');
-    iframe.src = `demo/index.html?config=../${demo.config}`;
-    iframe.loading = 'lazy';
+    // src set on demand by the load-order controller below, not here —
+    // avoids all 4 map engines fetching/booting at once on slow connections.
+    iframe.dataset.src = `demo/index.html?config=../${demo.config}`;
     iframe.title = demo.label;
     card.appendChild(iframe);
+    entries.push({ iframe, queued: false, loaded: false });
 
     const openBtn = document.createElement('a');
     openBtn.className = 'demo-open-btn';
@@ -298,6 +301,58 @@ npm install && npm run dev</pre>
     lbl.appendChild(badges);
     card.appendChild(lbl);
     grid.appendChild(card);
+  }
+
+  // Load-order controller: whichever demo card is scrolled into view loads
+  // first, rest load one at a time (next starts after previous iframe fires
+  // 'load') so they don't all compete for bandwidth/CPU at once on phones.
+  const queue = [];
+  let loading = false;
+
+  function enqueue(entry, priority) {
+    if (entry.queued || entry.loaded) return;
+    entry.queued = true;
+    if (priority) queue.unshift(entry); else queue.push(entry);
+    pump();
+  }
+
+  function pump() {
+    if (loading || !queue.length) return;
+    const entry = queue.shift();
+    loading = true;
+    entry.loaded = true;
+    entry.iframe.addEventListener('load', () => { loading = false; pump(); backgroundFill(); }, { once: true });
+    entry.iframe.src = entry.iframe.dataset.src;
+  }
+
+  // Once nothing is queued (visible maps loaded, or none intersected yet),
+  // prefetch the rest one at a time during browser idle time so scrolling to
+  // them later is instant. A late-intersecting card still jumps the queue
+  // via enqueue(entry, true) above. Skipped on data-saver / slow connections.
+  const conn = navigator.connection;
+  const skipBackgroundFill = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
+  const requestIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 300));
+
+  function backgroundFill() {
+    if (skipBackgroundFill || loading || queue.length) return;
+    const next = entries.find((e) => !e.loaded && !e.queued);
+    if (!next) return;
+    requestIdle(() => enqueue(next, false), { timeout: 2000 });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((observed) => {
+      for (const obs of observed) {
+        if (!obs.isIntersecting) continue;
+        io.unobserve(obs.target);
+        const entry = entries.find((e) => e.iframe === obs.target);
+        if (entry) enqueue(entry, true);
+      }
+    }, { rootMargin: '150px 0px' });
+    for (const entry of entries) io.observe(entry.iframe);
+  } else {
+    // no IntersectionObserver support: fall back to loading in order
+    for (const entry of entries) enqueue(entry, false);
   }
 </script>
 
