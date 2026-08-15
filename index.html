@@ -55,6 +55,39 @@
     }
     .demo-card iframe {
       width: 100%; height: 100%; border: none; display: block;
+      opacity: 0; transition: opacity .45s ease;
+    }
+    .demo-card.is-ready iframe { opacity: 1; }
+
+    /* ── Loading placeholder ──
+       Fake "map-ish" skeleton shown until the iframe reports load, so the grid
+       looks like maps immediately instead of four black holes. */
+    .demo-skeleton {
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(0deg,  rgba(255,255,255,.045) 0 1px, transparent 1px 56px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 56px),
+        radial-gradient(circle at 32% 38%, rgba(77,166,255,.16), transparent 46%),
+        radial-gradient(circle at 71% 66%, rgba(126,200,127,.13), transparent 44%),
+        #16222e;
+      opacity: 1; transition: opacity .45s ease;
+      pointer-events: none;
+    }
+    .demo-card.is-ready .demo-skeleton { opacity: 0; }
+    /* shimmer sweep = "something is happening" cue */
+    .demo-skeleton::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.07) 50%, transparent 70%);
+      background-size: 220% 100%;
+      animation: demo-shimmer 1.4s linear infinite;
+    }
+    @keyframes demo-shimmer {
+      from { background-position: 120% 0; }
+      to   { background-position: -120% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .demo-skeleton::after { animation: none; }
+      .demo-card iframe, .demo-skeleton { transition: none; }
     }
     .demo-card-label {
       position: absolute; bottom: 0; left: 0; right: 0;
@@ -269,7 +302,12 @@ npm install && npm run dev</pre>
     iframe.dataset.src = `demo/index.html?config=../${demo.config}`;
     iframe.title = demo.label;
     card.appendChild(iframe);
-    entries.push({ iframe, queued: false, loaded: false });
+
+    const skeleton = document.createElement('div');
+    skeleton.className = 'demo-skeleton';
+    card.appendChild(skeleton);
+
+    entries.push({ iframe, card, queued: false, loaded: false });
 
     const openBtn = document.createElement('a');
     openBtn.className = 'demo-open-btn';
@@ -321,7 +359,15 @@ npm install && npm run dev</pre>
     const entry = queue.shift();
     loading = true;
     entry.loaded = true;
-    entry.iframe.addEventListener('load', () => { loading = false; pump(); backgroundFill(); }, { once: true });
+    entry.iframe.addEventListener('load', () => {
+      loading = false;
+      // iframe 'load' fires before the engine has painted its first tiles, so
+      // hold the skeleton a moment longer — revealing at 'load' shows a blank
+      // map and looks *slower* than the skeleton did.
+      setTimeout(() => entry.card.classList.add('is-ready'), 700);
+      pump();
+      backgroundFill();
+    }, { once: true });
     entry.iframe.src = entry.iframe.dataset.src;
   }
 
