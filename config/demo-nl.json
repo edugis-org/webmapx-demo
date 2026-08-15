@@ -74,9 +74,16 @@
       {
         "id": "bingmaproad-source",
         "type": "raster",
-        "service": "wms",
-        "url": "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Road?output=json&include=ImageryProviders&uriScheme=https&key={key-bing}",
-        "maxzoom": 19
+        "service": "xyz",
+        "tileSize": 256,
+        "url": [
+          "https://ecn.t0.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=12327&mkt=nl-BE&shading=hill",
+          "https://ecn.t1.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=12327&mkt=nl-BE&shading=hill",
+          "https://ecn.t2.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=12327&mkt=nl-BE&shading=hill",
+          "https://ecn.t3.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=12327&mkt=nl-BE&shading=hill"
+        ],
+        "maxzoom": 19,
+        "attribution": "VirtualEarth"
       },
       {
         "id": "stamentoner-source",
@@ -103,9 +110,16 @@
       {
         "id": "bingmapaerial-source",
         "type": "raster",
-        "service": "wms",
-        "url": "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/Aerial?output=json&include=ImageryProviders&uriScheme=https&key={key-bing}",
-        "maxzoom": 18
+        "service": "xyz",
+        "tileSize": 256,
+        "url": [
+          "https://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=12327",
+          "https://ecn.t1.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=12327",
+          "https://ecn.t2.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=12327",
+          "https://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=12327"
+        ],
+        "maxzoom": 18,
+        "attribution": "VirtualEarth"
       },
       {
         "id": "pdokluchtfotowmts2016-source",
@@ -146,9 +160,16 @@
       {
         "id": "bingmaphybrid-source",
         "type": "raster",
-        "service": "wms",
-        "url": "https://dev.virtualearth.net/REST/V1/Imagery/Metadata/AerialWithLabels?output=json&include=ImageryProviders&uriScheme=https&key={key-bing}",
-        "maxzoom": 18
+        "service": "xyz",
+        "tileSize": 256,
+        "url": [
+          "https://ecn.t0.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=12327&mkt=nl-BE",
+          "https://ecn.t1.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=12327&mkt=nl-BE",
+          "https://ecn.t2.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=12327&mkt=nl-BE",
+          "https://ecn.t3.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=12327&mkt=nl-BE"
+        ],
+        "maxzoom": 18,
+        "attribution": "VirtualEarth"
       },
       {
         "id": "stamenwatercolor-source",
@@ -2712,6 +2733,7 @@
         "type": "raster",
         "source": "openstreetmap-source",
         "metadata": {
+          "swatch": "#dfdfd2",
           "legendurl": "https://mapserver.edugis.nl/legends/wereld/osm_logo.png",
           "label": "Standaard (OSM)"
         }
@@ -2722,6 +2744,7 @@
         "type": "style",
         "url": "styles/openmaptiles/osmbright.json",
         "metadata": {
+          "swatch": "#f8f4f0",
           "reference": true,
           "label": "Helder (OSM)",
           "language": "browser"
@@ -2733,6 +2756,7 @@
         "type": "raster",
         "source": "openstreetmapgray-source",
         "metadata": {
+          "swatch": "#dcdcdc",
           "legendurl": "https://mapserver.edugis.nl/legends/wereld/osm_logo.png",
           "label": "Grijs (OSM)"
         }
@@ -2743,6 +2767,7 @@
         "type": "style",
         "url": "styles/openmaptiles/dark-matter.json",
         "metadata": {
+          "swatch": "rgb(12,12,12)",
           "reference": true,
           "label": "Donker (OSM)",
           "language": "browser"
@@ -2754,6 +2779,7 @@
         "type": "style",
         "url": "styles/openmaptiles/klokantech-basic.json",
         "metadata": {
+          "swatch": "hsl(47, 26%, 88%)",
           "reference": true,
           "label": "Eenvoudig (OSM)",
           "language": "browser"
@@ -2765,6 +2791,7 @@
         "type": "style",
         "url": "styles/openmaptiles/positron.json",
         "metadata": {
+          "swatch": "rgb(242,243,240)",
           "reference": true,
           "label": "Eenvoudig grijs (OSM)",
           "language": "browser"
@@ -2776,6 +2803,7 @@
         "type": "raster",
         "source": "brtachtergrondkaart-source",
         "metadata": {
+          "swatch": "#e2e1ea",
           "reference": true,
           "legendurl": "https://kaart.edugis.nl/data/img/brt.png",
           "label": "Standaard (NL BRT)"
@@ -2787,18 +2815,20 @@
         "type": "raster",
         "source": "brt-achtergrondkaart-water-tms-id-source",
         "metadata": {
+          "swatch": "#dee5ec",
           "label": "Wateren (NL BRT)"
         }
       },
       {
         "id": "bingmaproad",
-        "title": "Standaard (Bing)",
+        "title": "Standaard (VirtualEarth)",
         "type": "raster",
         "source": "bingmaproad-source",
         "metadata": {
+          "swatch": "#dbdbd4",
           "reference": true,
           "bing": true,
-          "label": "Standaard (Bing)"
+          "label": "Standaard (VirtualEarth)"
         }
       },
       {
@@ -2817,19 +2847,21 @@
         "type": "raster",
         "source": "esriworldimagery-source",
         "metadata": {
+          "swatch": "#596138",
           "reference": true,
           "label": "Wereld (ESRI World Imagery)"
         }
       },
       {
         "id": "bingmapaerial",
-        "title": "Wereld (Microsoft Bing)",
+        "title": "Wereld (VirtualEarth)",
         "type": "raster",
         "source": "bingmapaerial-source",
         "metadata": {
+          "swatch": "#606649",
           "reference": true,
           "bing": true,
-          "label": "Wereld (Microsoft Bing)"
+          "label": "Wereld (VirtualEarth)"
         }
       },
       {
@@ -2838,6 +2870,7 @@
         "type": "raster",
         "source": "pdokluchtfotowmts2016-source",
         "metadata": {
+          "swatch": "#757b72",
           "reference": true,
           "legendurl": "https://map.edugis.nl/legends2/pdoklufolegend2016.png",
           "label": "Nederland-2016 (PDOK)"
@@ -2849,6 +2882,7 @@
         "type": "raster",
         "source": "pdokluchtfotowmtsactueel-source",
         "metadata": {
+          "swatch": "#787d78",
           "legendurl": "https://map.edugis.nl/legends2/pdoklufolegend.png",
           "reference": true,
           "label": "Nederland Actueel (PDOK)"
@@ -2856,13 +2890,14 @@
       },
       {
         "id": "bingmaphybrid",
-        "title": "Hybride | Wereld (Microsoft Bing)",
+        "title": "Hybride | Wereld (VirtualEarth)",
         "type": "raster",
         "source": "bingmaphybrid-source",
         "metadata": {
+          "swatch": "#6a6c58",
           "reference": true,
           "bing": true,
-          "label": "Hybride | Wereld (Microsoft Bing)"
+          "label": "Hybride | Wereld (VirtualEarth)"
         }
       },
       {
@@ -2889,19 +2924,28 @@
         "id": "achtergrondkleur",
         "title": "Achtergrondkleur",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightbackground.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightbackground.json",
+        "metadata": {
+          "swatch": "#f8f4f0"
+        }
       },
       {
         "id": "grondgebruik",
         "title": "Grondgebruik",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightlandcov.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightlandcov.json",
+        "metadata": {
+          "swatch": "#fff"
+        }
       },
       {
         "id": "water-en-waterwegen",
         "title": "Water en waterwegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwater.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwater.json",
+        "metadata": {
+          "swatch": "#a0c8f0"
+        }
       },
       {
         "id": "waterpatroon-golven",
@@ -2913,73 +2957,109 @@
         "id": "waternamen",
         "title": "Waternamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwatername.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwatername.json",
+        "metadata": {
+          "swatch": "#74aee9"
+        }
       },
       {
         "id": "administratieve-grenzen",
         "title": "Administratieve grenzen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightadminborders.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightadminborders.json",
+        "metadata": {
+          "swatch": "#9e9cab"
+        }
       },
       {
         "id": "landnamen",
         "title": "Landnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames.json",
+        "metadata": {
+          "swatch": "#334"
+        }
       },
       {
         "id": "landnamen-nl",
         "title": "Landnamen (nl)",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames_nl.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames_nl.json",
+        "metadata": {
+          "swatch": "#334"
+        }
       },
       {
         "id": "snelwegen",
         "title": "Snelwegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightroads.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightroads.json",
+        "metadata": {
+          "swatch": "#ffdaa6"
+        }
       },
       {
         "id": "snelwegnamen",
         "title": "Snelwegnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/brightmotorwayname.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/brightmotorwayname.json",
+        "metadata": {
+          "swatch": "rgba(0, 0, 0, 1)"
+        }
       },
       {
         "id": "wegen",
         "title": "Wegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroads.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroads.json",
+        "metadata": {
+          "swatch": "hsla(0, 0%, 89%, 0.56)"
+        }
       },
       {
         "id": "wegnamen",
         "title": "Wegnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroadnames.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroadnames.json",
+        "metadata": {
+          "swatch": "hsl(30, 23%, 62%)"
+        }
       },
       {
         "id": "spoorwegen",
         "title": "Spoorwegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightrail.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightrail.json",
+        "metadata": {
+          "swatch": "#bbb"
+        }
       },
       {
         "id": "plaatsen",
         "title": "Plaatsen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoi.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoi.json",
+        "metadata": {
+          "swatch": "black"
+        }
       },
       {
         "id": "plaatsnamen",
         "title": "Plaatsnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoiname.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoiname.json",
+        "metadata": {
+          "swatch": "#666"
+        }
       },
       {
         "id": "gebouwen",
         "title": "Gebouwen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightbuildings.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightbuildings.json",
+        "metadata": {
+          "swatch": "#D2B69A"
+        }
       },
       {
         "id": "housenumber-topo",
@@ -3027,6 +3107,7 @@
         "minzoom": 7.5,
         "maxzoom": 11,
         "metadata": {
+          "swatch": "#dedad8",
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top1000raster/default.png",
           "label": "topografie: 1:1000.000"
@@ -3039,6 +3120,7 @@
         "source": "top250raster-source",
         "minzoom": 8.5,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA/0lEQVR4AQSAu0sCYQDAf/ed1+klHihhUGYiKGUQuPRa3IMI+rtamoOgpSHaGhJCpCGiLcseSB4eiGWaYJz3sOMTYbUfpG015cfzhbyvV2Xt7kSeXR7I86t9eVo9kiKYhkSiSVpvKqp0GXcf2Qm2SShFTLWA8BstxsMBSiSCPXohywbtBQvPeGWveIgw1Qm9+jWhp1A28zjLcWz/B8cX3NweIzqjAatLKbSwj6MZxGMxCsEmu39b5MkhdCGxxxPcbo+hliaZqrA+n0M3NJy0hzAMHd/rE80IyqUM0ekQZ6XIf6lCYk5B2O4iumLieFmatRqN5jufT198WwN+O2vMAAAA//8W3KNmAAAABklEQVQDANTlahbbu2GXAAAAAElFTkSuQmCC",
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top250raster/default.png",
           "label": "topografie: 1:250.000"
@@ -3051,6 +3133,7 @@
         "source": "top50raster-source",
         "minzoom": 11.5,
         "metadata": {
+          "swatch": "#c5b1ad",
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top50raster/default.png",
           "label": "topografie: 1:50.000"
@@ -3063,6 +3146,7 @@
         "source": "top25raster-source",
         "minzoom": 12.5,
         "metadata": {
+          "swatch": "#a4a2a4",
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/topraster/wms/v1_0/legend/top25raster/default.png",
           "label": "topografie: 1:25.000"
@@ -3075,6 +3159,7 @@
         "source": "top10nl-source",
         "minzoom": 13.5,
         "metadata": {
+          "swatch": "#abadae",
           "abstract": "Topografische kaart 1:10 000 (TOP10NL). TOP10NL is het digitale topografische basisbestand van het Kadaster. Dit is het meest gedetailleerde product binnen de Basisregistratie Topografie (BRT). Omdat de kaart zo gedetailleerd is, is deze alleen zichtbaar bij ver inzoomen.",
           "getFeatureInfoUrl": "",
           "legendurl": "https://service.pdok.nl/brt/top10nl/wms/v1_0/legend/top10nl/top10nl.png",
@@ -5925,6 +6010,7 @@
         "source": "percelenwms-source",
         "minzoom": 14,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAuklEQVR4ARSOzQoBYRiFz7ySNCupkVE2lpIdG/fiAtyDG7C1lJ+bcAF2lpTCAknNYiRGKc34eWZxOuc57+mbsak0n0gLvDeWBqgPD2dSl25kkraOFHylFvCGV2iZSAXct59URS+Oaa7gHQ71jFTDD7CuhDwSw4SXiuQPOsFOOtjwiQcQASH5Ql4zuKM9nWJCRMlNN7IoG7zk0WUNyAE7/EnhMghRwNqj842/PRLOjGLKEsc2wybu4uU/AAAA//8VxvZ9AAAABklEQVQDALLxOTXtKL0BAAAAAElFTkSuQmCC",
           "getFeatureInfoUrl": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/kadaster.map&LAYERS=perceel",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "legendurl": "https://mapserver.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/kadaster.map&version=1.1.0&service=WMS&request=GetLegendGraphic&layer=perceel&format=image/png&STYLE=default",
@@ -13406,6 +13492,7 @@
         "type": "raster",
         "source": "werelderfgoed-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA8ElEQVR4AUROPUtCYRg975upXbGsiAqKIoKiCIyGoEBw0tXByc3NXyC6+wPcdXBxcxEcdXTwD4ggoiBcv64XryKo997H+74OPsPhOR8cDk/nK1SqNilfrlMiW6RcoUaNVpsGqkbieCwcxPf7I8gmiAv4Ffx+veDh9lJQ8PubAK4ufOgOp1KY6StYlg3OmOT82jEVrxu6sZaCqhmY6Ev5C+C+Mw9EbSoeguuE41zxoOe0qbOF8MEFMsbwH3xFJhnFz8cTnIHwK15hHQLOWmx3Jt6e7xD5+8Rma2IyN44Bxhjcpy4pmJaFTn+MkbaAbRP2AAAA//9LeK9lAAAABklEQVQDAF8eU9Ak8SajAAAAAElFTkSuQmCC",
           "proxy": "https://map.edugis.nl/cgi-bin/proxy.cgi?url=",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "attributes": {
@@ -13420,6 +13507,7 @@
         "type": "raster",
         "source": "stadsendorpsgezichten-source",
         "metadata": {
+          "swatch": "#e26a61",
           "proxy": "https://map.edugis.nl/cgi-bin/proxy.cgi?url=",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "label": "Stads- en Dorpsgezichten"
@@ -13922,6 +14010,7 @@
         "type": "raster",
         "source": "bodemkaartbro-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABC0lEQVR4AQzAPUgCUQDA8X+PGwQ7iBALjSIQFxchycWlwSGoLYiGgpYo2oK29tbaimiWMFBbqiVyyT5QIxAjUMhOy5LsKpPrXj39CdUl5aeKXaTU4VFdrW/UlCGf1aa9rSL2tBJ0fZg3vHlytLy3DA7XqBhF0jLPfCOMUP8Wicsq14U2yWMD075DT5eIxpbxn/4gzO8aOQnVRBuZr6C0d1o+yWzwHDHiQKydxWnqL3gHfNQf/yj3XLFvJdmrpLB+m4i5YJSVUASn7kDTXNxndDIPBYp+g93eFOLEecDW1w6BVY2ZeIPRpQKhsAu93s9Y2Y0I9g0RcHlovJbwZN1MPo0zlfWxIBeZsCN0AAAA//+i5Q9WAAAABklEQVQDAOWydxmVDLfrAAAAAElFTkSuQmCC",
           "abstract": "De bodemkaart geeft ruimtelijke informatie over de bodemopbouw tot globaal 1 meter diepte. Deze informatie heeft betrekking op de aard en samenstelling van de bovengrond (grondsoort) met een verdere onderverdeling naar bodemvorming, veensoort, afwijkende lagen in het profiel en de aanwezigheid van kalk.",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "attributes": {
@@ -13952,6 +14041,7 @@
         "type": "raster",
         "source": "bodemdaling-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA+klEQVR4AQzMu0rDYByG8adfEixtUg+l1gOIIgFdFEHF2UnwIrwXL8DBLm6Cm4dVEIPFyUEQHOxQUBGRCMaoqa22NPn+/d75/T1Kay0P2a3Uog15bq3KW3Nb4rgmL9c7ctBbE4XZo4Tcj1oESvHuwJG6JK4+kbXLqFgS6nqfhX6fUgqf3x9ceF3OZzV1N0HtyTGVtMdmBOXfPJFvkUO4cQr8WA5qqXnIujm0voRJUynmHLb+jaSDwxDKdzQzRk/YYOdSVpIuyzH4mcb/E1QwZ/FqW4RTRcL2MFcunEzbxAKNgoW6kwrBmMdp3mN3cZ4zd5yGVA0aoUSHAQAAAP//XZ6NvgAAAAZJREFUAwDMqGe7K52hbAAAAABJRU5ErkJggg==",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "attributes": {
             "allowedattributes": [
@@ -13988,6 +14078,7 @@
         "source": "hoogteahn-new-20231210-source",
         "minzoom": 0,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAnUlEQVR4AazNoQrCUBSA4XOu14toEecFBxZBDUabyeQTCGIwCQaDTRBfQIvBaLOsDJRp8Dl8gcVhEsTBGBu7nNVtZWV//uBnkFMBoPFaTKW52WnW+iCfq2X2yLir31T1fxQY7PGnXaS5nSURK/m1qK2/8Ty+wmRk8M7g0U0B9eFhJazTsEx0ajpo9G0rDcgjx22pewD4FTDvCbCTIAYAAP//sfTyoQAAAAZJREFUAwDv2CvKtiWITwAAAABJRU5ErkJggg==",
           "legendurl": "https://mapserver.edugis.nl/legends/nederland/ahn-nederland1.png",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/ahn_pdok/service?layers=dsm_05m&query_layers=dsm_05m&service=WMS&request=GetFeatureInfo&version=1.1.1",
           "getFeatureInfoFormat": "application/json",
@@ -14045,6 +14136,7 @@
         "type": "raster",
         "source": "bodemdaling2-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA+klEQVR4AQzMu0rDYByG8adfEixtUg+l1gOIIgFdFEHF2UnwIrwXL8DBLm6Cm4dVEIPFyUEQHOxQUBGRCMaoqa22NPn+/d75/T1Kay0P2a3Uog15bq3KW3Nb4rgmL9c7ctBbE4XZo4Tcj1oESvHuwJG6JK4+kbXLqFgS6nqfhX6fUgqf3x9ceF3OZzV1N0HtyTGVtMdmBOXfPJFvkUO4cQr8WA5qqXnIujm0voRJUynmHLb+jaSDwxDKdzQzRk/YYOdSVpIuyzH4mcb/E1QwZ/FqW4RTRcL2MFcunEzbxAKNgoW6kwrBmMdp3mN3cZ4zd5yGVA0aoUSHAQAAAP//XZ6NvgAAAAZJREFUAwDMqGe7K52hbAAAAABJRU5ErkJggg==",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "attributes": {
             "allowedattributes": [
@@ -14435,6 +14527,7 @@
         "type": "raster",
         "source": "fysichgeografischeregios-source",
         "metadata": {
+          "swatch": "#e7fbfa",
           "getFeatureInfoFormat": "application/json",
           "label": "Fysisch Geografische Regio's"
         }
@@ -14447,6 +14540,7 @@
         "minzoom": 4.5,
         "maxzoom": 11.5,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA90lEQVR4AQzNu07CYBxA8dMPCgLlkiASHYygcTSRuDmw+FK+Bk9hHN1YXDQ6aCIab00jLESj1DRSS7GX72/3k/NTWmu5c7/l5upYrs8Hcv9xK0PHljP7VB4/T0S9/ggSPVNdsajnZxgzG8sdslkzeXEcVN4IqbsPFDb2KXR6GK0urj+i6k3Ya7dQkTMAM0Elc7RpUvFGtFFc2heUqnVUbhkTzmOSIKFYLqNqFqu7fba2D3kbP6Hm/gLja4IkPqQRysyiYolOY51ucyc79I6oHPQJohxTVxNrhfrTSJASeu8ZLRZBWqPUXKOxHLNwx0w9m+h3QtKw+AcAAP//WfzVlAAAAAZJREFUAwCFDXBFTbRy3QAAAABJRU5ErkJggg==",
           "getFeatureInfoFormat": "application/json",
           "label": "cbs bodemgebruik 2017"
         }
@@ -14458,6 +14552,7 @@
         "source": "cbsbodemgebruik2017categorie-source",
         "minzoom": 11.5,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA/ElEQVR4AQzNP0sCYRzA8a/PnZoZaNipKFi4Cw1RBEHRGg1Br6GlN9AU+CZa6wVEtbQ1OdUUkXLUEhEk/fPsvNPT+909On+Gj/JvlvX/9abuXR5q53Zdu+dHOjpt6qh5ov2zY63mHMGYJEiaNmIskXlvgNQR64U4PUSFOUGyIShBJ0xU6QIyj4xLXzApooy/Kma/QEIDXg2CMuN5C3r7SK2F8hZ9olyXWKVmWEFGawgrDPJ13NQuyjQUOiwRRUWk3+Yn/01abIr2K4XnWeHGB2TbW5ifG+Qq9zx1O9z9tvCqHWLrAZUdXjGwFkiOAsTZY7sRsLMaQ/mNZPzBFAAA//8wJRrBAAAABklEQVQDAPGNaiYsSpSvAAAAAElFTkSuQmCC",
           "getFeatureInfoFormat": "application/json",
           "abstract": "Het Bestand Bodemgebruik 2017 bevat digitale geometrie van het bodemgebruik in Nederland. Voorbeelden van het bodemgebruik zijn verkeersterreinen, bebouwing, recreatieterreinen en binnen- en buitenwater. De begrenzingen zijn voor een groot deel gebaseerd op de Top10NL (BRT). Bij het interpreteren zijn luchtfoto&#x27;s leidend. De gegevens zijn ingewonnen in de zomer van 2017.",
           "label": "cbs bodemgebruik 2017 detail"
@@ -14469,6 +14564,7 @@
         "type": "style",
         "url": "styles/bgt_standaardvisualisatie.json",
         "metadata": {
+          "swatch": "#C9EB70",
           "abstract": "De Basisregistratie Grootschalige Topografie (BGT) is een digitale kaart van Nederland waarop gebouwen, wegen, waterlopen, terreinen en spoorlijnen eenduidig zijn vastgelegd. De kaart is op 20 centimeter nauwkeurig en bevat veel details, zoals je die in de werkelijkheid ook ziet. Denk aan bomen, wegen en gebouwen. Kortom: de inrichting van de fysieke omgeving.",
           "label": "Basiskaart Grootschalige Topografie"
         }
@@ -15621,6 +15717,7 @@
         "type": "raster",
         "source": "kea-aantal-tropische-dagen-max-gte-30c-huidig-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAr0lEQVR4AWxNPQ4BYRB9b3yiFQmFCziAA+g1juAKDqXTuoFGJLYTKoVIqIRkP1mS3WdWbETiZX4yb97MMzhiRDfNwjPN6kWahXk81EZxUTvGWcjfAgUbAwwocUFHK05wIiFsTEITsglKnFVwiT7FgY8tED2LjzAF2EaUuHYq90s4yAbAunkZAhATCMVn6UQVBsmdPK90cUV/uyHBlvv/y1JmPGrnXxJ3uZXET96lFwAAAP//IFzuigAAAAZJREFUAwAVeEGDFpRZ9QAAAABJRU5ErkJggg==",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/hitte/wms/?version=1.1.1&request=GetFeatureInfo&styles=&layers=Aantal_tropische_dagen_max_gte_30C_Huidig&query_layers=Aantal_tropische_dagen_max_gte_30C_Huidig",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "legendurl": "https://tiles.edugis.nl/mapproxy/hitte/wms?version=1.1.1&request=GetLegendGraphic&styles=&layer=Aantal_tropische_dagen_max_gte_30C_Huidig&format=image%2Fpng",
@@ -15646,6 +15743,7 @@
         "type": "raster",
         "source": "kea-aantal-zomerse-dagen-max-gte-25c-huidig-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAt0lEQVR4AWSOO2pCYRBGz0x+kyJNICRkB9lA6iwgTTaQxxpcUSDpYquVexAtfJaCWIkI/hdUvJ+joCB+M1MM5wyME1GDp/yf1rlWKfNvquevq/f8kSb5M20PQi78G7PESCVNHk1WxVBU1+c/3Jm8yjTg0AzsRdgrcB/Ss1/fpj8KHmjHGoRT7Aas4sAbbcRmf81FnE7Ame3FCwiSa8wgiGLOeyWlLnKX+mG24uXF0bClytQDK/AdAAAA//8B1l9MAAAABklEQVQDAHoeQrHacQtxAAAAAElFTkSuQmCC",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/hitte/wms/?version=1.1.1&request=GetFeatureInfo&styles=&layers=Aantal_zomerse_dagen_max_gte_25C_Huidig&query_layers=Aantal_zomerse_dagen_max_gte_25C_Huidig",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "legendurl": "https://tiles.edugis.nl/mapproxy/hitte/wms?version=1.1.1&request=GetLegendGraphic&styles=&layer=Aantal_zomerse_dagen_max_gte_25C_Huidig&format=image%2Fpng",
@@ -15671,6 +15769,7 @@
         "type": "raster",
         "source": "kea-aantal-warme-dagen-max-gte-20c-huidig-source",
         "metadata": {
+          "swatch": "#fc9d53",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/hitte/wms/?version=1.1.1&request=GetFeatureInfo&styles=&layers=Aantal_warme_dagen_max_gte_20C_Huidig&query_layers=Aantal_warme_dagen_max_gte_20C_Huidig",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "legendurl": "https://tiles.edugis.nl/mapproxy/hitte/wms?version=1.1.1&request=GetLegendGraphic&styles=&layer=Aantal_warme_dagen_max_gte_20C_Huidig&format=image%2Fpng",
@@ -15696,6 +15795,7 @@
         "type": "raster",
         "source": "kea-aantal-vorstdagen-min-0c-huidig-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA3UlEQVR4ATyPvUoDURCFzx1kUwqihQ8giNjFtD6BIj6AvoP4EiFgZWVraSci+BQWgk3IDyGBJMuS3Q0hm+z9Obl7QzLMKeb7ZooR+Kr/vJ02vl5Wjc+Wu3x9+D5v3t1etO5HPjYsYJU9wtnILlLHYnEiIs9Q/hL8l/pH81DAJ5PHbj3pKC+ulMK110dl0j8TVVPvZTI8LqddgTPKi9BmnkQ2j2tCrW9MOt6LytKRejYITNwyJcAwVLKKLTLC6MDErot2BXchQZ2NdyNEHUR/JH89yX1Qxj2ymG+/A7ABAAD//48Nt+8AAAAGSURBVAMA9b5jYiV2ZvEAAAAASUVORK5CYII=",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/hitte/wms/?version=1.1.1&request=GetFeatureInfo&styles=&layers=Aantal_vorstdagen_min_0C_Huidig&query_layers=Aantal_vorstdagen_min_0C_Huidig",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "legendurl": "https://tiles.edugis.nl/mapproxy/hitte/wms?version=1.1.1&request=GetLegendGraphic&styles=&layer=Aantal_vorstdagen_min_0C_Huidig&format=image%2Fpng",
@@ -15721,6 +15821,7 @@
         "type": "raster",
         "source": "kea-aantal-ijsdagen-max-0c-huidig-source",
         "metadata": {
+          "swatch": "#74c2cc",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/hitte/wms/?version=1.1.1&request=GetFeatureInfo&styles=&layers=Aantal_ijsdagen_max_0C_Huidig&query_layers=Aantal_ijsdagen_max_0C_Huidig",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "legendurl": "https://tiles.edugis.nl/mapproxy/hitte/wms?version=1.1.1&request=GetLegendGraphic&styles=&layer=Aantal_ijsdagen_max_0C_Huidig&format=image%2Fpng",
@@ -16603,6 +16704,7 @@
         "type": "raster",
         "source": "lichtvervuiling-source",
         "metadata": {
+          "swatch": "#f3c90b",
           "getFeatureInfoFormat": "application/json",
           "label": "Lichtvervuiling"
         }
@@ -16613,6 +16715,7 @@
         "type": "raster",
         "source": "licht-20150315-gm-hhavondbew-source",
         "metadata": {
+          "swatch": "#f3c90b",
           "getFeatureInfoFormat": "application/json",
           "label": "Hemelhelderheid in de avond zonder bewolking"
         }
@@ -16623,6 +16726,7 @@
         "type": "raster",
         "source": "licht-20150315-gm-hhnachtbew-source",
         "metadata": {
+          "swatch": "#d3bb2a",
           "getFeatureInfoFormat": "application/json",
           "label": "Hemelhelderheid in de nacht met bewolking"
         }
@@ -16633,6 +16737,7 @@
         "type": "raster",
         "source": "dmg-licht-20150315-gm-hhnachtonbew-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABCElEQVR4AQyOvUsCcQBAn7/zO5Xu0kHCIgkzyQZtitaoKQiKlqjBodqKqDGIxob+kpaWaI8K5xCiD0uJQ5OwOr3O8/h521ve4wkyh1LL78vTo015cbYhl5f25G5pS66tl2Ro+kAKkKRVG03rkUoZ5CZM/B6FSj3MlGYj8nGbnVWd4twn6vAPjZYfqydYyHTRwg7iePuD1LhB9W2E65tJEq4Vd4udroJXehAri3cUZh8ZTTZ5qQep6n6eayGqDR9qtI+ovGe5vS/wUE7T7ij8uqb5L0jEHP5cFifnM1xeJdGbASJBh+yYyXyhTSggiQ65D+VakFrLx9e3j2LOwKvA02sENdbHsgQDAAAA//+ZYstdAAAABklEQVQDAEcTX3tUNf/sAAAAAElFTkSuQmCC",
           "getFeatureInfoFormat": "application/json",
           "label": "Hemelhelderheid in de nacht zonder bewolking"
         }
@@ -16643,6 +16748,7 @@
         "type": "raster",
         "source": "dmg-licht-emissie-iss-nl-2012-source",
         "metadata": {
+          "swatch": "#231a0f",
           "getFeatureInfoFormat": "application/json",
           "label": "Lichtemissie Nederland, foto van ISS (2012)"
         }
@@ -16653,6 +16759,7 @@
         "type": "raster",
         "source": "dmg-licht-lichtemissie-2012-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABFElEQVR4AQAIAff+AhAcLP9DaJX/vrWn/8+ihf9bg7L/nZec/2eGq/8lOlX/AhcoPQAUGyIAHxgCACHz4ABJG+sACyEaANLY4QBLVVYAAiI1TACHPOEAE+PTAOgjNQDL/CQA6PMEAFtEHgAFCAwAAnQf1QAS8uUA9BUfALLyKABGDdsAKw7xAO/9DADt9gQAAinCsQDzn7gABc/RAOj0AgDQ8xIAxt4DANbmAgAYB/UAAggrHAANOCMA5jdEAOvs9wDn9AYA6/wMABkP/QDxAQ4AAnUJZACgKGsA4NjpAA8H/AAsHQQAXSzvAPf+BwAYB/UAAuru+wDW2fEAz/YcADga9QAF/vkAt90MADsW7QDo8wMAAAAA//9dbpLqAAAABklEQVQDAJknZF+xbXfjAAAAAElFTkSuQmCC",
           "getFeatureInfoFormat": "application/json",
           "label": "Lichtemissie Nederland (2012)"
         }
@@ -16663,6 +16770,7 @@
         "type": "raster",
         "source": "lucht-actueel-lki-source",
         "metadata": {
+          "swatch": "#ffff71",
           "getFeatureInfoFormat": "application/json",
           "label": "Luchtkwaliteitsindex (actueel)"
         }
@@ -16673,6 +16781,7 @@
         "type": "raster",
         "source": "fijnstofpm10actueel-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA0ElEQVR4ARyOTUtCYRSEn/c1pW7cSIsoKKKgD1rXP+gHtmjRqj/Qok2biHZu3YkbQcGtKKhXUa/ecfTAYc7APMOJ8nQz6elXOv+RHv+kt7ZU9c23FPF89mC8gpMy1PbgvQNT+9MKxOESmgPIC9GaQWMEXWtiNMsd+GiLlSArAkcleEjE3QHMCkjt438/MHGi6urRGvp5YGpdGioFiOUAZxWw7HZh8sL+9Riu9yHWx/DlFpewDQeg5me39NzheH8INwlMXHtr4iWFS+uV9zmFDQAAAP//7bnmXQAAAAZJREFUAwDHcVHxYdERKQAAAABJRU5ErkJggg==",
           "getFeatureInfoFormat": "application/json",
           "label": "Fijnstof pm10 (actueel)"
         }
@@ -16683,6 +16792,7 @@
         "type": "raster",
         "source": "stiksofoxideno2actueel-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA50lEQVR4AQyPv0rDcBSFv9y0aRMidohiq0UD/pl8B9/GV3DyGQqOQgbfQhEcHJxcS5fWoULUogRs1Jrk3v6+7fCdMxwxx8vCrHelFl+rnY7URg9mW5dqnYvGBEf2BFFXSXdqhkc12UxZNpD0QBbfcPNmdFrK+LHF88Rjmjs5aNBQkfNbxQsb3j99BknN8X7FYVrzVQrFykfGtRKGsJs0zPM2s9eAIhfKqRD8GBJHcNb/528pSGAgRntTifpK3XZxct8iuwsxJwKB4kPI5z7666GlK5wM4SB2V9y4u21UeFQrYS9V/A1YAwAA//+3na6bAAAABklEQVQDAN2NZP+nIsPXAAAAAElFTkSuQmCC",
           "getFeatureInfoFormat": "application/json",
           "label": "Stikstofoxide NO2 (actueel)"
         }
@@ -16693,6 +16803,7 @@
         "type": "raster",
         "source": "luchtactueel-03-source",
         "metadata": {
+          "swatch": "#ffff71",
           "getFeatureInfoFormat": "application/json",
           "label": "Ozon (actueel)"
         }
@@ -16703,6 +16814,7 @@
         "type": "raster",
         "source": "geluidbelasting-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABFElEQVR4AQAIAff+Av//gAL//aN/9a4Y7fmzD/P63U5o/9tUQPvkRZD98FqnAgAAMSIA+vP/8+f5DvHO9wz+7t57/ADziAEGDDb/9O78AgAA5Q/845lqES4OARNXIQADFSTcAQUH7P3n7Nz+7vT2AvnKoDr/+wvmBSEuvv4CLq7/8OMP/OvjCAAHCAgDEBbqAgEKA3f/+vwf+unsAv8KA7AAChPDBA0N2wMGDaT98+wNAvTQ5Qv74OAEAgkB/gD9ABH/9/Tv/QAEFP396jECCgsOAhJQSFIIMzqr/efnAv3u2O0EDQ/6BAEL4wMJE9/+9vDyAv347xn/++3qABAQ+wMAAEX++PYD+/7+5v7y8WkBDRbqAAAA//9fhWzSAAAABklEQVQDAAs4hh+rymp/AAAAAElFTkSuQmCC",
           "getFeatureInfoFormat": "application/json",
           "attributes": {
             "translations": [
@@ -16723,6 +16835,7 @@
         "type": "raster",
         "source": "rivm-nsl-20180324-gm-pm102016-source",
         "metadata": {
+          "swatch": "#96a4d1",
           "getFeatureInfoFormat": "application/json",
           "attributes": {
             "translations": [
@@ -16743,6 +16856,7 @@
         "type": "raster",
         "source": "rivm-r19-gm-n-depositie-source",
         "metadata": {
+          "swatch": "#fdcf76",
           "getFeatureInfoFormat": "application/json",
           "label": "Stikstofdepositie (2015)"
         }
@@ -16753,6 +16867,7 @@
         "type": "raster",
         "source": "rivm-nsl-20180324-gm-no22016-source",
         "metadata": {
+          "swatch": "#e9d1b2",
           "getFeatureInfoFormat": "application/json",
           "label": "Stikstofdioxide concentratie (2016)"
         }
@@ -16773,6 +16888,7 @@
         "type": "raster",
         "source": "nsl-20141204-gm-ec2013-source",
         "metadata": {
+          "swatch": "#e8dbc0",
           "getFeatureInfoFormat": "application/json",
           "label": "Roet (2016)"
         }
@@ -17291,6 +17407,7 @@
         "type": "raster",
         "source": "rivm-r88-20170621-gm-actueel-uhi-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABDElEQVR4AQzMPUsCcQCA8ef+nmZpppZDpERwSVihEDY1NRRNEUFj9AWCPkAfoKWlqYa2oECE5sKIojF6RfClKAw57aLUw/Qw/91vfeAR0qZXunJh41Zu7h3LpTVLXty3pRa3pGJXge0kLVG0XsKBEtpMjtSVTsNQmZrvIOoNuFOeeM6Mcni0zsHOJOenHsYXC9T+Woh06oxyVsGlWnwWfcytPKDFSnwUQ5iVHoRZuyaWzBNJVDC/3Ly/hilkR6i++AkGfhB5X5yk9xJnx0JRQM/5KT8G8YRaGN+DiMz+Mlvbu6jdXzxDFg5VwReFZtVNf599iEacRAZcZG8SjM3qDE8YONpNplffMOte/gEAAP//HQXHHgAAAAZJREFUAwCfzWgNGaMCnQAAAABJRU5ErkJggg==",
           "getFeatureInfoFormat": "application/json",
           "attributes": {
             "translations": [
@@ -18150,6 +18267,7 @@
         "source": "zonpotentie-source",
         "minzoom": 9.5,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA2ElEQVR4AUTOQUrDUBDG8f97adpG2yJazUak7sXLeAFXXsV7iJ7AjeBWEEQvoCK6sCRQMKQxIZmXjI+A9GMWw8xv8Vn1+Sme9fHjUpfvL1qVub/4aVvVslQryZLp+JTF/JxpfEwtKa5Yg7UQRdhwb58gCIknB1CVzEYdwdY2/7Go9vvD6w1vxTVdeIWk39A1NHmKZTjsweF8jLqE2llkltBIhg5+PejfsNg94+ToAikMIrdk1RNG2w0wxpfSjFVX48KKyeiTNfcbIG4F5o54YLAea5OzE33xBwAA//9znWZ2AAAABklEQVQDAGhWYtz4b3FaAAAAAElFTkSuQmCC",
           "getFeatureInfoFormat": "application/json",
           "label": "Zonpotentie velden"
         }
@@ -18161,6 +18279,7 @@
         "source": "rvolabel2017-source",
         "minzoom": 12,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAA70lEQVR4AQSAPU7CUBzAf/3bPq2UpoFI/ACNkRgGHRw4hVfyHB7AK5jo4OLi6oQmxggJqBiIUlpSaB99z8jk/drGwxu77Pes/n22af/JjnpXdta7tbOveytGBqQqxUSCNSF5vUVdXaIXA7ykQFzVIdJ10mRMsZ5jvu8YLh9xm2c4+03ETF/RkuL6MdbXBI02e39tgso55fwN8cIqatNQrRzi6QaFHjHdmICb4kRHyE++Sxm3cFaKVTlB1AXVzgkYy6IcI8c7XfLxC/HHA1tK8G2NIItgrQjjDlL2B4SnXbyDGiZLyPIhEhocP6Dc/uQfAAD//wHmzq8AAAAGSURBVAMAOkJt05VjvIEAAAAASUVORK5CYII=",
           "label": "Energielabels"
         }
       },
@@ -18171,6 +18290,7 @@
         "source": "dakdelen-2018-source",
         "minzoom": 16.5,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABAklEQVR4AQyNTUsCUQBFj88IRbSQLDFbtZxlhEFbd1E/p4SwZVAti9m7kqBlm6xlH0RGIUGREeGUg1FmzafNTK+3uFy4HO4RB5WKbFTX5fN1U4ZhKH3flxeNhtzfqMpjXZci/mowYhjc1Goc6jreYECpXGZpdY3EdAEhXJsX08QTcSLP5Wlrk2a9zk+vx+LyCmI8nyelaQTyj3RmjMe3Lp2zU1p7u5zvbCNSc/PMRgEUZ+CrT17Bo+k0k+o5bN0inOEvd/cPTBUKmDFB+9sipoB3tXeUVtgnR8RLC0RXlyQdh2w2S7tr4kzkKDo24sOyyEQRgeqo/4mrkkkmyAVDfE3jHwAA//8gTR7IAAAABklEQVQDAIyfeA7n/EPZAAAAAElFTkSuQmCC",
           "legendurl": "https://pico.geodan.nl/cgi-bin/qgis_mapserv.fcgi?DPI=120&map=/usr/lib/cgi-bin/projects/dakdelen2.qgs&transparent=false&LAYERS=dakdelen2&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&STYLES=&",
           "getFeatureInfoUrl": "https://pico.geodan.nl/cgi-bin/qgis_mapserv.fcgi?DPI=120&map=/usr/lib/cgi-bin/projects/dakdelen2.qgs&query_layers=dakdelen2&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&STYLES=",
           "attributes": {
@@ -18224,6 +18344,7 @@
         "type": "raster",
         "source": "topotijdreis1815-source",
         "metadata": {
+          "swatch": "#c7b9a8",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1815"
         }
@@ -18234,6 +18355,7 @@
         "type": "raster",
         "source": "topotijdreis1820-source",
         "metadata": {
+          "swatch": "#a1a2a1",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1820"
         }
@@ -18244,6 +18366,7 @@
         "type": "raster",
         "source": "topotijdreis1821-source",
         "metadata": {
+          "swatch": "#b2aea4",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1821"
         }
@@ -18254,6 +18377,7 @@
         "type": "raster",
         "source": "topotijdreis1823-1829-source",
         "metadata": {
+          "swatch": "#b2aea4",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1823_1829"
         }
@@ -18264,6 +18388,7 @@
         "type": "raster",
         "source": "topotijdreis1830-1849-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1830_1849"
         }
@@ -18274,6 +18399,7 @@
         "type": "raster",
         "source": "topotijdreis1850-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1850"
         }
@@ -18284,6 +18410,7 @@
         "type": "raster",
         "source": "topotijdreis1857-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1857"
         }
@@ -18294,6 +18421,7 @@
         "type": "raster",
         "source": "topotijdreis1858-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1858"
         }
@@ -18304,6 +18432,7 @@
         "type": "raster",
         "source": "topotijdreis1861-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1861"
         }
@@ -18314,6 +18443,7 @@
         "type": "raster",
         "source": "topotijdreis1862-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1862"
         }
@@ -18324,6 +18454,7 @@
         "type": "raster",
         "source": "topotijdreis1865-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1865"
         }
@@ -18334,6 +18465,7 @@
         "type": "raster",
         "source": "topotijdreis1866-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1866"
         }
@@ -18344,6 +18476,7 @@
         "type": "raster",
         "source": "topotijdreis1868-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1868"
         }
@@ -18354,6 +18487,7 @@
         "type": "raster",
         "source": "topotijdreis1870-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1870"
         }
@@ -18364,6 +18498,7 @@
         "type": "raster",
         "source": "topotijdreis1871-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1871"
         }
@@ -18374,6 +18509,7 @@
         "type": "raster",
         "source": "topotijdreis1872-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1872"
         }
@@ -18384,6 +18520,7 @@
         "type": "raster",
         "source": "topotijdreis1880-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1880"
         }
@@ -18394,6 +18531,7 @@
         "type": "raster",
         "source": "topotijdreis1883-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1883"
         }
@@ -18404,6 +18542,7 @@
         "type": "raster",
         "source": "topotijdreis1886-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1886"
         }
@@ -18414,6 +18553,7 @@
         "type": "raster",
         "source": "topotijdreis1888-source",
         "metadata": {
+          "swatch": "#cdc2b2",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1888"
         }
@@ -18424,6 +18564,7 @@
         "type": "raster",
         "source": "topotijdreis1889-source",
         "metadata": {
+          "swatch": "#a89776",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1889"
         }
@@ -18434,6 +18575,7 @@
         "type": "raster",
         "source": "topotijdreis1893-source",
         "metadata": {
+          "swatch": "#a89776",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1893"
         }
@@ -18444,6 +18586,7 @@
         "type": "raster",
         "source": "topotijdreis1899-source",
         "metadata": {
+          "swatch": "#97846e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1899"
         }
@@ -18454,6 +18597,7 @@
         "type": "raster",
         "source": "topotijdreis1900-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1900"
         }
@@ -18464,6 +18608,7 @@
         "type": "raster",
         "source": "topotijdreis1901-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1901"
         }
@@ -18474,6 +18619,7 @@
         "type": "raster",
         "source": "topotijdreis1902-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1902"
         }
@@ -18484,6 +18630,7 @@
         "type": "raster",
         "source": "topotijdreis1904-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1904"
         }
@@ -18494,6 +18641,7 @@
         "type": "raster",
         "source": "topotijdreis1908-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1908"
         }
@@ -18504,6 +18652,7 @@
         "type": "raster",
         "source": "topotijdreis1909-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1909"
         }
@@ -18514,6 +18663,7 @@
         "type": "raster",
         "source": "topotijdreis1910-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1910"
         }
@@ -18524,6 +18674,7 @@
         "type": "raster",
         "source": "topotijdreis1912-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1912"
         }
@@ -18534,6 +18685,7 @@
         "type": "raster",
         "source": "topotijdreis1915-source",
         "metadata": {
+          "swatch": "#c4b59c",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1915"
         }
@@ -18544,6 +18696,7 @@
         "type": "raster",
         "source": "topotijdreis1918-source",
         "metadata": {
+          "swatch": "#b6a78e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1918"
         }
@@ -18554,6 +18707,7 @@
         "type": "raster",
         "source": "topotijdreis1919-source",
         "metadata": {
+          "swatch": "#b6a78e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1919"
         }
@@ -18564,6 +18718,7 @@
         "type": "raster",
         "source": "topotijdreis1920-source",
         "metadata": {
+          "swatch": "#b6a78e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1920"
         }
@@ -18574,6 +18729,7 @@
         "type": "raster",
         "source": "topotijdreis1922-source",
         "metadata": {
+          "swatch": "#beaa8a",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1922"
         }
@@ -18584,6 +18740,7 @@
         "type": "raster",
         "source": "topotijdreis1925-source",
         "metadata": {
+          "swatch": "#beaa8a",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1925"
         }
@@ -18594,6 +18751,7 @@
         "type": "raster",
         "source": "topotijdreis1929-source",
         "metadata": {
+          "swatch": "#cec5a7",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1929"
         }
@@ -18604,6 +18762,7 @@
         "type": "raster",
         "source": "topotijdreis1931-source",
         "metadata": {
+          "swatch": "#cec5a7",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1931"
         }
@@ -18614,6 +18773,7 @@
         "type": "raster",
         "source": "topotijdreis1935-source",
         "metadata": {
+          "swatch": "#cec5a7",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1935"
         }
@@ -18624,6 +18784,7 @@
         "type": "raster",
         "source": "topotijdreis1937-source",
         "metadata": {
+          "swatch": "#cdc4a8",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1937"
         }
@@ -18634,6 +18795,7 @@
         "type": "raster",
         "source": "topotijdreis1940-source",
         "metadata": {
+          "swatch": "#cdc4a8",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1940"
         }
@@ -18644,6 +18806,7 @@
         "type": "raster",
         "source": "topotijdreis1942-source",
         "metadata": {
+          "swatch": "#b6ad9b",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1942"
         }
@@ -18654,6 +18817,7 @@
         "type": "raster",
         "source": "topotijdreis1943-source",
         "metadata": {
+          "swatch": "#cec3a3",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1943"
         }
@@ -18664,6 +18828,7 @@
         "type": "raster",
         "source": "topotijdreis1947-source",
         "metadata": {
+          "swatch": "#cec3a3",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1947"
         }
@@ -18674,6 +18839,7 @@
         "type": "raster",
         "source": "topotijdreis1948-source",
         "metadata": {
+          "swatch": "#cec3a3",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1948"
         }
@@ -18684,6 +18850,7 @@
         "type": "raster",
         "source": "topotijdreis1949-source",
         "metadata": {
+          "swatch": "#cec3a3",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1949"
         }
@@ -18694,6 +18861,7 @@
         "type": "raster",
         "source": "topotijdreis1950-source",
         "metadata": {
+          "swatch": "#d2caaa",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1950"
         }
@@ -18704,6 +18872,7 @@
         "type": "raster",
         "source": "topotijdreis1951-source",
         "metadata": {
+          "swatch": "#d2caaa",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1951"
         }
@@ -18714,6 +18883,7 @@
         "type": "raster",
         "source": "topotijdreis1952-source",
         "metadata": {
+          "swatch": "#d2caaa",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1952"
         }
@@ -18724,6 +18894,7 @@
         "type": "raster",
         "source": "topotijdreis1953-source",
         "metadata": {
+          "swatch": "#d2caaa",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1953"
         }
@@ -18734,6 +18905,7 @@
         "type": "raster",
         "source": "topotijdreis1955-source",
         "metadata": {
+          "swatch": "#d4ceb4",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1955"
         }
@@ -18744,6 +18916,7 @@
         "type": "raster",
         "source": "topotijdreis1962-source",
         "metadata": {
+          "swatch": "#cabf94",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1962"
         }
@@ -18754,6 +18927,7 @@
         "type": "raster",
         "source": "topotijdreis1963-source",
         "metadata": {
+          "swatch": "#cabf94",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1963"
         }
@@ -18764,6 +18938,7 @@
         "type": "raster",
         "source": "topotijdreis1965-source",
         "metadata": {
+          "swatch": "#cabf94",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1965"
         }
@@ -18774,6 +18949,7 @@
         "type": "raster",
         "source": "topotijdreis1970-source",
         "metadata": {
+          "swatch": "#d5cca5",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1970"
         }
@@ -18784,6 +18960,7 @@
         "type": "raster",
         "source": "topotijdreis1971-source",
         "metadata": {
+          "swatch": "#d5cca5",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1971"
         }
@@ -18794,6 +18971,7 @@
         "type": "raster",
         "source": "topotijdreis1973-source",
         "metadata": {
+          "swatch": "#dddbd0",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1973"
         }
@@ -18804,6 +18982,7 @@
         "type": "raster",
         "source": "topotijdreis1975-source",
         "metadata": {
+          "swatch": "#dddbd0",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1975"
         }
@@ -18814,6 +18993,7 @@
         "type": "raster",
         "source": "topotijdreis1976-source",
         "metadata": {
+          "swatch": "#e5e1cc",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1976"
         }
@@ -18824,6 +19004,7 @@
         "type": "raster",
         "source": "topotijdreis1978-source",
         "metadata": {
+          "swatch": "#e5e1cc",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1978"
         }
@@ -18834,6 +19015,7 @@
         "type": "raster",
         "source": "topotijdreis1980-source",
         "metadata": {
+          "swatch": "#eeebc6",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1980"
         }
@@ -18844,6 +19026,7 @@
         "type": "raster",
         "source": "topotijdreis1984-source",
         "metadata": {
+          "swatch": "#eeeaa7",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1984"
         }
@@ -18854,6 +19037,7 @@
         "type": "raster",
         "source": "topotijdreis1988-source",
         "metadata": {
+          "swatch": "#e8e1a4",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1988"
         }
@@ -18864,6 +19048,7 @@
         "type": "raster",
         "source": "topotijdreis1990-source",
         "metadata": {
+          "swatch": "#ede3a4",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1990"
         }
@@ -18874,6 +19059,7 @@
         "type": "raster",
         "source": "topotijdreis1994-source",
         "metadata": {
+          "swatch": "#ece7b7",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1994"
         }
@@ -18884,6 +19070,7 @@
         "type": "raster",
         "source": "topotijdreis1995-source",
         "metadata": {
+          "swatch": "#ece7b7",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1995"
         }
@@ -18894,6 +19081,7 @@
         "type": "raster",
         "source": "topotijdreis1996-source",
         "metadata": {
+          "swatch": "#d7d2a0",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1996"
         }
@@ -18904,6 +19092,7 @@
         "type": "raster",
         "source": "topotijdreis1997-source",
         "metadata": {
+          "swatch": "#d7d2a0",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1997"
         }
@@ -18914,6 +19103,7 @@
         "type": "raster",
         "source": "topotijdreis1999-source",
         "metadata": {
+          "swatch": "#d7d3a0",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "1999"
         }
@@ -18924,6 +19114,7 @@
         "type": "raster",
         "source": "topotijdreis2006-source",
         "metadata": {
+          "swatch": "#ded7ab",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2006"
         }
@@ -18934,6 +19125,7 @@
         "type": "raster",
         "source": "topotijdreis2010-source",
         "metadata": {
+          "swatch": "#ded8ac",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2010"
         }
@@ -18944,6 +19136,7 @@
         "type": "raster",
         "source": "topotijdreis2011-source",
         "metadata": {
+          "swatch": "#ded8ac",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2011"
         }
@@ -18954,6 +19147,7 @@
         "type": "raster",
         "source": "topotijdreis2014-source",
         "metadata": {
+          "swatch": "#d7d4aa",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2014"
         }
@@ -18964,6 +19158,7 @@
         "type": "raster",
         "source": "topotijdreis2015-source",
         "metadata": {
+          "swatch": "#d8d3a9",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2015"
         }
@@ -18974,6 +19169,7 @@
         "type": "raster",
         "source": "topotijdreis2016-source",
         "metadata": {
+          "swatch": "#dedbb8",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2016"
         }
@@ -18984,6 +19180,7 @@
         "type": "raster",
         "source": "topotijdreis2017-source",
         "metadata": {
+          "swatch": "#dddcb8",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2017"
         }
@@ -18994,6 +19191,7 @@
         "type": "raster",
         "source": "topotijdreis2018-source",
         "metadata": {
+          "swatch": "#dfdeb9",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2018"
         }
@@ -19004,6 +19202,7 @@
         "type": "raster",
         "source": "topotijdreis2019-source",
         "metadata": {
+          "swatch": "#e0dec0",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2019"
         }
@@ -19014,6 +19213,7 @@
         "type": "raster",
         "source": "tijdreisfoto2006-source",
         "metadata": {
+          "swatch": "#949494",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2006"
         }
@@ -19024,6 +19224,7 @@
         "type": "raster",
         "source": "tijdreisfoto2007-source",
         "metadata": {
+          "swatch": "#94958e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2007"
         }
@@ -19034,6 +19235,7 @@
         "type": "raster",
         "source": "tijdreisfoto2008-source",
         "metadata": {
+          "swatch": "#747e72",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2008"
         }
@@ -19044,6 +19246,7 @@
         "type": "raster",
         "source": "tijdreisfoto2009-source",
         "metadata": {
+          "swatch": "#7e8174",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2009"
         }
@@ -19054,6 +19257,7 @@
         "type": "raster",
         "source": "tijdreisfoto2010-source",
         "metadata": {
+          "swatch": "#838376",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2010"
         }
@@ -19064,6 +19268,7 @@
         "type": "raster",
         "source": "tijdreisfoto2011-source",
         "metadata": {
+          "swatch": "#7f8173",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2011"
         }
@@ -19074,6 +19279,7 @@
         "type": "raster",
         "source": "tijdreisfoto2012-source",
         "metadata": {
+          "swatch": "#727669",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2012"
         }
@@ -19084,6 +19290,7 @@
         "type": "raster",
         "source": "tijdreisfoto2013-source",
         "metadata": {
+          "swatch": "#8b8d82",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2013"
         }
@@ -19094,6 +19301,7 @@
         "type": "raster",
         "source": "tijdreisfoto2014-source",
         "metadata": {
+          "swatch": "#7f8784",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2014"
         }
@@ -19104,6 +19312,7 @@
         "type": "raster",
         "source": "tijdreisfoto2015-source",
         "metadata": {
+          "swatch": "#6e7068",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2015"
         }
@@ -19114,6 +19323,7 @@
         "type": "raster",
         "source": "tijdreisfoto2016-source",
         "metadata": {
+          "swatch": "#737a70",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2016"
         }
@@ -19124,6 +19334,7 @@
         "type": "raster",
         "source": "tijdreisfoto2017-source",
         "metadata": {
+          "swatch": "#6d786e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2017"
         }
@@ -19134,6 +19345,7 @@
         "type": "raster",
         "source": "tijdreisfoto2018-source",
         "metadata": {
+          "swatch": "#6e786e",
           "legendurl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRnionh_s64tuvwvyLQTkhyl5NE3dqBTSBGxg&usqp=CAU",
           "label": "2018"
         }
@@ -19144,6 +19356,7 @@
         "type": "raster",
         "source": "pdokluchtfotowmts2019-2-source",
         "metadata": {
+          "swatch": "#6e736a",
           "legendurl": "https://map.edugis.nl/legends2/pdoklufolegend2019.png",
           "label": "2019"
         }
@@ -19154,6 +19367,7 @@
         "type": "raster",
         "source": "pdokluchtfotowmts2020-2-source",
         "metadata": {
+          "swatch": "#72736b",
           "legendurl": "https://map.edugis.nl/legends2/pdoklufolegend2020.png",
           "label": "2020"
         }
@@ -19261,7 +19475,7 @@
                   "checked": false
                 },
                 {
-                  "label": "Standaard (Bing)",
+                  "label": "Standaard (VirtualEarth)",
                   "layerId": "bingmaproad",
                   "selectionGroup": "basemap",
                   "checked": false
@@ -19283,7 +19497,7 @@
                   "checked": false
                 },
                 {
-                  "label": "Wereld (Microsoft Bing)",
+                  "label": "Wereld (VirtualEarth)",
                   "layerId": "bingmapaerial",
                   "selectionGroup": "basemap",
                   "checked": false
@@ -19305,7 +19519,7 @@
                   "separator": true
                 },
                 {
-                  "label": "Hybride | Wereld (Microsoft Bing)",
+                  "label": "Hybride | Wereld (VirtualEarth)",
                   "layerId": "bingmaphybrid",
                   "selectionGroup": "basemap",
                   "checked": false
