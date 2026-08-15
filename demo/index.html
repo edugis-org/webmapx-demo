@@ -43,8 +43,47 @@
     const params = new URLSearchParams(window.location.search);
     const configParam = params.get('config') ?? '../config/demo.json';
 
+    /**
+     * Tell an embedding page (the landing-page demo grid) when the map has
+     * actually settled, so it can drop its preview image at the right moment.
+     *
+     * WebMapX.mount() resolves once the engine is initialized — well before
+     * tiles are fetched and painted — and every engine signals "done"
+     * differently (maplibre 'idle', OpenLayers 'rendercomplete', leaflet
+     * 'load'). Instead of engine-specific hooks, watch the network: once no
+     * new resource has been requested for QUIET_MS, the tiles are in.
+     */
+    function reportReadyToParent() {
+      if (window.parent === window) return;
+
+      const QUIET_MS = 700;
+      const MAX_WAIT_MS = 30000;
+      let timer;
+      let done = false;
+
+      const finish = (reason) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        observer.disconnect();
+        window.parent.postMessage({ type: 'webmapx:ready', reason }, window.location.origin);
+      };
+
+      const armQuietTimer = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => finish('quiet'), QUIET_MS);
+      };
+
+      const observer = new PerformanceObserver(armQuietTimer);
+      observer.observe({ type: 'resource', buffered: true });
+      armQuietTimer();
+      // Live sources keep polling and never go quiet — reveal anyway.
+      setTimeout(() => finish('timeout'), MAX_WAIT_MS);
+    }
+
     try {
       await WebMapX.mount('#map', { config: configParam });
+      reportReadyToParent();
     } catch (e) {
       const el = document.getElementById('error');
       el.style.display = 'block';

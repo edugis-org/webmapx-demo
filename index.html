@@ -287,7 +287,7 @@ npm install && npm run dev</pre>
 
     card.appendChild(placeholder);
 
-    entries.push({ iframe, card, queued: false, loaded: false });
+    entries.push({ iframe, card, queued: false, loaded: false, revealed: false, fallbackTimer: 0 });
 
     const openBtn = document.createElement('a');
     openBtn.className = 'demo-open-btn';
@@ -321,6 +321,27 @@ npm install && npm run dev</pre>
     grid.appendChild(card);
   }
 
+  // Reveal the live map, dropping the preview image. Driven by the
+  // 'webmapx:ready' message the demo page posts once its tiles have settled.
+  const FALLBACK_REVEAL_MS = 15000;
+
+  function reveal(entry, reason) {
+    if (entry.revealed) return;
+    entry.revealed = true;
+    clearTimeout(entry.fallbackTimer);
+    entry.card.classList.add('is-ready');
+    if (reason === 'fallback') {
+      console.warn(`[demo grid] no webmapx:ready from ${entry.iframe.title}; revealed on timeout`);
+    }
+  }
+
+  window.addEventListener('message', (event) => {
+    if (event.origin !== window.location.origin) return;
+    if (event.data?.type !== 'webmapx:ready') return;
+    const entry = entries.find((e) => e.iframe.contentWindow === event.source);
+    if (entry) reveal(entry, event.data.reason);
+  });
+
   // Load-order controller: whichever demo card is scrolled into view loads
   // first, rest load one at a time (next starts after previous iframe fires
   // 'load') so they don't all compete for bandwidth/CPU at once on phones.
@@ -341,10 +362,12 @@ npm install && npm run dev</pre>
     entry.loaded = true;
     entry.iframe.addEventListener('load', () => {
       loading = false;
-      // iframe 'load' fires before the engine has painted its first tiles, so
-      // hold the poster a moment longer — revealing at 'load' shows a blank
-      // map, i.e. a step backwards from the screenshot already on screen.
-      setTimeout(() => entry.card.classList.add('is-ready'), 700);
+      // Do NOT reveal here: 'load' only means the demo document parsed, while
+      // the engine still has to boot and fetch tiles — on a phone that is
+      // seconds later. The map itself posts 'webmapx:ready' when it has
+      // settled (see demo/index.html); this is only the fallback deadline for
+      // an old cached demo page that does not send it.
+      entry.fallbackTimer = setTimeout(() => reveal(entry, 'fallback'), FALLBACK_REVEAL_MS);
       pump();
       backgroundFill();
     }, { once: true });
