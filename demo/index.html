@@ -20,8 +20,20 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2/cdn/themes/light.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2/cdn/themes/dark.css">
   <script>
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-      document.documentElement.classList.add('sl-theme-dark');
+    // WebMapX colours key off [data-theme] while Shoelace keys off the
+    // .sl-theme-dark class, so both must be set or the UI comes out half dark
+    // and half light. webmapx-settings does exactly this once it mounts, but
+    // demos without the settings tool have no one to do it — hence here, before
+    // first paint. Honour a stored choice so the setting survives a reload.
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem('webmapx-theme'); } catch (e) { /* private mode */ }
+      var theme = stored === 'light' || stored === 'dark'
+        ? stored
+        : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.toggle('sl-theme-dark', theme === 'dark');
+    })();
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.css">
