@@ -56,7 +56,7 @@ every tool type, so the `dist-lib` build already contains the stories tool.
 The final webmapx.com should demo **all** tools, including their example data, and
 should follow the upstream default config automatically instead of via manual copies.
 
-## Proposed fix
+## Fix (applied 2026-08-24)
 
 Let upstream own `demo.json`, and let this repo keep only the configs it adds
 (`belgie.json`, `demo-mlgl-globe.json`, ... ). In the "Assemble site" step:
@@ -67,14 +67,16 @@ cp /tmp/webmapx/dist/config/demo.json dist/config/   # upstream default config w
 cp -R /tmp/webmapx/dist/config/stories-demo dist/config/
 ```
 
-In the *same* commit — never before, or the deploy has no `demo.json` at all —
-`git rm config/demo.json` (this repo's stale copy, **not** webmapx's
-`public/config/demo.json`, which stays the source of truth), so that no stale
-duplicate is left around to be edited by mistake.
+`config/demo.json` is `git rm`-ed in the same commit and added to `.gitignore`, so no
+stale duplicate can be edited by mistake. webmapx's `public/config/demo.json` stays the
+single source of truth — and it must be **committed and pushed**, since CI clones it
+from GitHub rather than from a local checkout.
 
-Optional: keep `config/demo.json` as a fallback in case the upstream clone fails to
-produce one, at the price of reintroducing silent drift. If kept, mark it clearly as
-"overwritten at deploy time — edit upstream instead".
+For local `npm start`, keep an untracked copy:
+
+```
+cp ../webmapx/public/config/demo.json config/demo.json
+```
 
 ### Things that must keep working
 

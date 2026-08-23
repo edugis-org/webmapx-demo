@@ -2,3 +2,7 @@ dist-lib/
 dist/
 node_modules/
 demo/config/apikeys.json
+
+# deploy-time copy of the upstream default config (see NOTES.md);
+# keep a local untracked copy for `npm start`, edit ../webmapx/public/config/demo.json
+config/demo.json

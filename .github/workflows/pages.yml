@@ -43,6 +43,10 @@ jobs:
           cp -R /tmp/webmapx/dist-lib/. dist/dist-lib/
           # demo configs and styles from this repo
           cp -R config/. dist/config/
+          # upstream default config wins over this repo's copy (see NOTES.md);
+          # stories-demo/ holds assets that demo.json references relatively
+          cp /tmp/webmapx/dist/config/demo.json dist/config/
+          cp -R /tmp/webmapx/dist/config/stories-demo dist/config/
           cp -R styles/. dist/styles/
           # landing page and demo app from this repo
           cp index.html dist/index.html
