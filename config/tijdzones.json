@@ -666,7 +666,7 @@
           "id": "view-mode",
           "type": "view-mode",
           "enabled": true,
-          "title": "View mode"
+          "title": "Projection"
         },
         {
           "id": "draw",
