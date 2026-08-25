@@ -233,12 +233,6 @@
         "type": "geojson",
         "data": "internalfunc://moon-visibility?refresh=auto",
         "attribution": "Computed in the browser"
-      },
-      {
-        "id": "moon-position-source",
-        "type": "geojson",
-        "data": "internalfunc://moon-position?refresh=auto",
-        "attribution": "Computed in the browser"
       }
     ],
     "layers": [
@@ -4570,36 +4564,53 @@
       },
       {
         "id": "moon-position",
-        "type": "circle",
         "title": "Maanstand",
-        "source": "moon-position-source",
-        "paint": {
-          "circle-color": "#e8e8ef",
-          "circle-radius": 9,
-          "circle-stroke-color": "#5a5f7a",
-          "circle-stroke-width": 2
-        },
-        "metadata": {
-          "title": "Moon position",
-          "abstract": "The point the moon stands over, with its phase, illumination and distance. It shifts about twelve degrees east a day, which is why moonrise is fifty minutes later each night."
-        }
-      },
-      {
-        "id": "moon-phase",
-        "title": "Maanfase",
         "type": "style",
         "sources": {
-          "moon-phase-source": {
+          "moon-position-source": {
             "type": "geojson",
-            "data": "internalfunc://moon-phase?refresh=auto",
+            "data": "internalfunc://moon-phase?refresh=auto&radius=5.6&observer={click}",
             "attribution": "Computed in the browser"
           }
         },
         "layers": [
           {
-            "id": "moon-phase-disc",
+            "id": "moon-position-horizon",
+            "type": "line",
+            "source": "moon-position-source",
+            "filter": [
+              "==",
+              [
+                "get",
+                "id"
+              ],
+              "horizon"
+            ],
+            "paint": {
+              "line-color": "#8d93b5",
+              "line-width": 1.5,
+              "line-opacity": [
+                "case",
+                [
+                  "any",
+                  [
+                    "get",
+                    "belowHorizon"
+                  ],
+                  [
+                    "get",
+                    "daylight"
+                  ]
+                ],
+                0.35,
+                0.9
+              ]
+            }
+          },
+          {
+            "id": "moon-position-disc",
             "type": "fill",
-            "source": "moon-phase-source",
+            "source": "moon-position-source",
             "filter": [
               "==",
               [
@@ -4610,14 +4621,29 @@
             ],
             "paint": {
               "fill-color": "#2f3350",
-              "fill-opacity": 0.85,
+              "fill-opacity": [
+                "case",
+                [
+                  "any",
+                  [
+                    "get",
+                    "belowHorizon"
+                  ],
+                  [
+                    "get",
+                    "daylight"
+                  ]
+                ],
+                0.3,
+                0.85
+              ],
               "fill-outline-color": "#8d93b5"
             }
           },
           {
-            "id": "moon-phase-lit",
+            "id": "moon-position-lit",
             "type": "fill",
-            "source": "moon-phase-source",
+            "source": "moon-position-source",
             "filter": [
               "==",
               [
@@ -4628,14 +4654,56 @@
             ],
             "paint": {
               "fill-color": "#f5eccd",
-              "fill-opacity": 0.95,
+              "fill-opacity": [
+                "case",
+                [
+                  "any",
+                  [
+                    "get",
+                    "belowHorizon"
+                  ],
+                  [
+                    "get",
+                    "daylight"
+                  ]
+                ],
+                0.35,
+                0.95
+              ],
               "fill-outline-color": "#f5eccd"
+            }
+          },
+          {
+            "id": "moon-position-observer",
+            "type": "circle",
+            "source": "moon-position-source",
+            "filter": [
+              "==",
+              [
+                "get",
+                "id"
+              ],
+              "observer"
+            ],
+            "paint": {
+              "circle-radius": 5,
+              "circle-color": [
+                "case",
+                [
+                  "get",
+                  "belowHorizon"
+                ],
+                "#8d93b5",
+                "#f5eccd"
+              ],
+              "circle-stroke-width": 2,
+              "circle-stroke-color": "#2f3350"
             }
           }
         ],
         "metadata": {
-          "title": "Maanfase",
-          "abstract": "The moon drawn where it stands overhead, with the lit part shaded. The disc is turned so that the lit side faces the sun, which is what you see if you look up: the horns of a crescent always point away from the sun. How much is lit changes smoothly through the month, from nothing at new moon to the whole disc at full moon, so the shape here is the real fraction rather than one of eight fixed pictures. The disc is drawn about seven degrees wide so it can be seen on a world map; the moon itself covers half a degree of sky.",
+          "title": "Maanstand",
+          "abstract": "Where the moon stands overhead, drawn at the size of the sun marker and shaded to show how much of it is lit. How much is lit is the same for everyone on Earth. Which way the lit side is turned is not: that is measured against somebody's horizon, and directly under the moon there is no such measure, because a point straight overhead has no compass direction. So by itself this marker claims no angle — the terminator simply follows the direction to the sun over the ground, and no horizon is drawn. Click anywhere on the map and it becomes a view instead: the crescent is turned the way it hangs over that place, a horizon appears under it, and a dot marks the place you chose. Click Paramaribo and the horns point up like a boat; click Amsterdam and the same moon stands on its edge. If the moon is below the horizon there, or the sky is bright, it is drawn faintly — nobody there is looking at this. Any click will do, including the info tool's, so no tool has to be switched on for it.",
           "attributes": {
             "translations": [
               {
@@ -4645,6 +4713,29 @@
               {
                 "name": "illumination",
                 "translation": "lit fraction"
+              },
+              {
+                "name": "tilt",
+                "translation": "angle from straight up",
+                "unit": "°"
+              },
+              {
+                "name": "altitude",
+                "translation": "moon above the horizon",
+                "unit": "°"
+              },
+              {
+                "name": "sunAltitude",
+                "translation": "sun above the horizon",
+                "unit": "°"
+              },
+              {
+                "name": "observerLat",
+                "translation": "seen from latitude"
+              },
+              {
+                "name": "observerLon",
+                "translation": "seen from longitude"
               },
               {
                 "name": "description",
@@ -5002,10 +5093,6 @@
                 {
                   "label": "Maanstand",
                   "layerId": "moon-position"
-                },
-                {
-                  "label": "Maanfase",
-                  "layerId": "moon-phase"
                 },
                 {
                   "label": "Maanpad",
