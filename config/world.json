@@ -242,6 +242,7 @@
         "type": "raster",
         "source": "esriworldimagery-source",
         "metadata": {
+          "swatch": "#596138",
           "reference": true,
           "title": "Wereld (ESRI World Imagery)",
           "userlayer": true,
@@ -254,6 +255,7 @@
         "type": "raster",
         "source": "satellite-source",
         "metadata": {
+          "swatch": "#415222",
           "title": "Wereld (Mapbox)",
           "reference": true,
           "userlayer": true,
@@ -266,6 +268,7 @@
         "type": "raster",
         "source": "bingmapaerial-source",
         "metadata": {
+          "swatch": "#606649",
           "reference": true,
           "bing": true,
           "title": "Wereld (Bing)",
@@ -279,6 +282,7 @@
         "type": "raster",
         "source": "openstreetmap-source",
         "metadata": {
+          "swatch": "#dfdfd2",
           "legendurl": "https://mapserver.edugis.nl/legends/wereld/osm_logo.png",
           "title": "Standaard (OSM)",
           "reference": true,
@@ -291,6 +295,7 @@
         "type": "raster",
         "source": "openstreetmapgray-source",
         "metadata": {
+          "swatch": "#dcdcdc",
           "legendurl": "https://mapserver.edugis.nl/legends/wereld/osm_logo.png",
           "title": "Grijs (OSM)",
           "reference": true,
@@ -303,6 +308,7 @@
         "type": "style",
         "url": "styles/openmaptiles/osmbright.json",
         "metadata": {
+          "swatch": "#f8f4f0",
           "reference": true,
           "title": "Helder (OSM)",
           "styleid": "OsmBright",
@@ -316,6 +322,7 @@
         "type": "raster",
         "source": "bingmaproad-source",
         "metadata": {
+          "swatch": "#dbdbd4",
           "reference": true,
           "bing": true,
           "title": "Standaard (Bing)",
@@ -329,6 +336,7 @@
         "type": "raster",
         "source": "bingmaphybrid-source",
         "metadata": {
+          "swatch": "#6a6c58",
           "reference": true,
           "bing": true,
           "title": "Bing | Combinatie",
@@ -546,6 +554,7 @@
           }
         ],
         "metadata": {
+          "swatch": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%23eaf0f5%22%2F%3E%3Cpath%20d%3D%22M0%2014%206%205.5%2010%2014Z%22%20fill%3D%22%23b6c2cd%22%2F%3E%3Cpath%20d%3D%22M6%205.5%208%209.5%204%209.5Z%22%20fill%3D%22%23fbfdff%22%2F%3E%3Cpath%20d%3D%22M7%2014%2011.5%207%2016%2014Z%22%20fill%3D%22%238b98a5%22%2F%3E%3Cpath%20d%3D%22M11.5%207%2013.2%209.7%209.8%209.7Z%22%20fill%3D%22%23fbfdff%22%2F%3E%3C%2Fsvg%3E",
           "opacity": [
             "interpolate",
             [
@@ -573,6 +582,7 @@
         "minzoom": 0,
         "maxzoom": 22.5,
         "metadata": {
+          "swatch": "#8e9b50",
           "getFeatureInfoUrl": "https://tiles.edugis.nl/mapproxy/landcover/wms?version=1.1.1&request=GetFeatureInfo&styles=&layers=landcover&query_layers=landcover",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
           "abstract": "Landbedekkingskaart. Deze kaart geeft aan warmee het land wordt bedekt zoals bijvoorbeeld verschillende soorten vegetatie, zand, steen of ijs.",
@@ -1179,6 +1189,7 @@
         "type": "raster",
         "source": "openweathermaptemperature-new-source",
         "metadata": {
+          "swatch": "#fe3a00",
           "legendurl": "https://openweathermap.org/img/a/TT.png",
           "getFeatureInfoUrl": "https://api.openweathermap.org/data/2.5/weather?appid={openweathermapkey}&lat={latitude}&lon={longitude}&lang=nl&units=metric",
           "deniedattributes": [
@@ -1257,6 +1268,7 @@
         "type": "raster",
         "source": "openweathermapprecipitation-new-source",
         "metadata": {
+          "swatch": "#fbfbfb",
           "legendurl": "https://openweathermap.org/img/a/PR.png",
           "timeinterval": 300000,
           "getFeatureInfoUrl": "https://api.openweathermap.org/data/2.5/weather?appid={openweathermapkey}&lat={latitude}&lon={longitude}&lang=nl&units=metric",
@@ -1335,6 +1347,7 @@
         "type": "raster",
         "source": "openweathermapcloudes-new-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAyUlEQVR4AVROscpHcBQ9roRZDBZZDMruHZQsHsBbWJRXMPEY+k0eQnYLm1KUMhikvu6vvuF/69zbued0OmSapojjWNR1LS/zoihEVVWi73tB7/tiHEe0bYv7vsF8WRbYtg3f90GapoHnPE/M84wwDPF9H47jQNd1kAmu67JHYl1XMIZhQBRFIF3XsW2bFHk9z4N93zFNE5qmARmGwf8fqKoq+XVdIEVRwD0sy8K/QETSwL0oz3NkWYayLJEkCRzHged5SNMUQRDgDwAA//8jqcAgAAAABklEQVQDAIJhTsRK1NDrAAAAAElFTkSuQmCC",
           "legendurl": "https://openweathermap.org/img/a/NT.png",
           "timeinterval": 300000,
           "getFeatureInfoUrl": "https://api.openweathermap.org/data/2.5/weather?appid={openweathermapkey}&lat={latitude}&lon={longitude}&lang=nl&units=metric",
@@ -1413,6 +1426,7 @@
         "type": "raster",
         "source": "openweathermappressure-new-source",
         "metadata": {
+          "swatch": "#d3d30e",
           "legendurl": "https://openweathermap.org/img/a/PN.png",
           "timeinterval": 300000,
           "getFeatureInfoUrl": "https://api.openweathermap.org/data/2.5/weather?appid={openweathermapkey}&lat={latitude}&lon={longitude}&lang=nl&units=metric",
@@ -1491,6 +1505,7 @@
         "type": "raster",
         "source": "openweathermapwind-new-source",
         "metadata": {
+          "swatch": "#f9edee",
           "legendurl": "",
           "timeinterval": 300000,
           "getFeatureInfoUrl": "https://api.openweathermap.org/data/2.5/weather?appid={openweathermapkey}&lat={latitude}&lon={longitude}&lang=nl&units=metric",
@@ -2788,6 +2803,7 @@
         "source": "bevolking2015-source",
         "maxzoom": 22.5,
         "metadata": {
+          "swatch": "#f55100",
           "abstract": "gegevens: 2015",
           "getFeatureInfoUrl": "https://map.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/population.map&version=1.1.1&request=GetFeatureInfo&styles=&layers=Bevolkingsdichtheid_2015&query_layers=Bevolkingsdichtheid_2015&srs=EPSG:900913",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
@@ -4106,79 +4122,118 @@
         "id": "water-en-waterwegen",
         "title": "Water en waterwegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwater.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwater.json",
+        "metadata": {
+          "swatch": "#a0c8f0"
+        }
       },
       {
         "id": "waternamen",
         "title": "Waternamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwatername.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightwatername.json",
+        "metadata": {
+          "swatch": "#74aee9"
+        }
       },
       {
         "id": "administratieve-grenzen",
         "title": "Administratieve grenzen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightadminborders.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightadminborders.json",
+        "metadata": {
+          "swatch": "#9e9cab"
+        }
       },
       {
         "id": "landnamen",
         "title": "Landnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames.json",
+        "metadata": {
+          "swatch": "#334"
+        }
       },
       {
         "id": "landnamen-nl",
         "title": "Landnamen (nl)",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames_nl.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightcountrynames_nl.json",
+        "metadata": {
+          "swatch": "#334"
+        }
       },
       {
         "id": "snelwegen",
         "title": "Snelwegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightroads.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightroads.json",
+        "metadata": {
+          "swatch": "#ffdaa6"
+        }
       },
       {
         "id": "snelwegnamen",
         "title": "Snelwegnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/brightmotorwayname.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/brightmotorwayname.json",
+        "metadata": {
+          "swatch": "rgba(0, 0, 0, 1)"
+        }
       },
       {
         "id": "wegen",
         "title": "Wegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroads.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroads.json",
+        "metadata": {
+          "swatch": "hsla(0, 0%, 89%, 0.56)"
+        }
       },
       {
         "id": "wegnamen",
         "title": "Wegnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroadnames.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightallroadnames.json",
+        "metadata": {
+          "swatch": "hsl(30, 23%, 62%)"
+        }
       },
       {
         "id": "spoorwegen",
         "title": "Spoorwegen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightrail.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightrail.json",
+        "metadata": {
+          "swatch": "#bbb"
+        }
       },
       {
         "id": "plaatsen",
         "title": "Plaatsen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoi.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoi.json",
+        "metadata": {
+          "swatch": "black"
+        }
       },
       {
         "id": "plaatsnamen",
         "title": "Plaatsnamen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoiname.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightpoiname.json",
+        "metadata": {
+          "swatch": "#666"
+        }
       },
       {
         "id": "gebouwen",
         "title": "Gebouwen",
         "type": "style",
-        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightbuildings.json"
+        "url": "https://kaart.edugis.nl/v2/maps/layers/osmbrightbuildings.json",
+        "metadata": {
+          "swatch": "#D2B69A"
+        }
       },
       {
         "id": "daynight-computed",
