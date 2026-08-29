@@ -25,60 +25,37 @@ otherwise the placeholder shows the old map.
 The demo list lives in `demos.js`, imported by both `index.html` (browser) and
 `scripts/update-map-previews.ts` (node). Add a demo there, then regenerate.
 
-## Site config is a stale fork of the webmapx default config
+## Site config was a stale fork — resolved 2026-08-29
 
-**Symptom:** tools added to webmapx's default config never show up on
-https://webmapx.com/demo/ after a redeploy. Concretely: the stories tool and its
-demo story are configured in webmapx (`public/config/demo.json`, `tools[] ->
-{"type": "stories"}` plus a top-level `stories` section) but the deployed demo
-shows no stories tool.
+**Was:** this repo kept its own `config/` directory, `demo/index.html` loaded
+`../config/demo.json` from it, and that copy drifted from webmapx's. Tools added
+upstream never appeared on the deployed site. A first fix (2026-08-24) let
+upstream's `demo.json` win while this repo kept the configs it added — which
+narrowed the drift to everything *except* demo.json.
 
-**Cause:** `.github/workflows/pages.yml` clones and builds webmapx, but only
-takes the *lib*, *testpages* and *data* output from it:
+**Now:** configs live in their own repository,
+[edugis-org/webmapx-configs](https://github.com/edugis-org/webmapx-configs), and
+this repo keeps none. All fourteen — including the ones that used to be here:
+`belgie.json`, `demo-mlgl-globe.json`, `demo-mlgl-terrain.json`,
+`demo-ol-chorepleth.json`, `demo-nl.json`, `config-laptop.json`,
+`webmapx-config.json` — now live there, with the styles and datasets they read
+beside them.
 
-```
-cp -R /tmp/webmapx/dist-lib/. dist/dist-lib/
-cp -R /tmp/webmapx/dist/testpages/. dist/testpages/
-cp -R /tmp/webmapx/dist/data/. dist/demo/data/
-cp -R config/. dist/config/        # <-- THIS repo's own config dir
-```
-
-`demo/index.html` loads `../config/demo.json`, i.e. `config/demo.json` from this
-repo — a hand-made copy that has drifted from webmapx's `public/config/demo.json`
-(79118 vs 82073 bytes at the time of writing). Upstream config changes are
-therefore never deployed.
-
-The tool code itself is not the problem: `src/bootstrap/tool-loader.ts` lazy-imports
-every tool type, so the `dist-lib` build already contains the stories tool.
-
-## Goal
-
-The final webmapx.com should demo **all** tools, including their example data, and
-should follow the upstream default config automatically instead of via manual copies.
-
-## Fix (applied 2026-08-24)
-
-Let upstream own `demo.json`, and let this repo keep only the configs it adds
-(`belgie.json`, `demo-mlgl-globe.json`, ... ). In the "Assemble site" step:
+`pages.yml` runs `npm run configs:sync` inside the webmapx checkout, which takes
+the commit webmapx pinned in `configs.lock`, and copies the result:
 
 ```
-cp -R config/. dist/config/                          # demo-repo-specific configs first
-cp /tmp/webmapx/dist/config/demo.json dist/config/   # upstream default config wins
-cp -R /tmp/webmapx/dist/config/stories-demo dist/config/
+npm run configs:sync                        # in the webmapx checkout
+cp -R /tmp/webmapx/dist/config/. dist/config/
 ```
 
-`config/demo.json` is `git rm`-ed in the same commit and added to `.gitignore`, so no
-stale duplicate can be edited by mistake. webmapx's `public/config/demo.json` stays the
-single source of truth — and it must be **committed and pushed**, since CI clones it
-from GitHub rather than from a local checkout.
+So the site serves the configs webmapx tested against, not whatever the config
+repository's main branch happens to be — and a config change reaches this site
+by being pinned upstream, deliberately, rather than by drifting into it.
+Changing a config means editing it in webmapx-configs (`npm run configs` in a
+webmapx checkout puts it at `public/config`), then `npm run configs:pin`.
 
-For local `npm start`, keep an untracked copy:
-
-```
-cp ../webmapx/public/config/demo.json config/demo.json
-```
-
-### Things that must keep working
+## Things that must keep working
 
 - **Story assets.** Story steps reference `htmlUrl: "stories-demo/step2.html"` and
   `stories-demo/images/`, resolved relative to the config URL. Copying `demo.json`

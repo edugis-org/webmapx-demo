@@ -30,24 +30,27 @@ jobs:
           git clone --depth 1 https://github.com/edugis-org/webmapx.git /tmp/webmapx
           cd /tmp/webmapx
           npm ci
+          # public/config is a checkout of webmapx-configs; sync takes the
+          # commit configs.lock names, so this site serves the pinned configs.
+          npm run configs:sync
           npm run build
           npm run build:lib
 
       - name: Assemble site
         run: |
-          mkdir -p dist/testpages dist/assets dist/dist-lib dist/config dist/styles dist/demo
+          mkdir -p dist/testpages dist/assets dist/dist-lib dist/config dist/demo
           # testpages (setup + preview) and their bundled assets from webmapx build
           cp -R /tmp/webmapx/dist/testpages/. dist/testpages/
           cp -R /tmp/webmapx/dist/assets/. dist/assets/
           # lib build for demo app
           cp -R /tmp/webmapx/dist-lib/. dist/dist-lib/
-          # demo configs and styles from this repo
-          cp -R config/. dist/config/
-          # upstream default config wins over this repo's copy (see NOTES.md);
-          # stories-demo/ holds assets that demo.json references relatively
-          cp /tmp/webmapx/dist/config/demo.json dist/config/
-          cp -R /tmp/webmapx/dist/config/stories-demo dist/config/
-          cp -R styles/. dist/styles/
+          # Configs come from webmapx-configs, at the commit webmapx pinned in
+          # configs.lock — the same commit its own deployment serves. This site
+          # therefore shows the configs that were tested, and cannot change
+          # because that repository's main branch moved. `npm run configs:sync`
+          # in the webmapx checkout does the fetching; its public/config lands
+          # in the build we already copied from.
+          cp -R /tmp/webmapx/dist/config/. dist/config/
           # landing page and demo app from this repo
           cp index.html dist/index.html
           cp demos.js dist/demos.js

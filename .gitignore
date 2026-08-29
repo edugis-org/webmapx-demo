@@ -3,6 +3,8 @@ dist/
 node_modules/
 demo/config/apikeys.json
 
-# deploy-time copy of the upstream default config (see NOTES.md);
-# keep a local untracked copy for `npm start`, edit ../webmapx/public/config/demo.json
-config/demo.json
+# Configs and the styles they read live in edugis-org/webmapx-configs. The build
+# fetches them at the commit webmapx pins in configs.lock; a copy kept here
+# would be the stale fork this repo already had once (see NOTES.md).
+config/
+styles/

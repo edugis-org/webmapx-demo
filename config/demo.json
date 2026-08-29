@@ -29,8 +29,9 @@
     "maxPitch": 85
   },
   "layerData": {
-    "sources": {
-      "xyz-source": {
+    "sources": [
+      {
+        "id": "xyz-source",
         "type": "raster",
         "service": "xyz",
         "url": [
@@ -42,24 +43,28 @@
         "attribution": "&copy; OpenStreetMap contributors",
         "maxzoom": 19
       },
-      "google-satellite-source": {
+      {
+        "id": "google-satellite-source",
         "type": "raster",
         "service": "xyz",
         "url": "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
         "tileSize": 256,
         "attribution": "© Google Satellite"
       },
-      "world-countries-source": {
+      {
+        "id": "world-countries-source",
         "type": "geojson",
-        "data": "./data/world-countries-simplified.topojson#world-countries-simplified2",
+        "data": "../data/world-countries-simplified.topojson#world-countries-simplified2",
         "attribution": "&copy; Natural Earth"
       },
-      "earthquake-source": {
+      {
+        "id": "earthquake-source",
         "type": "geojson",
         "data": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
         "attribution": "USGS Earthquake Data"
       },
-      "countrypopest-source": {
+      {
+        "id": "countrypopest-source",
         "type": "vector",
         "bounds": [
           -180,
@@ -72,7 +77,8 @@
         ],
         "attribution": "Natural Earth"
       },
-      "countrypopdensity-source": {
+      {
+        "id": "countrypopdensity-source",
         "type": "vector",
         "bounds": [
           -180,
@@ -85,7 +91,8 @@
           "https://tiles.edugis.nl/data/public.world_population_moredetailed/mvt/{z}/{x}/{y}?geom_column=geom&columns=country,population,population_density,area&include_nulls=0"
         ]
       },
-      "bevolking2015-source": {
+      {
+        "id": "bevolking2015-source",
         "type": "raster",
         "tileSize": 256,
         "bounds": [
@@ -103,7 +110,8 @@
         ],
         "attribution": "&copy; <a href='https://www.cbs.nl' target='copyright'>CBS</a>"
       },
-      "populationdensity-source": {
+      {
+        "id": "populationdensity-source",
         "type": "vector",
         "bounds": [
           -180,
@@ -116,7 +124,8 @@
           "https://tiles.edugis.nl/data/public.ne_10m_admin_1_states_provinces_lakes_pop/mvt/{z}/{x}/{y}?geom_column=geom&columns=name,pop_sum,pop_dens,admin,type,type_en&include_nulls=0"
         ]
       },
-      "population3d-source": {
+      {
+        "id": "population3d-source",
         "type": "vector",
         "bounds": [
           -180,
@@ -129,7 +138,8 @@
           "https://tiles.edugis.nl/data/public.ne_10m_admin_1_states_provinces_lakes_pop/mvt/{z}/{x}/{y}?geom_column=geom&columns=name,pop_sum,pop_dens,admin,type,type_en&include_nulls=0"
         ]
       },
-      "populationsum-source": {
+      {
+        "id": "populationsum-source",
         "type": "vector",
         "bounds": [
           -180,
@@ -142,29 +152,33 @@
           "https://tiles.edugis.nl/data/public.ne_10m_admin_1_states_provinces_lakes_pop/mvt/{z}/{x}/{y}?geom_column=geompoint&columns=name,pop_sum,pop_dens,admin,type,type_en&include_nulls=0"
         ]
       },
-      "citiesandtowns2-source": {
+      {
+        "id": "citiesandtowns2-source",
         "type": "vector",
         "tiles": [
           "https://tiles.edugis.nl/data/public.ne_10m_populated_places/mvt/{z}/{x}/{y}?geom_column=geom&columns=name,name_nl,timezone,pop_min,pop_max&include_nulls=0"
         ],
         "attribution": "Natural Earth"
       },
-      "worldlandcover-source": {
+      {
+        "id": "worldlandcover-source",
         "type": "raster",
-        "tiles": [
+        "url": [
           "https://tiles.edugis.nl/mapproxy/landcover/wmts/landcover/GLOBAL_WEBMERCATOR/{z}/{x}/{y}.png"
         ],
         "tileSize": 256,
         "attribution": "&copy; <a href=\"https://github.com/globalmaps/gm_lc_v3\" target=\"copyright\">GLCNMO Version 3</a>"
       },
-      "geographiclines-source": {
+      {
+        "id": "geographiclines-source",
         "type": "vector",
         "tiles": [
           "https://tiles.edugis.nl/data/public.ne_10m_geographic_lines/mvt/{z}/{x}/{y}?geom_column=geom&columns=name_nl&include_nulls=0"
         ],
         "attribution": "Natural Earth"
       },
-      "latitudes-source": {
+      {
+        "id": "latitudes-source",
         "type": "geojson",
         "attribution": "",
         "data": {
@@ -488,7 +502,8 @@
           ]
         }
       },
-      "longitudes-source": {
+      {
+        "id": "longitudes-source",
         "type": "geojson",
         "attribution": "",
         "data": {
@@ -871,24 +886,88 @@
           ]
         }
       },
-      "timezones-source": {
+      {
+        "id": "timezones-source",
         "type": "vector",
         "tiles": [
           "https://tiles.edugis.nl/data/public.ne_10m_time_zones/mvt/{z}/{x}/{y}?geom_column=geom&columns=tz_name1st,zone&include_nulls=0"
         ],
         "attribution": "Natural Earth"
       },
-      "daynight-source": {
+      {
+        "id": "daynight-computed-source",
         "type": "geojson",
-        "data": "https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/Day_Night_Terminator/FeatureServer/2/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
-        "attribution": "Esri Day Night Terminator"
+        "data": "internalfunc://day-night?refresh=auto",
+        "attribution": "Computed in the browser"
       },
-      "sunposition-source": {
+      {
+        "id": "sunposition-computed-source",
         "type": "geojson",
-        "data": "https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/Day_Night_Terminator/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
-        "attribution": "Esri Day Night Terminator"
+        "data": "internalfunc://sun-position?refresh=auto",
+        "attribution": "Computed in the browser"
       },
-      "pdok-ahn-source": {
+      {
+        "id": "graticule-source",
+        "type": "geojson",
+        "data": "internalfunc://graticule?spacing=15",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "reference-circles-source",
+        "type": "geojson",
+        "data": "internalfunc://reference-circles",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "tissot-source",
+        "type": "geojson",
+        "data": "internalfunc://tissot?spacing=30&radius=500",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "day-length-source",
+        "type": "geojson",
+        "data": "internalfunc://day-length?refresh=auto",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "solar-time-source",
+        "type": "geojson",
+        "data": "internalfunc://solar-time?refresh=auto",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "analemma-source",
+        "type": "geojson",
+        "data": "internalfunc://analemma",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "moon-position-source",
+        "type": "geojson",
+        "data": "internalfunc://moon-position?refresh=auto",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "moon-visibility-source",
+        "type": "geojson",
+        "data": "internalfunc://moon-visibility?refresh=auto",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "utm-zones-source",
+        "type": "geojson",
+        "data": "internalfunc://utm-zones",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "sunpath-computed-source",
+        "type": "geojson",
+        "data": "internalfunc://sun-path",
+        "attribution": "Computed in the browser"
+      },
+      {
+        "id": "pdok-ahn-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 512,
@@ -903,7 +982,8 @@
         ],
         "attribution": "&copy; AHN | PDOK"
       },
-      "pdok-luchtfoto-source": {
+      {
+        "id": "pdok-luchtfoto-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 256,
@@ -918,7 +998,8 @@
         ],
         "attribution": "&copy; Beeldmateriaal.nl | PDOK"
       },
-      "pdok-brt-achtergrond-source": {
+      {
+        "id": "pdok-brt-achtergrond-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 256,
@@ -933,7 +1014,8 @@
         ],
         "attribution": "&copy; Kadaster | PDOK"
       },
-      "pdok-brt-achtergrond-grijs-source": {
+      {
+        "id": "pdok-brt-achtergrond-grijs-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 256,
@@ -948,7 +1030,8 @@
         ],
         "attribution": "&copy; Kadaster | PDOK"
       },
-      "pdok-brt-achtergrond-pastel-source": {
+      {
+        "id": "pdok-brt-achtergrond-pastel-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 256,
@@ -963,7 +1046,8 @@
         ],
         "attribution": "&copy; Kadaster | PDOK"
       },
-      "pdok-brt-achtergrond-water-source": {
+      {
+        "id": "pdok-brt-achtergrond-water-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 256,
@@ -978,7 +1062,8 @@
         ],
         "attribution": "&copy; Kadaster | PDOK"
       },
-      "pdok-bag-source": {
+      {
+        "id": "pdok-bag-source",
         "type": "raster",
         "service": "wms",
         "tileSize": 256,
@@ -998,7 +1083,8 @@
         ],
         "attribution": "&copy; Kadaster | PDOK"
       },
-      "pdok-kadastralekaart-source": {
+      {
+        "id": "pdok-kadastralekaart-source",
         "type": "raster",
         "service": "xyz",
         "tileSize": 256,
@@ -1013,7 +1099,8 @@
         ],
         "attribution": "&copy; Kadaster | PDOK"
       },
-      "mapzenhillshading-source": {
+      {
+        "id": "mapzenhillshading-source",
         "type": "raster-dem",
         "tiles": [
           "https://t1.edugis.nl/mapproxy/nextzenelevation/wmts/nextzenelevation/webmercator/{z}/{x}/{y}.png",
@@ -1026,7 +1113,7 @@
         "maxzoom": 15,
         "attribution": "NextZen"
       }
-    },
+    ],
     "attributeMetadata": {
       "pop_dens": {
         "translations": [
@@ -1090,31 +1177,40 @@
         ]
       }
     },
-    "layers": {
-      "osm": {
+    "layers": [
+      {
         "id": "osm",
         "type": "raster",
         "source": "xyz-source",
         "singleGroup": "basemap",
-        "title": "OpenStreetMap (xyz)"
+        "title": "OpenStreetMap (xyz)",
+        "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAx0lEQVR4AUyOTWuDQBCGHxdMJVbowfSQ0ijeeltIkfjL+xt60KM0xw0oG1s0kEovyja7XvLCwzAz73wIpT7MV/dpjro296qqypzP2oi+19T1kb/ph3tJKdlsnhG2+Bq+IfonblOUZekYxxHP8xZDlmUkSUKapg6bz/PMNE2LQSlF0zSOtm1dvP2DxZ0IH0OCIGAdrlk9rNi+bImiCN/3lw2X4YLWmq775nr95aRODMOAldjtJHmeUxQFxeHA+36PlJI4jm2ffwAAAP//LtLWIwAAAAZJREFUAwA9ZmKdIQwaXAAAAABJRU5ErkJggg=="
+        }
       },
-      "google-satellite": {
+      {
         "id": "google-satellite",
         "type": "raster",
         "source": "google-satellite-source",
         "singleGroup": "basemap",
-        "title": "Google Satellite"
+        "title": "Google Satellite",
+        "metadata": {
+          "swatch": "#445540"
+        }
       },
-      "relief": {
+      {
         "id": "relief",
         "type": "hillshade",
         "source": "mapzenhillshading-source",
         "title": "Relief (hillshade)",
         "paint": {
           "hillshade-exaggeration": 0.2
+        },
+        "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAoUlEQVR4ASzOzQpBURSG4W8vREIpZyAZmDE4fsbO1A1ImbkAN8F1uQ8zQ8QQiYGc867atZ69vv3TattuqHyfIMUq2tDX2Cq3cJfURBcfTJBigb5kahBaGGOGb3Sml/zBnDBAFV4+5UW4gGzyyykbL2Np449ECnWfMJL0QwdeZZYaHlJ+9AcHNm9c8Yxu9Ao4N2UE/+SJzkj16Pw+LKWQSQUAAAD//3YZSD4AAAAGSURBVAMA93EmVrk2MPIAAAAASUVORK5CYII="
         }
       },
-      "openfreemap-liberty": {
+      {
         "id": "openfreemap-liberty",
         "type": "style",
         "url": "https://tiles.openfreemap.org/styles/liberty",
@@ -1124,13 +1220,14 @@
         "fallbackLayerId": "osm",
         "layers": [],
         "metadata": {
+          "swatch": "#f8f4f0",
           "supportedEngines": [
             "maplibre",
             "openlayers"
           ]
         }
       },
-      "world-countries": {
+      {
         "id": "world-countries",
         "type": "style",
         "version": 8,
@@ -1159,7 +1256,7 @@
           }
         ]
       },
-      "earthquake": {
+      {
         "id": "earthquake",
         "type": "style",
         "version": 8,
@@ -1250,18 +1347,23 @@
           }
         ]
       },
-      "nyc-historical": {
+      {
         "id": "nyc-historical",
         "type": "allmaps",
         "annotation": "https://annotations.allmaps.org/images/d180902cb93d5bf2",
-        "title": "NYC 1836 (Allmaps)"
+        "title": "NYC 1836 (Allmaps)",
+        "metadata": {
+          "bounds": [-74.05716, 40.67406, -73.80487, 40.91636],
+          "swatch": "#adb1a0"
+        }
       },
-      "amsterdam-historical": {
+      {
         "id": "amsterdam-historical",
         "type": "allmaps",
         "annotation": "https://annotations.allmaps.org/maps/f60ecda322d09956",
         "title": "Amsterdam 1625 (Allmaps)",
         "metadata": {
+          "swatch": "#aaa286",
           "bounds": [
             4.87253,
             52.35762,
@@ -1270,7 +1372,7 @@
           ]
         }
       },
-      "countrypopest": {
+      {
         "id": "countrypopest",
         "type": "circle",
         "title": "Population by country",
@@ -1351,7 +1453,7 @@
           "circle-pitch-alignment": "map"
         }
       },
-      "countrypopdensity": {
+      {
         "id": "countrypopdensity",
         "type": "fill",
         "title": "Population density | Countries",
@@ -1497,12 +1599,13 @@
           "population_density"
         ]
       },
-      "bevolking2015": {
+      {
         "id": "bevolking2015",
         "type": "raster",
         "title": "Population density | Raster",
         "source": "bevolking2015-source",
         "metadata": {
+          "swatch": "#f55100",
           "abstract": "gegevens: 2015",
           "getFeatureInfoUrl": "https://map.edugis.nl/cgi-bin/mapserv?map=maps/edugis/cache/population.map&version=1.1.1&request=GetFeatureInfo&styles=&layers=Bevolkingsdichtheid_2015&query_layers=Bevolkingsdichtheid_2015&srs=EPSG:900913",
           "getFeatureInfoFormat": "application/vnd.ogc.gml",
@@ -1521,7 +1624,7 @@
         "minzoom": 0,
         "maxzoom": 8.5
       },
-      "populationdensity": {
+      {
         "id": "populationdensity",
         "type": "fill",
         "title": "Population density | Regions",
@@ -1629,7 +1732,7 @@
           "fill-opacity": 0.8
         }
       },
-      "population3d": {
+      {
         "id": "population3d",
         "type": "fill-extrusion",
         "title": "Population density | Regions 3D",
@@ -1745,7 +1848,7 @@
           "fill-extrusion-opacity": 0.8
         }
       },
-      "populationsum": {
+      {
         "id": "populationsum",
         "type": "circle",
         "title": "Population density | Dot map",
@@ -1822,7 +1925,7 @@
           "circle-pitch-alignment": "map"
         }
       },
-      "citiesandtowns2": {
+      {
         "id": "citiesandtowns2",
         "type": "circle",
         "title": "Urban population",
@@ -1918,12 +2021,13 @@
           "circle-pitch-alignment": "map"
         }
       },
-      "worldlandcover": {
+      {
         "id": "worldlandcover",
         "type": "raster",
         "title": "Land cover",
         "source": "worldlandcover-source",
         "metadata": {
+          "swatch": "#8e9b50",
           "title": "Land cover",
           "abstract": "Landbedekkingskaart. Deze kaart geeft aan warmee het land wordt bedekt zoals bijvoorbeeld verschillende soorten vegetatie, zand, steen of ijs.",
           "legendurl": "https://tiles.edugis.nl/mapproxy/landcover/wms?version=1.1.1&request=GetLegendGraphic&styles=&layer=landcover&format=image/png",
@@ -2022,7 +2126,7 @@
           }
         }
       },
-      "pdok-bag": {
+      {
         "id": "pdok-bag",
         "type": "style",
         "url": "https://api.pdok.nl/lv/bag/ogc/v1/styles/bag_standaardvisualisatie__webmercatorquad?f=mapbox",
@@ -2039,7 +2143,7 @@
         },
         "layers": []
       },
-      "pdok-bgt": {
+      {
         "id": "pdok-bgt",
         "type": "style",
         "url": "https://api.pdok.nl/lv/bgt/ogc/v1/styles/bgt_standaardvisualisatie__webmercatorquad?f=mapbox",
@@ -2047,6 +2151,7 @@
         "title": "BGT (PDOK)",
         "attribution": "&copy; Kadaster | PDOK",
         "metadata": {
+          "swatch": "#ffffff",
           "bounds": [
             3.2,
             50.75,
@@ -2056,7 +2161,7 @@
         },
         "layers": []
       },
-      "pdok-bgt-achtergrond": {
+      {
         "id": "pdok-bgt-achtergrond",
         "type": "style",
         "url": "https://api.pdok.nl/lv/bgt/ogc/v1/styles/bgt_achtergrondvisualisatie__webmercatorquad?f=mapbox",
@@ -2064,6 +2169,7 @@
         "title": "BGT achtergrond (PDOK)",
         "attribution": "&copy; Kadaster | PDOK",
         "metadata": {
+          "swatch": "#9BCBE9",
           "bounds": [
             3.2,
             50.75,
@@ -2073,7 +2179,7 @@
         },
         "layers": []
       },
-      "pdok-brk-bestuurlijkegebieden": {
+      {
         "id": "pdok-brk-bestuurlijkegebieden",
         "type": "style",
         "url": "https://api.pdok.nl/kadaster/brk-bestuurlijke-gebieden/ogc/v1/styles/bestuurlijkegebieden_standaardvisualisatie__webmercatorquad?f=mapbox",
@@ -2081,6 +2187,7 @@
         "title": "Bestuurlijke gebieden (PDOK)",
         "attribution": "&copy; Kadaster | PDOK",
         "metadata": {
+          "swatch": "rgb(0, 0, 0)",
           "bounds": [
             3.2,
             50.75,
@@ -2090,12 +2197,13 @@
         },
         "layers": []
       },
-      "pdok-ahn": {
+      {
         "id": "pdok-ahn",
         "type": "raster",
         "title": "Hoogte (AHN)",
         "source": "pdok-ahn-source",
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAnUlEQVR4AazNoQrCUBSA4XOu14toEecFBxZBDUabyeQTCGIwCQaDTRBfQIvBaLOsDJRp8Dl8gcVhEsTBGBu7nNVtZWV//uBnkFMBoPFaTKW52WnW+iCfq2X2yLir31T1fxQY7PGnXaS5nSURK/m1qK2/8Ty+wmRk8M7g0U0B9eFhJazTsEx0ajpo9G0rDcgjx22pewD4FTDvCbCTIAYAAP//sfTyoQAAAAZJREFUAwDv2CvKtiWITwAAAABJRU5ErkJggg==",
           "title": "Hoogte (AHN)",
           "bounds": [
             2.52713,
@@ -2119,13 +2227,14 @@
           }
         }
       },
-      "pdok-bag-raster": {
+      {
         "id": "pdok-bag-raster",
         "type": "raster",
         "title": "BAG panden (raster)",
         "source": "pdok-bag-source",
         "minzoom": 15,
         "metadata": {
+          "swatch": "#d9d9d9",
           "title": "BAG panden (raster)",
           "bounds": [
             3.2,
@@ -2136,12 +2245,13 @@
           "abstract": "Panden uit de Basisregistratie Adressen en Gebouwen (BAG), als raster (alle zoomniveaus)."
         }
       },
-      "pdok-luchtfoto": {
+      {
         "id": "pdok-luchtfoto",
         "type": "raster",
         "title": "Luchtfoto (PDOK)",
         "source": "pdok-luchtfoto-source",
         "metadata": {
+          "swatch": "#787d78",
           "title": "Luchtfoto (PDOK)",
           "bounds": [
             3.2,
@@ -2152,12 +2262,13 @@
           "abstract": "Actuele luchtfoto van Nederland, 25 cm resolutie."
         }
       },
-      "pdok-brt-achtergrond": {
+      {
         "id": "pdok-brt-achtergrond",
         "type": "raster",
         "title": "Achtergrondkaart (PDOK)",
         "source": "pdok-brt-achtergrond-source",
         "metadata": {
+          "swatch": "#e6e9d4",
           "title": "Achtergrondkaart (PDOK)",
           "bounds": [
             3.2,
@@ -2168,12 +2279,13 @@
           "abstract": "BRT Achtergrondkaart, standaard stijl."
         }
       },
-      "pdok-brt-achtergrond-grijs": {
+      {
         "id": "pdok-brt-achtergrond-grijs",
         "type": "raster",
         "title": "Achtergrondkaart grijs (PDOK)",
         "source": "pdok-brt-achtergrond-grijs-source",
         "metadata": {
+          "swatch": "#f7f9f9",
           "title": "Achtergrondkaart grijs (PDOK)",
           "bounds": [
             3.2,
@@ -2184,12 +2296,13 @@
           "abstract": "BRT Achtergrondkaart, grijze stijl."
         }
       },
-      "pdok-brt-achtergrond-pastel": {
+      {
         "id": "pdok-brt-achtergrond-pastel",
         "type": "raster",
         "title": "Achtergrondkaart pastel (PDOK)",
         "source": "pdok-brt-achtergrond-pastel-source",
         "metadata": {
+          "swatch": "#f3eee3",
           "title": "Achtergrondkaart pastel (PDOK)",
           "bounds": [
             3.2,
@@ -2200,12 +2313,13 @@
           "abstract": "BRT Achtergrondkaart, pastel stijl."
         }
       },
-      "pdok-brt-achtergrond-water": {
+      {
         "id": "pdok-brt-achtergrond-water",
         "type": "raster",
         "title": "Achtergrondkaart water (PDOK)",
         "source": "pdok-brt-achtergrond-water-source",
         "metadata": {
+          "swatch": "#e6f1f7",
           "title": "Achtergrondkaart water (PDOK)",
           "bounds": [
             3.2,
@@ -2216,13 +2330,14 @@
           "abstract": "BRT Achtergrondkaart, water stijl."
         }
       },
-      "pdok-percelen": {
+      {
         "id": "pdok-percelen",
         "type": "raster",
         "title": "Percelen (Kadastrale kaart)",
         "source": "pdok-kadastralekaart-source",
-        "minzoom": 15.5,
+        "minzoom": 16,
         "metadata": {
+          "swatch": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAABFElEQVR4AQAIAff+AnZ2doJMTEw8g4ODQA0NDRR6AAAXampqKRAKCjGKVFQ9AuHh4dMnJSUu7+rq71JSUiqGAAD5AgIC//D29tR2rKzlAg8PD873+fkMMzQ0hDk0NFmJiImMKCgoRoODgz0KAAD3Ag0NDTgxMTEzvbu71bK3t78EAwLzAf//LuXl5Rn2AAD5AgsJCyT28/P1LDExJlNQUDcGBQUfl5mZqZiYmLQAAADzAgcJBxGeoaGYx8jIqaumptPu8PDaERER1AAAAAEAAAAEArW1tcPr6+vnR0dHEC42NgGur6+pMTExEwAAAPELAAAPAmFhYVAE8PAW////HZCKisnR0dHckpKS2wAAABN2gYE9AAAA//+rWorwAAAABklEQVQDAORja2/+6gbdAAAAAElFTkSuQmCC",
           "title": "Percelen (Kadastrale kaart)",
           "bounds": [
             3.2,
@@ -2235,7 +2350,7 @@
           "getFeatureInfoFormat": "application/json"
         }
       },
-      "geographiclines": {
+      {
         "id": "geographiclines",
         "type": "style",
         "version": 8,
@@ -2353,7 +2468,7 @@
           "title": "Equator | Tropics | Polar circles"
         }
       },
-      "latitudes": {
+      {
         "id": "latitudes",
         "type": "line",
         "title": "Latitudes",
@@ -2366,7 +2481,7 @@
           "title": "Latitudes"
         }
       },
-      "longitudes": {
+      {
         "id": "longitudes",
         "type": "line",
         "title": "Longitudes",
@@ -2379,7 +2494,7 @@
           "title": "Longitudes"
         }
       },
-      "timezones": {
+      {
         "id": "timezones",
         "type": "style",
         "version": 8,
@@ -2542,25 +2657,25 @@
           "title": "Time zones"
         }
       },
-      "daynight": {
-        "id": "daynight",
+      {
+        "id": "daynight-computed",
         "type": "fill",
-        "title": "Day, twilight and night",
-        "source": "daynight-source",
+        "title": "Day, twilight and night (computed)",
+        "source": "daynight-computed-source",
         "paint": {
           "fill-color": [
             "match",
             [
               "get",
-              "description"
+              "id"
             ],
-            "Nighttime",
+            "night",
             "#0b0f2b",
-            "Astronomical Twilight",
+            "astronomical",
             "#1a237e",
-            "Nautical Twilight",
+            "nautical",
             "#3949ab",
-            "Civil Twilight",
+            "civil",
             "#90caf9",
             "#cccccc"
           ],
@@ -2568,8 +2683,8 @@
           "fill-outline-color": "#000000"
         },
         "metadata": {
-          "title": "Day, twilight and night",
-          "abstract": "Civil twilight, nautical twilight, astronomical twilight and night zones (real-time).",
+          "title": "Day, twilight and night (computed)",
+          "abstract": "Night and the three twilights, right now. Computed from the date and time rather than fetched, and redrawn continuously as the Earth turns: the whole picture slides west at 464 metres a second on the equator, gliding at street zoom and barely stirring at world zoom. Where the bands lie north to south is a matter of the date — in June the night side does not reach the Arctic at all — and where they lie east to west is a matter of the time. The bands are set by how far the sun is below the horizon. Civil twilight, down to 6 degrees below, is still bright enough to read outdoors and to make out the horizon at sea. Nautical twilight, 6 to 12 degrees, brings out the brighter stars while the horizon can just be seen — the two together are what a sextant needs, and where the name comes from. Astronomical twilight, 12 to 18 degrees, looks dark but still washes out the faintest stars. Below 18 degrees is full night.",
           "attributes": {
             "translations": [
               {
@@ -2581,11 +2696,11 @@
           }
         }
       },
-      "sunposition": {
-        "id": "sunposition",
+      {
+        "id": "sunposition-computed",
         "type": "circle",
-        "title": "Sun position",
-        "source": "sunposition-source",
+        "title": "Sun position (computed)",
+        "source": "sunposition-computed-source",
         "paint": {
           "circle-color": "#FFD700",
           "circle-radius": 14,
@@ -2594,11 +2709,278 @@
           "circle-stroke-color": "#FF8C00"
         },
         "metadata": {
-          "title": "Sun position (real-time)",
-          "abstract": "Current position of the sun (perpendicular solar radiation point)."
+          "title": "Sun position (computed)",
+          "abstract": "The point the sun is directly overhead, right now, moving west at 464 metres a second as the Earth turns. Computed from the date and time rather than fetched, and redrawn continuously — at street zoom it glides across the screen, at world zoom it barely stirs. How far north or south the sun stands is a matter of the date — that is the seasons. How far east or west is a matter of the time: the Earth turns fifteen degrees an hour, so the sun crosses one degree of longitude every four minutes. But the clock is not quite the sun's: because the Earth's orbit is an ellipse and its axis is tilted, the sun reaches its highest point up to a quarter of an hour before or after twelve o'clock, depending on the month. That is taken into account here. Leaving it out shifts the sun up to four degrees of longitude — a quarter of an hour of turning, which measures about 450 km on the equator and less towards the poles."
+        }
+      },
+      {
+        "id": "graticule",
+        "type": "line",
+        "title": "Graticule",
+        "source": "graticule-source",
+        "paint": {
+            "line-color": "#6b7785",
+            "line-width": [
+                      "case",
+                      [
+                                "==",
+                                [
+                                          "get",
+                                          "degrees"
+                                ],
+                                0
+                      ],
+                      1.4,
+                      0.5
+            ],
+            "line-opacity": 0.7
+  },
+        "metadata": {
+          "title": "Graticule",
+          "abstract": "Meridians and parallels, sampled so they curve as the projection curves rather than cutting corners."
+        }
+      },
+      {
+        "id": "reference-circles",
+        "type": "line",
+        "title": "Equator, tropics and polar circles",
+        "source": "reference-circles-source",
+        "paint": {
+            "line-color": [
+                      "match",
+                      [
+                                "get",
+                                "id"
+                      ],
+                      "equator",
+                      "#d62728",
+                      "cancer",
+                      "#ff7f0e",
+                      "capricorn",
+                      "#ff7f0e",
+                      "#1f77b4"
+            ],
+            "line-width": 1.6,
+            "line-dasharray": [
+                      3,
+                      2
+            ]
+  },
+        "metadata": {
+          "title": "Equator, tropics and polar circles",
+          "abstract": "Computed from the tilt of the Earth on this date. The tilt drifts, so the tropics and polar circles move about ten metres a year — an atlas from 1926 has them half a kilometre out."
+        }
+      },
+      {
+        "id": "tissot",
+        "type": "fill",
+        "title": "Tissot indicatrix",
+        "source": "tissot-source",
+        "paint": {
+            "fill-color": "#e377c2",
+            "fill-opacity": 0.35,
+            "fill-outline-color": "#7b3f6b"
+  },
+        "metadata": {
+          "title": "Tissot indicatrix",
+          "abstract": "Circles of 500 km ground radius. Whatever the projection does to them is what it does to every shape and area on the map: on Mercator they swell towards the poles, on an equal-area map they squash but keep their size."
+        }
+      },
+      {
+        "id": "day-length",
+        "type": "line",
+        "title": "Hours of daylight",
+        "source": "day-length-source",
+        "paint": {
+            "line-color": [
+                      "interpolate",
+                      [
+                                "linear"
+                      ],
+                      [
+                                "get",
+                                "hours"
+                      ],
+                      0,
+                      "#08306b",
+                      12,
+                      "#6a51a3",
+                      24,
+                      "#d94801"
+            ],
+            "line-width": [
+                      "case",
+                      ["==", ["get", "hours"], 12],
+                      2,
+                      1.2
+            ],
+            "line-opacity": 0.9
+  },
+        "metadata": {
+          "title": "Hours of daylight",
+          "abstract": "Latitudes that get 0, 2, 4 … 24 hours of daylight today. The 0 and 24 hour lines exist only when there is polar night or midnight sun somewhere."
+        }
+      },
+      {
+        "id": "solar-time",
+        "type": "line",
+        "title": "Solar time",
+        "source": "solar-time-source",
+        "paint": {
+            "line-color": [
+                      "case",
+                      [
+                                "get",
+                                "noon"
+                      ],
+                      "#d95f02",
+                      "#7570b3"
+            ],
+            "line-width": [
+                      "case",
+                      [
+                                "get",
+                                "noon"
+                      ],
+                      2,
+                      0.8
+            ],
+            "line-opacity": 0.8
+  },
+        "metadata": {
+          "title": "Solar time",
+          "abstract": "Where it is solar noon, and every hour of solar time either side. The gap against the clock is why the sun is overhead at half past one in western Spain."
+        }
+      },
+      {
+        "id": "analemma",
+        "type": "line",
+        "title": "Analemma",
+        "source": "analemma-source",
+        "paint": {
+            "line-color": "#b8860b",
+            "line-width": 2
+  },
+        "metadata": {
+          "title": "Analemma",
+          "abstract": "Where the sun stands at 12:00 UTC on every day of the year: the figure of eight made by the tilt of the axis and the eccentricity of the orbit."
+        }
+      },
+      {
+        "id": "moon-visibility",
+        "type": "fill",
+        "title": "Moon above the horizon",
+        "source": "moon-visibility-source",
+        "paint": {
+            "fill-color": "#c7c9d9",
+            "fill-opacity": 0.25,
+            "fill-outline-color": "#8c8fa8"
+  },
+        "metadata": {
+          "title": "Moon above the horizon",
+          "abstract": "The half of the Earth the moon is above the horizon for. Where this overlaps the night side is where it can actually be seen."
+        }
+      },
+      {
+        "id": "moon-position",
+        "type": "circle",
+        "title": "Moon position",
+        "source": "moon-position-source",
+        "paint": {
+            "circle-color": "#e8e8ef",
+            "circle-radius": 9,
+            "circle-stroke-color": "#5a5f7a",
+            "circle-stroke-width": 2
+  },
+        "metadata": {
+          "title": "Moon position",
+          "abstract": "The point the moon stands over, with its phase, illumination and distance. It shifts about twelve degrees east a day, which is why moonrise is fifty minutes later each night."
+        }
+      },
+      {
+        "id": "utm-zones",
+        "type": "line",
+        "title": "UTM grid zones",
+        "source": "utm-zones-source",
+        "paint": {
+            "line-color": [
+                      "case",
+                      [
+                                "!=",
+                                [
+                                          "get",
+                                          "exception"
+                                ],
+                                null
+                      ],
+                      "#d62728",
+                      "#4a90d9"
+            ],
+            "line-width": [
+                      "case",
+                      [
+                                "!=",
+                                [
+                                          "get",
+                                          "exception"
+                                ],
+                                null
+                      ],
+                      1.6,
+                      0.6
+            ],
+            "line-opacity": 0.8
+  },
+        "metadata": {
+          "title": "UTM grid zones",
+          "abstract": "The sixty zones and twenty bands, from the rules — including the hand-made exceptions: 32V widened for Norway, three zones missing over Svalbard, and row X twelve degrees tall. The exceptions are drawn in red."
+        }
+      },
+      {
+        "id": "sunpath-computed",
+        "type": "line",
+        "title": "Sun paths | solstice to solstice",
+        "source": "sunpath-computed-source",
+        "paint": {
+          "line-color": [
+            "interpolate",
+            ["linear"],
+            ["get", "declination"],
+            -23.5,
+            "#2166ac",
+            0,
+            "#6a51a3",
+            23.5,
+            "#b2182b"
+          ],
+          "line-width": [
+            "case",
+            ["!=", ["get", "solstice"], null],
+            2.2,
+            0.7
+          ],
+          "line-opacity": 0.8
+        },
+        "metadata": {
+          "title": "Sun paths | solstice to solstice",
+          "abstract": "The track the overhead sun takes each day, one line per day from the June solstice on the Tropic of Cancer to the December solstice on the Tropic of Capricorn. The return half of the year retraces the same latitudes, so it is not drawn. The lines crowd at the solstices, where the sun turns, and spread at the equinox, where it crosses the equator fastest — the spacing is the seasons.",
+          "attributes": {
+            "translations": [
+              {
+                "name": "date",
+                "translation": "date",
+                "unit": ""
+              },
+              {
+                "name": "declination",
+                "translation": "declination",
+                "unit": "°"
+              }
+            ]
+          }
         }
       }
-    }
+    ]
   },
   "state": {
     "activeExclusiveLayers": {
@@ -2629,6 +3011,11 @@
       "position": "bottom-left",
       "language": "browser"
     },
+    "search": {
+      "enabled": true,
+      "provider": "nominatim",
+      "attribution": "&copy; OpenStreetMap contributors | &copy; Nominatim"
+    },
     "mainToolbar": {
       "type": "toolbar",
       "enabled": true,
@@ -2645,9 +3032,7 @@
           "type": "search",
           "enabled": true,
           "title": "Search",
-          "icon": "search",
-          "provider": "nominatim",
-          "attribution": "&copy; OpenStreetMap contributors | &copy; Nominatim"
+          "icon": "search"
         },
         {
           "id": "layerTree",
@@ -2734,10 +3119,40 @@
                   "label": "Geography",
                   "children": [
                     {
-                      "layerId": "daynight"
+                      "layerId": "daynight-computed"
                     },
                     {
-                      "layerId": "sunposition"
+                      "layerId": "sunposition-computed"
+                    },
+                    {
+                      "layerId": "sunpath-computed"
+                    },
+                    {
+                      "layerId": "graticule"
+                    },
+                    {
+                      "layerId": "reference-circles"
+                    },
+                    {
+                      "layerId": "tissot"
+                    },
+                    {
+                      "layerId": "day-length"
+                    },
+                    {
+                      "layerId": "solar-time"
+                    },
+                    {
+                      "layerId": "analemma"
+                    },
+                    {
+                      "layerId": "moon-visibility"
+                    },
+                    {
+                      "layerId": "moon-position"
+                    },
+                    {
+                      "layerId": "utm-zones"
                     },
                     {
                       "layerId": "worldlandcover"
@@ -2894,6 +3309,13 @@
           "enabled": true,
           "title": "Settings",
           "icon": "gear"
+        },
+        {
+          "id": "stories",
+          "type": "stories",
+          "enabled": true,
+          "title": "Stories",
+          "icon": "book"
         }
       ]
     },
@@ -2939,14 +3361,14 @@
     "fullscreen": {
       "type": "fullscreen",
       "enabled": true,
-      "position": "bottom-left"
+      "position": "bottom-right"
     },
     "scale": {
       "type": "scaleControl",
       "enabled": true,
       "position": "bottom-right",
       "maxWidth": 140,
-      "margin": "0 0 5px 0"
+      "margin": "0 0 12px 0"
     },
     "zoomLevel": {
       "type": "zoomLevel",
@@ -2959,7 +3381,88 @@
       "position": "middle-center"
     }
   },
-  "_devTools": {
-    "configedit": false
+  "stories": {
+    "stories": [
+      {
+        "name": "Demo tour",
+        "description": "A short guided tour demonstrating the stories tool.",
+        "chapters": [
+          {
+            "id": "intro",
+            "title": "Introduction",
+            "buttonText": "Intro",
+            "steps": [
+              {
+                "title": "Welcome",
+                "html": "<p>This is the <strong>webmapx</strong> stories tool. Use Next to continue.</p>",
+                "state": {
+                  "layers": [
+                    "osm"
+                  ],
+                  "view": {
+                    "center": [-74.0, 40.7],
+                    "zoom": 4
+                  }
+                }
+              },
+              {
+                "title": "From a URL",
+                "htmlUrl": "stories-demo/step2.html",
+                "state": {
+                  "layers": [
+                    "osm",
+                    "world-countries"
+                  ],
+                  "view": {
+                    "center": [10, 50],
+                    "zoom": 4
+                  },
+                  "projection": "globe"
+                }
+              }
+            ]
+          },
+          {
+            "id": "detail",
+            "title": "Detail",
+            "buttonText": "Detail",
+            "steps": [
+              {
+                "title": "Zoomed in",
+                "html": "<p>Country borders layer is now hidden.</p>",
+                "state": {
+                  "layers": [
+                    "osm",
+                    "world-countries"
+                  ],
+                  "hiddenLayers": [
+                    "world-countries"
+                  ],
+                  "view": {
+                    "center": [4.9041, 52.3676],
+                    "zoom": 10
+                  }
+                }
+              },
+              {
+                "title": "Amsterdam, 1625",
+                "html": "<p>A georeferenced 1625 map of Amsterdam, warped onto the modern map with <strong>Allmaps</strong>.</p><p>This layer was not on the map before this step. The story adds it on arrival and removes it again when the story closes, so it never leaks into the legend or the permalink.</p>",
+                "state": {
+                  "layers": [
+                    "osm",
+                    "amsterdam-historical"
+                  ],
+                  "view": {
+                    "center": [4.9083, 52.3749],
+                    "zoom": 13.6
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "width": "480px"
+      }
+    ]
   }
 }
