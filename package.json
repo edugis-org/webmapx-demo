@@ -7,6 +7,7 @@
   "scripts": {
     "start": "tsx scripts/serve.ts",
     "updateMapPreviews": "tsx scripts/update-map-previews.ts",
+    "publish:site-latest": "tsx scripts/publish-site-latest.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

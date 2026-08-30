@@ -25,14 +25,26 @@ jobs:
         with:
           node-version: 22
 
+      # site.lock names the exact commit of webmapx and of webmapx-configs this
+      # site is built from. Pinning is a publication decision and this is what
+      # publishes, so both pins live here; webmapx's own repository holds no
+      # lock, and its Pages deploy is a preview that follows main.
+      #
+      # `npm run publish:site-latest` writes this file, and pushing it is what
+      # triggers this workflow — so every build has a commit saying what went
+      # out, and a site that was tested cannot change because another
+      # repository moved.
       - name: Build webmapx
         run: |
-          git clone --depth 1 https://github.com/edugis-org/webmapx.git /tmp/webmapx
+          WEBMAPX_COMMIT=$(node -p "require('./site.lock').webmapx.commit")
+          echo "Building webmapx at $WEBMAPX_COMMIT"
+          git clone --filter=blob:none https://github.com/edugis-org/webmapx.git /tmp/webmapx
+          git -C /tmp/webmapx checkout --detach "$WEBMAPX_COMMIT"
           cd /tmp/webmapx
           npm ci
-          # public/config is a checkout of webmapx-configs; sync takes the
-          # commit configs.lock names, so this site serves the pinned configs.
-          npm run configs:sync
+          # public/config is a checkout of webmapx-configs; point webmapx's sync
+          # at our lock so it serves the configs that were tested with this code.
+          WEBMAPX_CONFIGS_LOCK="$GITHUB_WORKSPACE/site.lock" npm run configs:sync
           npm run build
           npm run build:lib
 

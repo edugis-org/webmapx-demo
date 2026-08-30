@@ -25,6 +25,31 @@ otherwise the placeholder shows the old map.
 The demo list lives in `demos.js`, imported by both `index.html` (browser) and
 `scripts/update-map-previews.ts` (node). Add a demo there, then regenerate.
 
+## Publishing — 2026-08-30
+
+`npm run publish:site-latest` is how webmapx.com is updated. It pushes
+`../webmapx-configs`, then `../webmapx`, then writes and commits `site.lock`
+here and pushes it — and that last push is what triggers the pages workflow.
+There is no button to press afterwards, and no `gh`/token involved.
+
+It pushes but never commits anything except `site.lock`: uncommitted work in
+either sibling repository stops it with the file list, so nothing half-finished
+is published by accident. All three clones must sit side by side.
+
+`site.lock` names the commit of **both** webmapx and webmapx-configs the site is
+built from. Pinning the code too is not decoration: without it a code-only
+release would leave nothing to commit here, hence no push, hence no rebuild.
+
+**Why the site froze (29 Aug – 30 Aug).** The pin used to live in webmapx as
+`configs.lock`, and this repository's workflow only runs `on: push` here. Once
+the configs moved out (`ab64223`), there was no reason to push this repository
+any more, so webmapx.com stayed at 29 Aug 18:38 while the configs were pinned
+three more times — the deep-time tool on the live site offered one plate model
+instead of two, and `data/paleo/muller2019/` 404'd. The pins moved here because
+a pin is a publication decision, and this is what publishes; webmapx builds, and
+its own Pages deploy at edugis-org.github.io/webmapx is a preview that follows
+the config repository's main branch.
+
 ## Site config was a stale fork — resolved 2026-08-29
 
 **Was:** this repo kept its own `config/` directory, `demo/index.html` loaded
