@@ -36,7 +36,9 @@ jobs:
       # repository moved.
       - name: Build webmapx
         run: |
-          WEBMAPX_COMMIT=$(node -p "require('./site.lock').webmapx.commit")
+          # Read, don't require: node only parses .json as JSON, and would run a
+          # .lock through the JavaScript parser.
+          WEBMAPX_COMMIT=$(node -p "JSON.parse(require('fs').readFileSync('site.lock','utf8')).webmapx.commit")
           echo "Building webmapx at $WEBMAPX_COMMIT"
           git clone --filter=blob:none https://github.com/edugis-org/webmapx.git /tmp/webmapx
           git -C /tmp/webmapx checkout --detach "$WEBMAPX_COMMIT"
