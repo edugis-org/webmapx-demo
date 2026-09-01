@@ -34,6 +34,18 @@ const CONFIG_ROOTS = [ROOT, resolve(ROOT, '..', 'webmapx-configs', '..')];
 
 const SITE = 'https://webmapx.com';
 
+/**
+ * Where the built webmapx keeps the Shoelace icon files. In CI the checkout is
+ * addressed through WEBMAPX_DIST_LIB, whose parent is that build.
+ */
+const ICON_DIRS = [
+    ...(process.env.WEBMAPX_DIST_LIB
+        ? [resolve(process.env.WEBMAPX_DIST_LIB, '..', 'dist', 'shoelace-assets', 'assets', 'icons')]
+        : []),
+    resolve(ROOT, '..', 'webmapx', 'dist', 'shoelace-assets', 'assets', 'icons'),
+    resolve(ROOT, '..', 'webmapx', 'node_modules', '@shoelace-style', 'shoelace', 'dist', 'assets', 'icons'),
+];
+
 /** The four audiences, as four sections, always in this order. */
 const SECTIONS = [
     { key: 'what', title: 'What it does' },
@@ -159,6 +171,36 @@ function markdown(md: string): string {
     return out.join('\n');
 }
 
+
+/**
+ * The tool's own icon, inlined as SVG.
+ *
+ * Inlined rather than linked: these pages are static and carry no Shoelace, and
+ * an <sl-icon> would fetch from a CDN at read time for a 300-byte glyph. The
+ * file comes from the same pinned webmapx build the registry does, so a tool
+ * whose icon changes upstream changes here too.
+ *
+ * A missing icon is not an error — the page renders without one and the build
+ * says which tool it was.
+ */
+function toolIconSvg(name: string | undefined): string {
+    if (!name) return '';
+    for (const dir of ICON_DIRS) {
+        const file = join(dir, `${name}.svg`);
+        if (!existsSync(file)) continue;
+        const svg = readFileSync(file, 'utf8')
+            .replace(/<\?xml[^>]*\?>/, '')
+            // Sized in em so it follows the heading it sits in, and painted with
+            // currentColor so it works in both themes without a second rule.
+            .replace(/\swidth="[^"]*"/, ' width="1em"')
+            .replace(/\sheight="[^"]*"/, ' height="1em"')
+            .trim();
+        return `<span class="tool-icon" aria-hidden="true">${svg}</span>`;
+    }
+    console.log(`no icon file for "${name}"`);
+    return '';
+}
+
 // ── inputs ──────────────────────────────────────────────────────────────────
 
 function readLock(): { webmapx: string; configs: string } {
@@ -230,7 +272,9 @@ header{background:#0f1923;color:#fff;padding:2rem 1.5rem}
 header .inner,main{max-width:52rem;margin:0 auto}
 header .crumb{font-size:.85rem;color:#8fa6bd}
 header .crumb a{color:#8fa6bd}
-header h1{font-size:2rem;letter-spacing:-.02em;margin:.4rem 0}
+header h1{font-size:2rem;letter-spacing:-.02em;margin:.4rem 0;display:flex;align-items:center;gap:.55rem}
+.tool-icon{display:inline-flex;align-items:center;flex:none}
+.tool-link{display:inline-flex;align-items:center;gap:.45rem}
 header p{color:#aac;max-width:42rem}
 .badges{margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap}
 .badge{font-size:.75rem;border:1px solid #2e4358;color:#cfe0f0;border-radius:99px;padding:.15rem .6rem}
@@ -319,7 +363,7 @@ function renderTool(doc: ToolDoc, registry: any, lock: { webmapx: string; config
 
     const body = `<header><div class="inner">
 <div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a></div>
-<h1>${escapeHtml(registry.label)}</h1>
+<h1>${toolIconSvg(registry.icon)}${escapeHtml(registry.label)}</h1>
 <p>${inline(doc.tagline)}</p>
 <div class="badges"><span class="badge">type: ${doc.id}</span><span class="badge">${registry.placement}</span><span class="badge">${doc.status}</span></div>
 </div></header>
@@ -340,7 +384,7 @@ Machine-readable: <a href="./${doc.id}.json">${doc.id}.json</a>.</footer>
 function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[]): string {
     const cards = docs.map(doc => {
         const registry = byId.get(doc.id);
-        return `<tr><td><a href="./${doc.id}.html">${escapeHtml(registry.label)}</a><br><code>${doc.id}</code></td><td>${inline(doc.tagline)}</td></tr>`;
+        return `<tr><td><a class="tool-link" href="./${doc.id}.html">${toolIconSvg(registry.icon)}${escapeHtml(registry.label)}</a><br><code>${doc.id}</code></td><td>${inline(doc.tagline)}</td></tr>`;
     }).join('');
     const missing = undocumented.length
         ? `<section><h2>Not documented yet</h2><p>${undocumented.map(t => `<code>${t.id}</code>`).join(', ')}</p></section>`
