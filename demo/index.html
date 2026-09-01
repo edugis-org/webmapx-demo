@@ -12,6 +12,8 @@
       "maplibre-gl": "https://esm.sh/maplibre-gl@5",
       "ol": "https://esm.sh/ol@10",
       "ol/": "https://esm.sh/ol@10/",
+      "ol-mapbox-style": "https://esm.sh/ol-mapbox-style@13?external=ol",
+      "ol/ol.css": "data:text/javascript,",
       "leaflet": "https://esm.sh/leaflet@1"
     }
   }
@@ -37,6 +39,11 @@
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.css">
+  <!-- OpenLayers ships its CSS as `import 'ol/ol.css'`, which a bare-module
+       setup resolves to a stylesheet the browser refuses to run as a module.
+       The importmap sends that specifier to an empty module and the real
+       stylesheet is linked here instead. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10/ol.css">
   <link rel="stylesheet" href="../dist-lib/webmapx.css">
 
   <style>
