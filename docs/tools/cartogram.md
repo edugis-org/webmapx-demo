@@ -1,0 +1,102 @@
+---
+config: config/docs/tools/cartogram.json
+tagline: Resize every region until its area *is* the number you care about.
+status: stable
+audience: [interactive, embedder, developer]
+source:
+  - src/components/webmapx-cartogram-tool.ts
+  - src/utils/cartogram.ts
+  - src/utils/geoprocessing-operations.ts
+tests:
+  - tests/cartogram.test.ts
+related: [geoprocessing, projection, truearea]
+---
+
+## what
+
+A cartogram sizes each region by a value instead of by its ground area. Colour
+a choropleth by population and the eye still reads *area* — so Siberia shouts
+and Bangladesh whispers, which is the opposite of the data. A cartogram fixes
+that by moving the geometry: give it a population column and the map ends up
+with the countries that hold the people taking up the room.
+
+The layer keeps its overall size. One shared factor converts value into area,
+so only the *distribution* changes and the result is still comparable with the
+map it came from.
+
+Areas are measured on the sphere in square metres, and each shape is resized in
+an equal-area plane centred on itself. That matters more than it sounds: a
+square degree is not an area, and sizing from Mercator would start Greenland out
+four times too big — the error would be as large as the data.
+
+Five methods, and they trade two things against each other:
+
+- **keep the map joined up, exact areas** (default) — solves the flow that
+  equalises the areas. Neighbours stay attached and the areas land within a
+  percent or two.
+- **keep the map joined up (classic, faster)** — Dougenik–Chrisman–Niemeyer:
+  boundaries are pushed around by every region's force. Quicker, rougher; the
+  **Detail** slider is how many passes it gets.
+- **keep the map joined up, exact areas (go-cart WASM)** — Gastner–Newman
+  diffusion, the Worldmapper method.
+- **resize each shape on the spot** — every outline is kept exactly, and gaps
+  open between neighbours.
+- **replace each by a circle (Dorling)** — shape thrown away entirely, circles
+  pushed apart until they stop overlapping.
+
+Use something else when the question is "how big is this really?" rather than
+"how big is this value" — that is **True area**, or a switch to an equal-area
+projection with the **Projection** tool.
+
+The demo map opens in Equal Earth, not Web Mercator, and that is deliberate:
+Mercator inflates area by 1/cos²(latitude), so Greenland looks the size of
+Africa before any data is applied — a cartogram drawn there is a lie by
+construction. The projection tool is on the toolbar so you can switch to
+Mercator and see what the same cartogram claims in each.
+
+## use
+
+1. Open the cartogram icon in the toolbar.
+2. Pick the **input layer** — any polygon layer on the map.
+3. Pick the attribute to **size by**. Only attributes observed to hold numbers
+   are offered; features without a positive value are left out.
+4. Pick a **cartogram type**. Start with the default.
+5. Optionally raise **leave out anything below**: a region asked to shrink ten
+   thousandfold cannot get there, and it drags the rest of the map with it.
+6. Press **Calculate**. The elapsed time is shown while it runs and the run can
+   be cancelled; a world layer takes a few seconds.
+7. The result arrives as a new layer in the legend, with the original still
+   underneath — which is the comparison worth showing.
+
+**What the tool can see is what the map has drawn.** For a layer served as
+vector tiles only the features in view take part, and the panel says so. Zoom
+out until the whole layer is on screen before calculating, or use a layer with a
+`geojson` source, where the full dataset is always available.
+
+## embed
+
+The tool works on an ordinary polygon layer that carries a numeric attribute —
+there is no special layer type and no preparation step. The demo config points
+at Natural Earth country polygons with a `pop_est` column.
+
+## extend
+
+`webmapx-cartogram-tool` is a three-line subclass of the geoprocessing tool with
+one operation pinned. That is the pattern for giving *any* analysis operation
+its own toolbar button: subclass, set `pinnedOperation`, add a registry entry.
+Layer picking, the numeric-attribute list, the shared GDAL worker, cancelling
+and the viewport warnings are inherited, not rebuilt.
+
+The maths is a plain GeoJSON→GeoJSON function in `src/utils/cartogram.ts`, wired
+in as the operation's `compute`. It undoes the pipeline's Web Mercator round
+trip itself, because the pipeline hands every operation EPSG:3857 and Mercator
+inflates area by 1/cos²(latitude).
+
+Three things there are load-bearing, and each was a bug found by measuring the
+result on 265 real countries rather than by looking at it: a multipart feature
+is grown about **each part's own centre** (scaling nine islets about one
+centroid spreads them over a continent); a longitude step is taken **the short
+way** round the globe, or a country straddling the date line inverts; and the
+achieved area is **measured and corrected** over up to four passes, because
+scaling bends a ring's straight lon/lat edges and the result drifts from
+factor².

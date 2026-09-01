@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Landing page and demo configs for WebMapX. The site itself is plain static files — npm is only used for the dev server and the preview-image generator.",
+  "description": "Landing page and demo configs for WebMapX. The site itself is plain static files \u2014 npm is only used for the dev server and the preview-image generator.",
   "scripts": {
     "start": "tsx scripts/serve.ts",
     "updateMapPreviews": "tsx scripts/update-map-previews.ts",
     "publish:site-latest": "tsx scripts/publish-site-latest.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:tool-docs": "tsx scripts/build-tool-docs.ts",
+    "check:tool-docs": "tsx scripts/build-tool-docs.ts --check"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

@@ -101,3 +101,51 @@ webmapx checkout puts it at `public/config`), then `npm run configs:pin`.
 - Whether upstream `demo.json` expects `layers.json`/`world.json` contents that
   differ from this repo's copies — if so, those should move somewhere fetchable
   rather than being gitignored upstream.
+
+## Tool documentation — 2026-09-01
+
+One static page per tool under `/tools/`, built by
+`npm run build:tool-docs` (`--check` fails when a registry tool has no page).
+
+```
+docs/tools/<id>.md          prose, in four fixed sections (what/use/embed/extend)
+tools/                      generated; gitignored, rebuilt by the workflow
+llms.txt                    generated index for agents
+```
+
+Three inputs, none of them duplicated. `TOOL_REGISTRY` from the pinned
+webmapx build says which tools exist and what they are called — so a tool added
+upstream shows up as "not documented yet" rather than silently missing. The
+markdown is the only prose. The demo config named in the front matter supplies
+both the live map in the iframe and the copy-paste config fragment, **cut from
+the real config file**, so the snippet on the page is the snippet that runs.
+
+Each page is emitted twice: HTML for people, `<id>.json` for agents and scripts.
+Same data, no second prose to keep in step.
+
+**A page per tool, not one picker page.** A picker has a single URL, so no tool
+can be linked to, shared, or cited — search engines and agents both need the
+one-URL-per-thing shape.
+
+Demo configs live in webmapx-configs under `docs/tools/`, beside the configs
+they sit with, and reach the site through the same pin as every other config.
+
+**The pages embed `testpages/preview.html`, not `demo/index.html`.** The demo
+host resolves the engines through an importmap against a CDN, which works for
+MapLibre and falls apart for OpenLayers: `ol/ol.css` arrives as a stylesheet
+where a module is expected, and proj4's registrations land in a second copy of
+`ol/proj`, so a map in any projection dies inside OL's own code. The preview
+page is built from the bundled app, where there is one copy of everything. It is
+passed `storageKey=webmapx-docs-no-override` on purpose — preview.html prefers a
+config saved in localStorage, and a reader who has used setup.html would
+otherwise see their own map on every tool page.
+
+Serve with `npm start`, which sends `cache-control: no-store`. A generic static
+server is a trap here: `http-server` defaults to `max-age=3600`, so the browser
+holds on to `preview.html` — and with it the previous build's asset hashes — for
+an hour, and a rebuilt tool looks like it never changed.
+
+For local work three paths are symlinked to sibling checkouts, all gitignored
+because the build assembles them from the pinned commits: `config/docs` →
+webmapx-configs, and `testpages` + `assets` → `../webmapx/dist` (run
+`npm run build` there first, otherwise the iframes 404).
