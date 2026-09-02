@@ -183,19 +183,41 @@ function markdown(md: string): string {
  * A missing icon is not an error — the page renders without one and the build
  * says which tool it was.
  */
-function toolIconSvg(name: string | undefined): string {
+type ToolIcon = string | { src?: string } | undefined;
+
+/** Normalises a raw <svg> so it follows the heading it sits in and both themes. */
+function inlineIconSvg(svg: string): string {
+    return `<span class="tool-icon" aria-hidden="true">${svg
+        .replace(/<\?xml[^>]*\?>/, '')
+        .replace(/<!--[\s\S]*?-->/g, '')
+        // Sized in em so it follows the heading it sits in, and painted with
+        // currentColor so it works in both themes without a second rule.
+        .replace(/\swidth="[^"]*"/, ' width="1em"')
+        .replace(/\sheight="[^"]*"/, ' height="1em"')
+        .trim()}</span>`;
+}
+
+function toolIconSvg(icon: ToolIcon): string {
+    // A registry icon is usually a Shoelace icon name, but a tool with artwork
+    // of its own carries `{ src }` — and the bundler inlines that as a
+    // `data:image/svg+xml` URL, so the drawing is right here rather than in a
+    // file this build would have to go and find.
+    if (icon && typeof icon === 'object') {
+        const src = icon.src ?? '';
+        const marker = 'data:image/svg+xml,';
+        if (!src.startsWith(marker)) return '';
+        try {
+            return inlineIconSvg(decodeURIComponent(src.slice(marker.length)));
+        } catch {
+            return '';
+        }
+    }
+    const name = icon;
     if (!name) return '';
     for (const dir of ICON_DIRS) {
         const file = join(dir, `${name}.svg`);
         if (!existsSync(file)) continue;
-        const svg = readFileSync(file, 'utf8')
-            .replace(/<\?xml[^>]*\?>/, '')
-            // Sized in em so it follows the heading it sits in, and painted with
-            // currentColor so it works in both themes without a second rule.
-            .replace(/\swidth="[^"]*"/, ' width="1em"')
-            .replace(/\sheight="[^"]*"/, ' height="1em"')
-            .trim();
-        return `<span class="tool-icon" aria-hidden="true">${svg}</span>`;
+        return inlineIconSvg(readFileSync(file, 'utf8'));
     }
     console.log(`no icon file for "${name}"`);
     return '';
@@ -287,6 +309,36 @@ section{margin-top:2.5rem}
    group rather than in one lump at the bottom: a reader looking for a control
    should find out there is one, in the place they were already looking. */
 .pending{margin-top:.8rem;font-size:.85rem;color:#666}
+/* One worked example, two pictures and a table. The colours are the tool's own:
+   the first layer neutral, the second layer the accent, the result filled. */
+.io{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:1rem}
+.io .arrow{font-size:1.6rem;color:#888;flex:0 0 auto}
+.map-figure{margin:0;flex:0 0 auto}
+.map-figure svg{background:#eef3f7;border:1px solid #d8d8d8;border-radius:4px;display:block}
+.map-figure figcaption{font-size:.75rem;color:#666;margin-top:.25rem}
+svg .a{fill:#c9d6e0;stroke:#7d8f9d;stroke-width:.5}
+svg .ghost{fill:#eceff2;stroke:#dfe4e8;stroke-width:.5}
+svg .b{fill:rgba(217,99,60,.18);stroke:#d9633c;stroke-width:1.2}
+svg .out{fill:rgba(43,108,143,.55);stroke:#1b4a63;stroke-width:.8}
+svg .pt{fill:#1b4a63;stroke:#fff;stroke-width:1}
+table.attrs{font-size:.8rem;margin-top:.6rem;width:auto;border-collapse:collapse}
+table.attrs th,table.attrs td{border:1px solid #ddd;padding:.2rem .5rem;text-align:left}
+table.attrs th{background:#f0f2f4}
+table.attrs td.null{color:#aaa;font-style:italic}
+p.fields{font-size:.85rem;color:#555;margin-top:.8rem}
+.scroll{overflow-x:auto}
+table.matrix{font-size:.8rem;border-collapse:collapse;margin-top:.6rem;width:auto}
+table.matrix th,table.matrix td{border:1px solid #ddd;padding:.25rem .5rem;text-align:center}
+table.matrix th.op{text-align:left;white-space:nowrap;font-weight:600}
+table.matrix th.sub{font-weight:400;color:#666;font-size:.75rem}
+table.matrix thead th{background:#f0f2f4}
+.yes{color:#2f7d4f;font-weight:700}
+.none{color:#999}
+.err{color:#b03030;font-weight:700}
+p.legend{font-size:.85rem;color:#555;margin-top:.6rem}
+.no-geom{width:300px;height:180px;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:#f4f6f8;border:1px dashed #cfd6dc;border-radius:4px;color:#7a848c;font-size:.85rem}
+p.pagenav{font-size:.9rem;margin-top:1.2rem;padding-bottom:.6rem;border-bottom:1px solid #e2e2e2}
 .pending code{background:#ececec;padding:.1em .35em;border-radius:3px}
 h2{font-size:1.3rem;letter-spacing:-.01em;margin-bottom:.6rem}
 p+p,p+ul,p+ol,ul+p,ol+p,pre+p{margin-top:.8rem}
@@ -383,6 +435,275 @@ Machine-readable: <a href="./${doc.id}.json">${doc.id}.json</a>.</footer>
         description: doc.tagline,
         canonical: `${SITE}/tools/${doc.id}.html`,
         alternate: `./${doc.id}.json`,
+    });
+}
+
+/**
+ * The worked example behind the analysis page.
+ *
+ * Built by `npm run build:analysis-examples` in the webmapx checkout, which
+ * runs every operation through the real GDAL/SpatiaLite WASM against real
+ * Natural Earth countries. Nothing on the page is drawn by hand: the shapes
+ * are the operations' own output, so a change in what clip does changes the
+ * picture rather than dating the prose beside it.
+ */
+interface AnalysisExample {
+    id: string;
+    operation: string;
+    title: string;
+    twoInput: boolean;
+    params?: Record<string, string | number>;
+    note: string;
+    featureCount: number;
+    fields: string[];
+    result: any;
+}
+
+/**
+ * The figure's frame, in lon/lat.
+ *
+ * Wide enough for every result, not just the inputs: a buffer grows past the
+ * coast and a cartogram grows past that, and a frame fitted to the countries
+ * alone quietly cropped France's southern half out of every picture — including
+ * the ones meant to show that a shape had changed size.
+ */
+const FIGURE_BOX = { west: -13.5, south: 40.5, east: 10.5, north: 62 };
+const FIGURE_W = 300;
+
+function projectLonLat(lon: number, lat: number): [number, number] {
+    // Web Mercator, so the shapes look like the map the reader knows.
+    const y = (l: number) => Math.log(Math.tan(Math.PI / 4 + (l * Math.PI / 180) / 2));
+    const x0 = FIGURE_BOX.west, x1 = FIGURE_BOX.east;
+    const y0 = y(FIGURE_BOX.north), y1 = y(FIGURE_BOX.south);
+    const h = FIGURE_W * (y0 - y1) / ((x1 - x0) * Math.PI / 180);
+    return [
+        (lon - x0) / (x1 - x0) * FIGURE_W,
+        (y0 - y(lat)) / (y0 - y1) * h,
+    ];
+}
+
+function figureHeight(): number {
+    const [, bottom] = projectLonLat(FIGURE_BOX.west, FIGURE_BOX.south);
+    return Math.round(bottom);
+}
+
+function geometryPath(geometry: any): string {
+    if (!geometry) return '';
+    const rings: number[][][] = geometry.type === 'MultiPolygon'
+        ? geometry.coordinates.flat()
+        : geometry.type === 'Polygon' ? geometry.coordinates
+        : geometry.type === 'MultiLineString' ? geometry.coordinates.map((c: any) => c)
+        : geometry.type === 'LineString' ? [geometry.coordinates]
+        : [];
+    return rings.map((ring) => ring.map((pos, i) => {
+        const [x, y] = projectLonLat(pos[0], pos[1]);
+        return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+    }).join('') + 'Z').join(' ');
+}
+
+function pointMarkers(fc: any): string {
+    const out: string[] = [];
+    for (const f of fc.features ?? []) {
+        const g = f.geometry;
+        const points = g?.type === 'Point' ? [g.coordinates]
+            : g?.type === 'MultiPoint' ? g.coordinates : [];
+        for (const p of points) {
+            const [x, y] = projectLonLat(p[0], p[1]);
+            out.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" class="pt"/>`);
+        }
+    }
+    return out.join('');
+}
+
+function figure(layers: Array<{ fc: any; cls: string }>, caption: string): string {
+    const h = figureHeight();
+    const paths = layers.map(({ fc, cls }) => {
+        const d = (fc.features ?? []).map((f: any) => geometryPath(f.geometry)).filter(Boolean).join(' ');
+        return (d ? `<path d="${d}" class="${cls}"/>` : '') + pointMarkers(fc);
+    }).join('');
+    return `<figure class="map-figure">
+<svg viewBox="0 0 ${FIGURE_W} ${h}" width="${FIGURE_W}" height="${h}" role="img" aria-label="${escapeHtml(caption)}">${paths}</svg>
+<figcaption>${escapeHtml(caption)}</figcaption>
+</figure>`;
+}
+
+function attributeTable(fc: any, fields: string[]): string {
+    const rows = (fc.features ?? []).map((f: any) => {
+        const cells = fields.map((k) => {
+            const v = f.properties?.[k];
+            const empty = v === null || v === undefined || v === '';
+            return `<td${empty ? ' class="null"' : ''}>${empty ? 'NULL' : escapeHtml(String(v))}</td>`;
+        }).join('');
+        return `<tr>${cells}</tr>`;
+    }).join('');
+    return `<table class="attrs"><thead><tr>${fields.map(f => `<th>${escapeHtml(f)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+/** The three analysis pages know about each other, so a reader can move between them. */
+const ANALYSIS_PAGES: Array<{ file: string; label: string }> = [
+    { file: 'analysis-operations.html', label: 'Two-layer operations' },
+    { file: 'analysis-single-layer.html', label: 'One-layer operations' },
+    { file: 'analysis-geometry.html', label: 'Which geometry each takes' },
+];
+
+function analysisNav(current: string): string {
+    const links = ANALYSIS_PAGES.map(pageLink => (pageLink.file === current
+        ? `<strong>${escapeHtml(pageLink.label)}</strong>`
+        : `<a href="./${pageLink.file}">${escapeHtml(pageLink.label)}</a>`)).join(' · ');
+    return `<p class="pagenav">${links}</p>`;
+}
+
+interface SupportRow { operation: string; label: string; twoInput: boolean; cells: Record<string, 'ok' | 'empty' | 'error'>; }
+
+const GEOM_KINDS = ['point', 'line', 'polygon'] as const;
+const SUPPORT_MARK: Record<string, { glyph: string; cls: string; title: string }> = {
+    ok: { glyph: '●', cls: 'yes', title: 'returns features' },
+    empty: { glyph: '○', cls: 'none', title: 'runs, but the answer is empty for this combination' },
+    error: { glyph: '×', cls: 'err', title: 'refuses this geometry' },
+};
+
+/**
+ * What each operation accepts, measured rather than declared.
+ *
+ * Nothing in the registry says which geometry an operation takes — the tool
+ * offers every layer on the map — so each cell here is one real run against the
+ * real SpatiaLite, recorded as it came back.
+ */
+function renderGeometryPage(support: SupportRow[], lock: { webmapx: string }): string {
+    return page(`<header><div class="inner">
+<div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a> / <a href="./geoprocessing.html">Analysis</a></div>
+<h1>Which geometry each operation takes</h1>
+<p>Points, lines and polygons, and what every analysis operation does with them — measured by running each combination rather than read off a specification.</p>
+</div></header>
+<main>${analysisNav('analysis-geometry.html')}${renderSupportMatrix(support)}
+<footer>Generated from webmapx <code>${lock.webmapx.slice(0, 9)}</code> by running each operation; see <a href="./geoprocessing.html">the analysis tool</a>.</footer>
+</main>`, {
+        title: 'Analysis — which geometry each operation takes',
+        description: 'Which geometry types each webmapx analysis operation accepts for its first and second layer, measured by running every combination.',
+        canonical: `${SITE}/tools/analysis-geometry.html`,
+    });
+}
+
+function renderSupportMatrix(support: SupportRow[]): string {
+    const twoIn = support.filter(r => r.twoInput);
+    const oneIn = support.filter(r => !r.twoInput);
+
+    const twoHead = GEOM_KINDS.map(b => `<th colspan="3">second layer: ${b}</th>`).join('');
+    const twoSub = GEOM_KINDS.flatMap(() => GEOM_KINDS.map(a => `<th class="sub">${a[0]}</th>`)).join('');
+    const twoRows = twoIn.map(r => {
+        const cells = GEOM_KINDS.flatMap(b => GEOM_KINDS.map(a => {
+            const m = SUPPORT_MARK[r.cells[`${a}/${b}`] ?? 'error'];
+            return `<td class="${m.cls}" title="first ${a}, second ${b} — ${m.title}">${m.glyph}</td>`;
+        })).join('');
+        return `<tr><th class="op">${escapeHtml(r.label)}</th>${cells}</tr>`;
+    }).join('');
+
+    const oneRows = oneIn.map(r => {
+        const cells = GEOM_KINDS.map(a => {
+            const m = SUPPORT_MARK[r.cells[a] ?? 'error'];
+            return `<td class="${m.cls}" title="${a} — ${m.title}">${m.glyph}</td>`;
+        }).join('');
+        return `<tr><th class="op">${escapeHtml(r.label)}</th>${cells}</tr>`;
+    }).join('');
+
+    return `<section id="geometry-support">
+<h2>Which geometry each operation takes</h2>
+<p>Nothing in the configuration declares this: the analysis panel offers every layer the map has, and whether an operation can answer is a property of the query it runs. Every cell below is one real run — the operation given that geometry, and the answer recorded as it came back.</p>
+<p class="legend">
+  <span class="yes">●</span> returns features &nbsp;
+  <span class="none">○</span> runs, but the answer is empty for this combination &nbsp;
+  <span class="err">×</span> refuses this geometry
+</p>
+<h3>Two-layer operations</h3>
+<p>Columns are the second layer's geometry; within each, <code>p</code> point, <code>l</code> line, <code>g</code> polygon is the <em>first</em> layer's.</p>
+<div class="scroll"><table class="matrix">
+<thead><tr><th></th>${twoHead}</tr><tr><th></th>${twoSub}</tr></thead>
+<tbody>${twoRows}</tbody>
+</table></div>
+<h3>Single-layer operations</h3>
+<div class="scroll"><table class="matrix">
+<thead><tr><th></th>${GEOM_KINDS.map(a => `<th>${a}</th>`).join('')}</tr></thead>
+<tbody>${oneRows}</tbody>
+</table></div>
+<p class="fields">An empty answer is usually geometry being honest rather than a limitation: a line clipped by a point keeps only the parts of the line that <em>are</em> that point, which is nothing unless the point lies exactly on it. A refusal is the operation saying the question does not apply — a cartogram sizes shapes by area, and a point has none.</p>
+</section>`;
+}
+
+function exampleSection(inputs: any, ex: AnalysisExample): string {
+    const inputFigure = ex.twoInput
+        ? figure([{ fc: inputs.countries, cls: 'a' }, { fc: inputs.rectangle, cls: 'b' }], 'in: countries + rectangle')
+        : figure([{ fc: inputs.countries, cls: 'a' }], 'in: countries');
+    const outputFigure = ex.result?.features?.some((f: any) => f.geometry)
+        ? figure([{ fc: inputs.countries, cls: 'ghost' }, { fc: ex.result, cls: 'out' }],
+            `out: ${ex.featureCount} feature${ex.featureCount === 1 ? '' : 's'}`)
+        : `<figure class="map-figure"><div class="no-geom">no geometry —<br>a table, not a layer</div><figcaption>out: ${ex.featureCount} row${ex.featureCount === 1 ? '' : 's'}</figcaption></figure>`;
+    return `
+<section id="${ex.id}">
+  <h2>${escapeHtml(ex.title)}</h2>
+  <p>${inline(ex.note)}</p>
+  <div class="io">${inputFigure}<div class="arrow" aria-hidden="true">→</div>${outputFigure}</div>
+  <p class="fields">Result attributes: ${ex.fields.map(f => `<code>${escapeHtml(f)}</code>`).join(' ')}</p>
+  ${attributeTable(ex.result, ex.fields)}
+</section>`;
+}
+
+function renderSingleLayerPage(inputs: any, examples: AnalysisExample[], lock: { webmapx: string }): string {
+    const body = `<header><div class="inner">
+<div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a> / <a href="./geoprocessing.html">Analysis</a></div>
+<h1>One-layer analysis operations</h1>
+<p>The operations that take a single layer and reshape or summarise it. Same five countries throughout, so the operation is the only thing that changes — and, as on the two-layer page, every shape below is the operation's own output.</p>
+</div></header>
+<main>${analysisNav('analysis-single-layer.html')}
+<section>
+  <h2>The input</h2>
+  <p>Five Natural Earth countries, each carrying a <code>name</code>, an <code>eu</code> flag (four members, one not) and a <code>pop_est</code>. The <code>eu</code> attribute is what the grouping operations below group by.</p>
+  <div class="io">${figure([{ fc: inputs.countries, cls: 'a' }], 'five countries')}<div>${attributeTable(inputs.countries, ['name', 'eu', 'pop_est'])}</div></div>
+</section>
+${examples.map(ex => exampleSection(inputs, ex)).join('')}
+<footer>Generated from webmapx <code>${lock.webmapx.slice(0, 9)}</code> by running each operation; see <a href="./geoprocessing.html">the analysis tool</a>.</footer>
+</main>`;
+    return page(body, {
+        title: 'One-layer analysis operations',
+        description: 'Dissolve, statistics, centroid, label point, buffer, convex hull, simplify, cartogram, voronoi and delaunay, each run on the same layer.',
+        canonical: `${SITE}/tools/analysis-single-layer.html`,
+    });
+}
+
+function renderAnalysisPage(inputs: any, examples: AnalysisExample[], lock: { webmapx: string }): string {
+    const countriesFields = ['name', 'eu', 'pop_est'];
+    const rectangleFields = ['name', 'note'];
+
+    const sections = examples.map(ex => exampleSection(inputs, ex)).join('');
+
+    const body = `<header><div class="inner">
+<div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a> / <a href="./geoprocessing.html">Analysis</a></div>
+<h1>Two-layer analysis operations</h1>
+<p>Every two-layer operation run on the same two layers, so the difference between them is the only thing that changes. The shapes below are the operations' own output, computed by the same code the tool runs — not illustrations of it.</p>
+</div></header>
+<main>${analysisNav('analysis-operations.html')}
+<section>
+  <h2>The two inputs</h2>
+  <p>The first layer is five Natural Earth countries, each carrying a <code>name</code> and a <code>pop_est</code>. The second is one rectangle called <code>rectangle</code>, carrying a <code>name</code> and a <code>note</code>.</p>
+  <p>The rectangle is placed deliberately: it <strong>contains Ireland completely</strong>, <strong>cuts the United Kingdom</strong>, and <strong>never reaches</strong> the Netherlands, Belgium or France. So every spatial test below has a visible yes <em>and</em> a visible no in one picture.</p>
+  <div class="io">
+    ${figure([{ fc: inputs.countries, cls: 'a' }], 'first layer: countries')}
+    <div class="arrow" aria-hidden="true">+</div>
+    ${figure([{ fc: inputs.countries, cls: 'ghost' }, { fc: inputs.rectangle, cls: 'b' }], 'second layer: rectangle')}
+  </div>
+  <div class="io">
+    <div>${attributeTable(inputs.countries, countriesFields)}</div>
+    <div>${attributeTable(inputs.rectangle, rectangleFields)}</div>
+  </div>
+  <p><strong>Both layers have a <code>name</code>.</strong> Where an operation carries both layers' attributes into one table, the second layer's colliding field is suffixed: <code>name</code> from the countries, <code>name_2</code> from the rectangle. A field that does not collide — <code>note</code> — keeps its own name.</p>
+</section>
+${sections}
+<footer>Generated from webmapx <code>${lock.webmapx.slice(0, 9)}</code> by running each operation; see <a href="./geoprocessing.html">the analysis tool</a>.</footer>
+</main>`;
+
+    return page(body, {
+        title: 'Two-layer analysis operations',
+        description: 'Clip, erase, intersect, union, select by location and spatial join, each run on the same two layers, with the geometry and attributes that come out.',
+        canonical: `${SITE}/tools/analysis-operations.html`,
     });
 }
 
@@ -497,6 +818,25 @@ for (const doc of docs) {
         page: `${SITE}/tools/${doc.id}.html`,
         webmapxCommit: lock.webmapx,
     }, null, 2) + '\n');
+}
+
+// The analysis worked example, when its data has been generated. Optional, so
+// a docs build without a webmapx checkout still produces the rest of the site.
+const analysisInputs = join(ROOT, 'docs', 'data', 'analysis-inputs.json');
+const analysisResults = join(ROOT, 'docs', 'data', 'analysis-results.json');
+if (existsSync(analysisInputs) && existsSync(analysisResults)) {
+    const inputs = JSON.parse(readFileSync(analysisInputs, 'utf8'));
+    const { results, support } = JSON.parse(readFileSync(analysisResults, 'utf8'));
+    const twoLayer = results.filter((r: AnalysisExample) => r.twoInput);
+    const oneLayer = results.filter((r: AnalysisExample) => !r.twoInput);
+    writeFileSync(join(OUT_DIR, 'analysis-operations.html'), renderAnalysisPage(inputs, twoLayer, lock));
+    writeFileSync(join(OUT_DIR, 'analysis-single-layer.html'), renderSingleLayerPage(inputs, oneLayer, lock));
+    if (support?.length) {
+        writeFileSync(join(OUT_DIR, 'analysis-geometry.html'), renderGeometryPage(support, lock));
+    }
+    console.log(`analysis pages: ${twoLayer.length} two-layer, ${oneLayer.length} one-layer, ${support?.length ?? 0} in the geometry matrix`);
+} else {
+    console.log('analysis example: skipped (run `npm run build:analysis-examples` in the webmapx checkout)');
 }
 
 writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(docs, byId, undocumented));
