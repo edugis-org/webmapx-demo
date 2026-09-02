@@ -283,6 +283,11 @@ header p{color:#aac;max-width:42rem}
 .mapwrap .fallback{padding:2rem;font-size:.9rem;color:#555}
 main{padding:0 1.5rem 4rem}
 section{margin-top:2.5rem}
+/* The tools that exist but have no page yet, listed quietly under their own
+   group rather than in one lump at the bottom: a reader looking for a control
+   should find out there is one, in the place they were already looking. */
+.pending{margin-top:.8rem;font-size:.85rem;color:#666}
+.pending code{background:#ececec;padding:.1em .35em;border-radius:3px}
 h2{font-size:1.3rem;letter-spacing:-.01em;margin-bottom:.6rem}
 p+p,p+ul,p+ol,ul+p,ol+p,pre+p{margin-top:.8rem}
 li{margin-left:1.2rem}
@@ -381,24 +386,62 @@ Machine-readable: <a href="./${doc.id}.json">${doc.id}.json</a>.</footer>
     });
 }
 
+/**
+ * Two kinds of thing live in the registry, and the index says so.
+ *
+ * A **tool** answers a question you asked: you open it, it takes over a panel,
+ * you close it again. A **map control** is part of the map's furniture — a
+ * scale bar, a north arrow, a coordinate readout — drawn on the map itself, at
+ * a corner you choose, and it is simply there.
+ *
+ * The registry already knows which is which: `placement: 'standalone'` is a
+ * control, and the distinction is not cosmetic — a control takes a `position`
+ * and no toolbar entry, a tool takes a toolbar entry and no position. Nothing
+ * is retyped here; the grouping is read from that field.
+ *
+ * `placement: 'both'` sits with the tools, because a thing that *can* live in a
+ * toolbar is a tool that also happens to work on its own.
+ */
+function isControl(registry: any): boolean {
+    return registry?.placement === 'standalone';
+}
+
 function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[]): string {
-    const cards = docs.map(doc => {
+    const card = (doc: ToolDoc) => {
         const registry = byId.get(doc.id);
         return `<tr><td><a class="tool-link" href="./${doc.id}.html">${toolIconSvg(registry.icon)}${escapeHtml(registry.label)}</a><br><code>${doc.id}</code></td><td>${inline(doc.tagline)}</td></tr>`;
-    }).join('');
-    const missing = undocumented.length
-        ? `<section><h2>Not documented yet</h2><p>${undocumented.map(t => `<code>${t.id}</code>`).join(', ')}</p></section>`
-        : '';
+    };
+
+    const section = (title: string, blurb: string, rows: ToolDoc[], pending: any[]) => {
+        if (!rows.length && !pending.length) return '';
+        const table = rows.length ? `<table><tbody>${rows.map(card).join('')}</tbody></table>` : '';
+        const rest = pending.length
+            ? `<p class="pending">Not documented yet: ${pending.map(t => `<code>${t.id}</code>`).join(', ')}</p>`
+            : '';
+        return `<section><h2>${escapeHtml(title)}</h2><p>${inline(blurb)}</p>${table}${rest}</section>`;
+    };
+
+    const tools = docs.filter(d => !isControl(byId.get(d.id)));
+    const controls = docs.filter(d => isControl(byId.get(d.id)));
+    const toolsPending = undocumented.filter(t => !isControl(t));
+    const controlsPending = undocumented.filter(isControl);
+
     const body = `<header><div class="inner">
 <div class="crumb"><a href="../index.html">WebMapX</a></div>
-<h1>Tools</h1>
-<p>Every tool WebMapX ships, one page each: a live map, what it does, how to use it, how to put it in your own map, and where its code lives.</p>
+<h1>Tools and Controls</h1>
+<p>Everything WebMapX ships, one page each: a live map, what it does, how to use it, how to put it in your own map, and where its code lives.</p>
 </div></header>
-<main><section><table><tbody>${cards}</tbody></table></section>${missing}
+<main>${section(
+    'Tools',
+    'Opened from a toolbar, and answered in a panel. A tool is something you go to when you have a question — measure this, tell me about that, draw here — and close again when you are done. Each one is a `tools` entry naming its `type`, plus an item in a toolbar.',
+    tools, toolsPending)}${section(
+    'Map controls',
+    'Drawn on the map itself rather than in a panel. A control is furniture: a scale bar, a coordinate readout, a north arrow — it takes a `position` such as `bottom-left` instead of a toolbar entry, and it is simply present rather than opened. The toolbar that holds the tools is positioned on the map the same way, though it is a container rather than a tool in its own right.',
+    controls, controlsPending)}
 <footer>Machine-readable: <a href="./index.json">index.json</a>, <a href="../llms.txt">llms.txt</a>.</footer></main>`;
     return page(body, {
-        title: 'WebMapX tools',
-        description: 'Every WebMapX map tool, with a live demo and documentation for each.',
+        title: 'WebMapX tools and controls',
+        description: 'Every WebMapX map tool and map control, with a live demo and documentation for each.',
         canonical: `${SITE}/tools/`,
         alternate: './index.json',
     });
