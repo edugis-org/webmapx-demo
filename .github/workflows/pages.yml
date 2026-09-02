@@ -87,12 +87,15 @@ jobs:
           cp -R demo/. dist/demo/
           cp -R /tmp/webmapx/dist/data/. dist/demo/data/
           cp -R /tmp/webmapx/dist/data/. dist/testpages/data/
-          # apikeys for the demo page and for the preview host the tool-doc pages
-          # embed (optional — silently ignored if missing, but its absence shows
-          # up as a 404 in every visitor's console)
-          mkdir -p dist/demo/config dist/testpages/config
-          echo '${{ secrets.APIKEYS_JSON }}' > dist/demo/config/apikeys.json
-          cp dist/demo/config/apikeys.json dist/testpages/config/apikeys.json
+          # apikeys, once, beside the configs that use them. The keys file is
+          # found relative to the *config* (`apiKeysFile`, default
+          # ./apikeys.json), so one copy here serves every config in the
+          # directory and every page that shows one. It used to be written once
+          # per page location — demo/config and testpages/config — because the
+          # lookup was relative to the page instead.
+          # Optional: silently ignored if missing, but its absence shows up as a
+          # 404 in every visitor's console.
+          echo '${{ secrets.APIKEYS_JSON }}' > dist/config/apikeys.json
 
       - uses: actions/upload-pages-artifact@v4
         with:
