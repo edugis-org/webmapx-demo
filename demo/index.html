@@ -6,15 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebMapX Demo</title>
 
+  <!-- Exact versions, not major-version ranges.
+       These are the versions webmapx is built and tested against, and the
+       demo has to run the same ones: the bundle here is compiled against a
+       particular OpenLayers, and the CDN supplies it at runtime.
+
+       A range is not a smaller version of that promise, it is the absence of
+       one. `ol@10` floated from 10.7 to 10.10, and at 10.10 esm.sh changed how
+       it builds the package: `ol/Map` stopped importing `./View.mjs` and
+       inlined a copy of it instead, so `ol/Map` and `ol/View` no longer shared
+       a View class. OpenLayers' own `setView` does
+       `view instanceof View ? … : view.then(…)`, so it took the map's view for
+       a promise and threw `view.then is not a function`. The choropleth demo —
+       the only OpenLayers one — came up as an empty white box, with nothing
+       committed here to explain it.
+
+       Bump these deliberately, with the versions in webmapx's package.json. -->
   <script type="importmap">
   {
     "imports": {
-      "maplibre-gl": "https://esm.sh/maplibre-gl@5",
-      "ol": "https://esm.sh/ol@10",
-      "ol/": "https://esm.sh/ol@10/",
-      "ol-mapbox-style": "https://esm.sh/ol-mapbox-style@13?external=ol",
+      "maplibre-gl": "https://esm.sh/maplibre-gl@5.24.0",
+      "ol": "https://esm.sh/ol@10.7.0",
+      "ol/": "https://esm.sh/ol@10.7.0/",
+      "ol-mapbox-style": "https://esm.sh/ol-mapbox-style@13.2.0?external=ol",
       "ol/ol.css": "data:text/javascript,",
-      "leaflet": "https://esm.sh/leaflet@1"
+      "leaflet": "https://esm.sh/leaflet@1.9.4"
     }
   }
   </script>
@@ -43,7 +59,7 @@
        setup resolves to a stylesheet the browser refuses to run as a module.
        The importmap sends that specifier to an empty module and the real
        stylesheet is linked here instead. -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10/ol.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10.7.0/ol.css">
   <link rel="stylesheet" href="../dist-lib/webmapx.css">
 
   <style>
