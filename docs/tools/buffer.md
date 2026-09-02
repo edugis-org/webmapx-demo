@@ -1,0 +1,53 @@
+---
+config: config/docs/tools/buffer.json
+tagline: A zone of a given distance around whatever is on the map.
+status: stable
+audience: [interactive, embedder, developer]
+source:
+  - src/components/webmapx-buffer-tool.ts
+tests:
+  - tests/geoprocessing.test.ts
+related: [geoprocessing, measure, draw]
+---
+
+## what
+
+A buffer is the answer to "within how far?" — 500 m of a station, 50 m of a
+watercourse, a kilometre of a proposed route. The tool takes a layer, takes a
+distance, and produces the zone as a new polygon layer.
+
+The distance is on the **ground**, in metres, not in degrees or in screen
+pixels. A degree of longitude is 111 km at the equator and 55 km at 60°N, so a
+buffer measured in degrees would be a different size in every part of the map —
+which is the mistake this quietly avoids.
+
+The result is an ordinary layer: it appears in the legend, it can be restyled,
+it can be exported, and it can be the input to the next thing you do.
+
+## use
+
+1. Open the tool, choose the layer to buffer, and give a distance in metres.
+2. Calculate. The zone appears as a new layer on the map.
+3. Run it again to replace the previous result rather than piling up copies.
+
+**What goes in depends on how the layer is stored**, and the panel says so. A
+GeoJSON layer contributes every feature it has. A vector-tile layer can only
+contribute what has been drawn — the current view, at the current zoom, after
+its filters — so a buffer taken while zoomed in is a buffer of what you could
+see. That is deliberate: it is what makes layer filtering and visibility apply.
+It also means zooming out and running it again can give a different answer.
+
+## embed
+
+Add `buffer` to a toolbar. It works on whatever layers the map has.
+
+The heavy lifting is GDAL compiled to WebAssembly, loaded on first use. A
+visitor who never opens the tool never downloads it.
+
+## extend
+
+The computation runs in a shared spatial worker, the same one the analysis tool
+uses, so opening either warms the other. If you need more than a distance — a
+clip, an overlay, a dissolve — that is the analysis tool, where buffer is also
+available as one operation among fourteen. This tool exists because a buffer is
+asked for by name far more often than it is reached for through a list.
