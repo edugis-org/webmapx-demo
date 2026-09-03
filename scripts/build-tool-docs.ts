@@ -841,6 +841,10 @@ function calculatedDemoConfig(doc: any): unknown {
     const deepTime = doc.category === 'deep-time';
     return {
         version: 0,
+        // These demos need no key — OSM tiles and arithmetic — but the loader
+        // looks for the file beside the config unless told otherwise, and a 404
+        // on every demo is the kind of noise that hides a real one.
+        apiKeysFile: '../../config/apikeys.json',
         project: {
             id: `docs-calculated-${doc.id}`,
             title: doc.label,
@@ -945,7 +949,10 @@ function show(id) {
     document.getElementById('demo-title').textContent = doc.label;
     document.getElementById('demo-summary').textContent = doc.summary;
     document.getElementById('demo-url').textContent = doc.example;
-    frame.src = '../testpages/preview.html?storageKey=webmapx-docs-no-override&config=./calculated/' + encodeURIComponent(id) + '.json';
+    // Relative to preview.html, which is what resolves it — not to this page.
+    // '/tools/calculated/x.json' spelled as './calculated/x.json' resolves
+    // against /testpages/ and 404s, which is how every demo came up empty.
+    frame.src = '../testpages/preview.html?storageKey=webmapx-docs-no-override&config=../tools/calculated/' + encodeURIComponent(id) + '.json';
     const url = new URL(location.href);
     url.searchParams.set('layer', id);
     history.replaceState(null, '', url);
