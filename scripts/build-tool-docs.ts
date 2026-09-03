@@ -794,7 +794,69 @@ function isControl(registry: any): boolean {
     return registry?.placement === 'standalone';
 }
 
-function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[]): string {
+
+/**
+ * The computed-layer reference.
+ *
+ * Read from the built library rather than written here, exactly as the tool
+ * registry is: these layers are code, and a documentation page that lists them
+ * from memory is a page that will one day describe a generator that no longer
+ * exists. webmapx's own test keeps the catalog and the generators in step; this
+ * only renders what it is given.
+ */
+function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx: string }): string {
+    const entry = (doc: any) => {
+        const params = doc.params.length
+            ? `<table class="attrs"><thead><tr><th>Parameter</th><th></th></tr></thead><tbody>${doc.params.map((p: any) =>
+                `<tr><td><code>${escapeHtml(p.name)}</code></td><td>${inline(p.summary)}${
+                    p.fallback ? ` <span class="muted">Left out: ${inline(p.fallback)}.</span>` : ''
+                }</td></tr>`).join('')}</tbody></table>`
+            : '<p class="fields">No parameters.</p>';
+        return `<section id="${escapeHtml(doc.id)}">
+  <h3>${escapeHtml(doc.label)} <code>${escapeHtml(doc.id)}</code></h3>
+  <p>${inline(doc.summary)}</p>
+  <p class="fields">${escapeHtml(doc.geometry)}. ${doc.clock === 'always'
+      ? 'Redrawn whenever the map’s clock moves.'
+      : 'The same picture whatever the moment.'}</p>
+  ${params}
+  <pre>${escapeHtml(doc.example)}</pre>
+</section>`;
+    };
+
+    const groups = categories
+        .filter((category: any) => docs.some((doc: any) => doc.category === category.id))
+        .map((category: any) => `<section>
+  <h2>${escapeHtml(category.label)}</h2>
+  <p>${inline(category.blurb)}</p>
+  ${docs.filter((doc: any) => doc.category === category.id).map(entry).join('')}
+</section>`).join('');
+
+    const body = `<header><div class="inner">
+<div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a></div>
+<h1>Calculated layers</h1>
+<p>Layers whose data is worked out in the browser instead of fetched. A source url of <code>internalfunc://day-night</code> means “ask the code for it”: some data is a function of the moment rather than a document on a server, and fetching it would make it stale on arrival, unavailable offline, and a request for something a browser computes in a millisecond. The protocol is deliberately not <code>http</code>, so a reader of a config can see at a glance that nothing is downloaded.</p>
+</div></header>
+<main>
+<section>
+  <h2>Using one</h2>
+  <p>Name it as a source’s <code>data</code>, and style the layer as you would any GeoJSON. Parameters ride along as a query string.</p>
+  <pre>"sources": {
+  "daylight": { "type": "geojson", "data": "internalfunc://day-night?refresh=auto" }
+}</pre>
+  <p><code>refresh=auto</code> asks the layer to keep itself current as the wall clock runs — worth it for the ones that move visibly, wasted on the ones that are the same picture all year. Every computed layer is recomputed when the map’s clock <em>jumps</em>, refreshing or not. A url that pins its own moment with <code>?at=</code> stops following the clock at all, which is how a story shows one instant while the rest of the map moves.</p>
+  <p>${docs.length} layers, listed as the build that made this page has them.</p>
+</section>
+${groups}
+<footer>Generated from webmapx <code>${lock.webmapx.slice(0, 9)}</code>; the list comes from the build, not from this page.</footer>
+</main>`;
+    return page(body, {
+        title: 'Calculated layers',
+        description: 'Every internalfunc:// layer WebMapX computes in the browser — sun, moon, tides, graticules, projection distortion, deep time — with its parameters.',
+        canonical: `${SITE}/tools/calculated-layers.html`,
+    });
+}
+
+function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[], calculated: any[]): string {
     const card = (doc: ToolDoc) => {
         const registry = byId.get(doc.id);
         return `<tr><td><a class="tool-link" href="./${doc.id}.html">${toolIconSvg(registry.icon)}${escapeHtml(registry.label)}</a><br><code>${doc.id}</code></td><td>${inline(doc.tagline)}</td></tr>`;
@@ -816,7 +878,7 @@ function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[
 
     const body = `<header><div class="inner">
 <div class="crumb"><a href="../index.html">WebMapX</a></div>
-<h1>Tools and Controls</h1>
+<h1>Tools, controls and calculated layers</h1>
 <p>Everything WebMapX ships, one page each: a live map, what it does, how to use it, how to put it in your own map, and where its code lives.</p>
 </div></header>
 <main>${section(
@@ -826,10 +888,13 @@ function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[
     'Map controls',
     'Drawn on the map itself rather than in a panel. A control is furniture: a scale bar, a coordinate readout, a north arrow — it takes a `position` such as `bottom-left` instead of a toolbar entry, and it is simply present rather than opened. The toolbar that holds the tools is positioned on the map the same way, though it is a container rather than a tool in its own right.',
     controls, controlsPending)}
+${calculated.length ? `<section><h2>Calculated layers</h2>
+<p>Data worked out in the browser rather than fetched — where night falls, where the moon stands, what a projection does to a circle, where the coastlines were 200 million years ago. A source names one with an <code>internalfunc://</code> url instead of an address, which is also how a reader of a config can tell at a glance that nothing is downloaded.</p>
+<p><a class="tool-link" href="./calculated-layers.html">All ${calculated.length} calculated layers →</a></p></section>` : ''}
 <footer>Machine-readable: <a href="./index.json">index.json</a>, <a href="../llms.txt">llms.txt</a>.</footer></main>`;
     return page(body, {
-        title: 'WebMapX tools and controls',
-        description: 'Every WebMapX map tool and map control, with a live demo and documentation for each.',
+        title: 'WebMapX tools, controls and calculated layers',
+        description: 'Every WebMapX map tool, map control and calculated layer, with a live demo and documentation for each.',
         canonical: `${SITE}/tools/`,
         alternate: './index.json',
     });
@@ -847,7 +912,7 @@ if (!existsSync(distLib)) {
     console.error(`no built webmapx-config.js at ${distLib} — set WEBMAPX_DIST_LIB or copy dist-lib/ here`);
     process.exit(1);
 }
-const { TOOL_REGISTRY } = await import(pathToFileURL(distLib).href) as any;
+const { TOOL_REGISTRY, INTERNAL_SOURCE_DOCS, INTERNAL_SOURCE_CATEGORIES } = await import(pathToFileURL(distLib).href) as any;
 const byId = new Map<string, any>(TOOL_REGISTRY.map((t: any) => [t.id, t]));
 
 const lock = readLock();
@@ -906,7 +971,17 @@ if (existsSync(analysisInputs) && existsSync(analysisResults)) {
     console.log('analysis example: skipped (run `npm run build:analysis-examples` in the webmapx checkout)');
 }
 
-writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(docs, byId, undocumented));
+// The catalog arrived in webmapx after this page was written, and the site is
+// built from whichever commit `site.lock` names — so a build against an older
+// one leaves the page out rather than failing, and the index says nothing about
+// layers that version cannot draw.
+const calculated: any[] = Array.isArray(INTERNAL_SOURCE_DOCS) ? INTERNAL_SOURCE_DOCS : [];
+if (calculated.length) {
+    writeFileSync(join(OUT_DIR, 'calculated-layers.html'), renderCalculatedLayers(calculated, INTERNAL_SOURCE_CATEGORIES ?? [], lock));
+} else {
+    console.warn('no INTERNAL_SOURCE_DOCS in this webmapx build — skipping the calculated-layers page');
+}
+writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(docs, byId, undocumented, calculated));
 writeFileSync(join(OUT_DIR, 'index.json'), JSON.stringify({
     tools: docs.map(d => ({ id: d.id, label: byId.get(d.id).label, tagline: d.tagline, page: `${SITE}/tools/${d.id}.html`, json: `${SITE}/tools/${d.id}.json` })),
     undocumented: undocumented.map((t: any) => t.id),
