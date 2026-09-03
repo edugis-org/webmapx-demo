@@ -822,7 +822,7 @@ function configSearchRoots(): string[] {
     return roots;
 }
 
-interface StyledExample { file: string; layer: any; sources: Record<string, any>; }
+interface StyledExample { file: string; layers: any[]; sources: Record<string, any>; }
 
 function harvestStyledLayers(): Map<string, StyledExample> {
     const found = new Map<string, StyledExample>();
@@ -839,6 +839,16 @@ function harvestStyledLayers(): Map<string, StyledExample> {
                 : Object.entries(data.sources ?? {}).map(([id, source]: any) => ({ ...source, id }));
             for (const source of declared) if (source?.id) topSources[source.id] = source;
 
+            // One generator can back more than one top-level layer in the same
+            // config — deeptime.json draws `paleo-plates` as a fill layer for
+            // the deforming zones *and* a line layer for the boundaries, both
+            // pointing at the same source. Keeping only the first found threw
+            // the second away outright: the demo showed the deforming zones
+            // and never the boundaries, reported as "a line style missing"
+            // when the real cause was that the line layer was never harvested.
+            // So every layer in this file naming a generator is collected
+            // together before deciding whether this file wins for that id.
+            const byGenerator = new Map<string, { layers: any[]; sources: Record<string, any> }>();
             const layers = Array.isArray(data.layers) ? data.layers : Object.values(data.layers ?? {});
             for (const layer of layers as any[]) {
                 if (!layer || typeof layer !== 'object') continue;
@@ -850,9 +860,17 @@ function harvestStyledLayers(): Map<string, StyledExample> {
                 const sources = { ...named, ...(layer.sources ?? {}) };
                 const match = /internalfunc:\/\/([a-z-]+)/.exec(JSON.stringify(sources));
                 if (!match) continue;
-                // First config wins: world.json is the fullest, and a second
-                // opinion on the same layer is not worth a second map.
-                if (!found.has(match[1])) found.set(match[1], { file, layer, sources });
+                const entry = byGenerator.get(match[1]) ?? { layers: [], sources: {} };
+                entry.layers.push(layer);
+                Object.assign(entry.sources, sources);
+                byGenerator.set(match[1], entry);
+            }
+            // First config wins, still — world.json is the fullest, and a
+            // second opinion on the same layer is not worth a second map —
+            // but "first" now means the first *file*, applied whole, not the
+            // first layer inside it.
+            for (const [id, entry] of byGenerator) {
+                if (!found.has(id)) found.set(id, { file, layers: entry.layers, sources: entry.sources });
             }
         }
     }
@@ -876,19 +894,29 @@ function styledDemoConfig(doc: any, example: StyledExample): unknown {
     const sources = Object.fromEntries(Object.entries(example.sources).map(([id, source]: any) => [
         id, { ...source, ...(typeof source.data === 'string' ? { data: retarget(source.data) } : {}) },
     ]));
-    const layer = {
-        ...example.layer,
-        // Our configs are Dutch in places; this page is not, and the layer
-        // should carry the name the reader arrived looking for.
-        title: `${doc.label} — styled as in ${example.file}`,
-        ...(example.layer.sources ? { sources } : {}),
-    };
-    base.layerData.layers = [base.layerData.layers[0], layer];
+    // Every layer the file drew from this generator, not only the first —
+    // deeptime.json's plate boundaries and deforming zones are two layers
+    // over one source, and a reader asking "how is this styled" wants both,
+    // exactly as the real config shows them together.
+    const layers = example.layers.map((layer: any, index: number) => ({
+        ...layer,
+        // Our configs are Dutch in places; this page is not. Only the first
+        // layer carries the reader's own label — the rest keep whatever name
+        // the config gave them, since deeptime.json's own titles are already
+        // in English and distinguishing ("Plate boundaries" vs "Deforming
+        // zones") in a way a shared label would erase.
+        ...(index === 0 ? { title: `${doc.label} — styled as in ${example.file}` } : {}),
+        ...(layer.sources ? { sources } : {}),
+    }));
+    base.layerData.layers = [base.layerData.layers[0], ...layers];
     base.layerData.sources = [
         base.layerData.sources[0],
         ...Object.entries(sources).map(([id, source]: any) => ({ ...source, id })),
     ];
-    base.state.activeLayers = [{ ref: 'osm', visible: true }, { ref: layer.id, visible: true }];
+    base.state.activeLayers = [
+        { ref: 'osm', visible: true },
+        ...layers.map((layer: any) => ({ ref: layer.id, visible: true })),
+    ];
     base.project.id = `docs-calculated-${doc.id}-styled`;
     return base;
 }
@@ -1060,7 +1088,7 @@ function renderCalculatedDemoPage(docs: any[], styled: Map<string, StyledExample
             example: doc.example,
             styledIn: example?.file ?? null,
             styledUrl: example ? styledSourceUrl(example) : null,
-            paint: example ? JSON.stringify(example.layer, null, 2) : null,
+            paint: example ? JSON.stringify(example.layers.length === 1 ? example.layers[0] : example.layers, null, 2) : null,
         }];
     })));
 
