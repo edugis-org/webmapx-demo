@@ -1037,11 +1037,11 @@ function renderCalculatedDemoPage(docs: any[], styled: Map<string, StyledExample
     })));
 
     const body = `<style>
-.two-up{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1rem}
-.two-up figure{margin:0;flex:1 1 380px;min-width:320px}
-.two-up .mapwrap{margin:0}
-.two-up figcaption{font-size:.85rem;color:#5b6b78;margin-top:.4rem}
-.two-up figcaption strong{color:#1a1a1a}
+figure{margin:0}
+figure.demo-map{margin-top:1rem}
+figure.demo-map .mapwrap{margin:0}
+figure.demo-map figcaption{font-size:.85rem;color:#5b6b78;margin-top:.4rem}
+figure.demo-map figcaption strong{color:#1a1a1a}
 details.paint{margin-top:1rem}
 details.paint summary{cursor:pointer;font-size:.9rem;color:#0070f3}
 </style>
@@ -1053,23 +1053,24 @@ details.paint summary{cursor:pointer;font-size:.9rem;color:#0070f3}
 <main>
 <section>
   <p><label for="layer-picker">Layer</label> <select id="layer-picker">${options}</select></p>
-  <div class="two-up">
-    <figure>
-      <div class="mapwrap"><iframe id="plain-frame" title="The layer with no styling"></iframe></div>
-      <figcaption><strong>The data as it arrives.</strong> One fill, one line, one circle — enough to see the shapes and click them, and nothing more.</figcaption>
-    </figure>
-    <figure id="styled-figure" hidden>
-      <div class="mapwrap"><iframe id="styled-frame" title="The layer styled as a suggestion"></iframe></div>
-      <figcaption><strong>One way to style it</strong>, taken from <code id="styled-source"></code>. A suggestion, not a default.</figcaption>
-    </figure>
-  </div>
-  <p class="fields"><strong>WebMapX does not style these layers.</strong> A generator returns GeoJSON carrying the attributes listed in the <a href="./calculated-layers.html">reference</a>; every colour, width and rule after that is written by whoever writes the config. The map on the right is what one of our own configs chose to do with it — worth copying, and worth disagreeing with.</p>
-  <details class="paint" id="paint-details" hidden>
+  <figure class="demo-map">
+    <div class="mapwrap"><iframe id="plain-frame" title="The layer with no styling"></iframe></div>
+    <figcaption><strong>The data as it arrives.</strong> One fill, one line, one circle — enough to see the shapes and click them, and nothing more.</figcaption>
+  </figure>
+  <p class="fields">Source url: <code id="demo-url"></code></p>
+  <p class="fields">Click a shape with the <strong>info</strong> tool to read what was computed for it — the hours of daylight on a day-length line, the EPSG code of a UTM zone, the distance along a great circle. That is where these layers keep their answer; the shape only says where it applies.</p>
+</section>
+<section id="styling-section" hidden>
+  <h2>Styling</h2>
+  <p class="fields"><strong>WebMapX does not style these layers.</strong> A generator returns GeoJSON carrying the attributes listed in the <a href="./calculated-layers.html">reference</a>; every colour, width and rule after that is written by whoever writes the config. The map below is what one of our own configs chose to do with it — worth copying, and worth disagreeing with.</p>
+  <figure class="demo-map">
+    <div class="mapwrap"><iframe id="styled-frame" title="The layer styled as a suggestion"></iframe></div>
+    <figcaption><strong>One way to style it</strong>, taken from <code id="styled-source"></code>. A suggestion, not a default.</figcaption>
+  </figure>
+  <details class="paint" id="paint-details">
     <summary>The layer definition behind that styling</summary>
     <pre><code id="paint-json"></code></pre>
   </details>
-  <p class="fields">Source url: <code id="demo-url"></code></p>
-  <p class="fields">Click a shape with the <strong>info</strong> tool to read what was computed for it — the hours of daylight on a day-length line, the EPSG code of a UTM zone, the distance along a great circle. That is where these layers keep their answer; the shape only says where it applies.</p>
 </section>
 <script>
 const META = ${meta};
@@ -1087,17 +1088,14 @@ function show(id) {
     document.getElementById('demo-url').textContent = doc.example;
     document.getElementById('plain-frame').src = frameFor(encodeURIComponent(id));
 
-    const figure = document.getElementById('styled-figure');
-    const details = document.getElementById('paint-details');
+    const section = document.getElementById('styling-section');
     if (doc.styledIn) {
         document.getElementById('styled-source').textContent = doc.styledIn;
         document.getElementById('styled-frame').src = frameFor(encodeURIComponent(id) + '-styled');
         document.getElementById('paint-json').textContent = doc.paint;
-        figure.hidden = false;
-        details.hidden = false;
+        section.hidden = false;
     } else {
-        figure.hidden = true;
-        details.hidden = true;
+        section.hidden = true;
         document.getElementById('styled-frame').removeAttribute('src');
     }
     const url = new URL(location.href);
