@@ -975,7 +975,20 @@ function calculatedDemoConfig(doc: any): unknown {
                         ...(kinds.includes('line') || kinds.includes('polygon') ? [{ id: 'calculated-line', type: 'line', source: 'calculated',
                           paint: { 'line-color': '#1b4a63', 'line-width': 1.5 },
                           metadata: { label: 'Lines' } }] : []),
+                        // A circle layer with no filter draws at every vertex of
+                        // *any* geometry sharing this source, not only at real
+                        // Point features — confirmed against a bare MapLibre
+                        // instance: a circle layer over LineString-only data
+                        // drew a dot at each coordinate with no filter needed to
+                        // trigger it. Only layers that mix kinds in one source
+                        // (equilibrium-tide: lines plus two bulge points) ever
+                        // showed it; every single-kind layer was accidentally
+                        // safe. The rest of webmapx already filters every
+                        // general-purpose circle layer this way (dropped file
+                        // import, WMS/MVT discovery, search results) — this was
+                        // the one place that didn't.
                         ...(kinds.includes('point') ? [{ id: 'calculated-circle', type: 'circle', source: 'calculated',
+                          filter: ['match', ['geometry-type'], ['Point', 'MultiPoint'], true, false],
                           paint: { 'circle-color': '#d9633c', 'circle-radius': 5, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 },
                           metadata: { label: 'Points' } }] : []),
                     ],
