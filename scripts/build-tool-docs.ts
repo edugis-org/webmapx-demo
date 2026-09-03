@@ -1033,6 +1033,10 @@ function calculatedDemoConfig(doc: any): unknown {
                 ],
             },
             navigation: { type: 'navigation', enabled: true, position: 'top-right' },
+            // The globe projection puts the map behind the time tool's panel
+            // at some widths, and fullscreen is the way out of that — placed
+            // right under navigation so it reads as part of the same cluster.
+            fullscreen: { type: 'fullscreen', enabled: true, position: 'top-right' },
             attribution: { type: 'attribution', enabled: true, position: 'edge-bottom-right' },
         },
     };
@@ -1078,7 +1082,7 @@ details.paint summary{cursor:pointer;font-size:.9rem;color:#0070f3}
 <section>
   <p><label for="layer-picker">Layer</label> <select id="layer-picker">${options}</select></p>
   <figure class="demo-map">
-    <div class="mapwrap"><iframe id="plain-frame" title="The layer with no styling"></iframe></div>
+    <div class="mapwrap"><iframe id="plain-frame" allow="fullscreen" title="The layer with no styling"></iframe></div>
     <figcaption><strong>The data as it arrives.</strong> One fill, one line, one circle — enough to see the shapes and click them, and nothing more.</figcaption>
   </figure>
   <p class="fields">Source url: <code id="demo-url"></code></p>
@@ -1088,7 +1092,7 @@ details.paint summary{cursor:pointer;font-size:.9rem;color:#0070f3}
   <h2>Styling</h2>
   <p class="fields"><strong>WebMapX does not style these layers.</strong> A generator returns GeoJSON carrying the attributes listed in the <a href="./calculated-layers.html">reference</a>; every colour, width and rule after that is written by whoever writes the config. The map below is what one of our own configs chose to do with it — worth copying, and worth disagreeing with.</p>
   <figure class="demo-map">
-    <div class="mapwrap"><iframe id="styled-frame" title="The layer styled as a suggestion"></iframe></div>
+    <div class="mapwrap"><iframe id="styled-frame" allow="fullscreen" title="The layer styled as a suggestion"></iframe></div>
     <figcaption><strong>One way to style it</strong>, taken from <code id="styled-source"></code>. A suggestion, not a default.</figcaption>
   </figure>
   <p class="fields" id="styled-url-line" hidden>That config's own source url: <code id="styled-url"></code><span id="styled-url-note"></span></p>
