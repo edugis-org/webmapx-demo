@@ -1093,6 +1093,58 @@ function frameFor(name) {
     // Relative to preview.html, which is what resolves it — not to this page.
     return '../testpages/preview.html?storageKey=webmapx-docs-no-override&config=../tools/calculated/' + name + '.json';
 }
+
+/**
+ * Frames every demo on wherever its data actually is, rather than a fixed
+ * centre. Several of these layers move daily — the sublunar point, the
+ * subsolar point, an equinox-dependent band — and a fixed [10, 20] zoom 1
+ * regularly put the one feature drawn clean off the edge of the map, which
+ * looked like the layer had failed to render at all.
+ */
+function fitFrameToData(frame) {
+    const win = frame.contentWindow;
+    if (!win) return;
+    let tries = 0;
+    const attempt = () => {
+        tries++;
+        try {
+            const map = win.document.querySelector('webmapx-map');
+            const adapter = map && map.adapter;
+            const style = adapter && (adapter.core?.mapInstance ?? adapter.map)?.getStyle?.();
+            if (!adapter || !style) { if (tries < 40) setTimeout(attempt, 250); return; }
+            let west = Infinity, south = Infinity, east = -Infinity, north = -Infinity, seen = false;
+            const visit = (coords) => {
+                if (typeof coords[0] === 'number') {
+                    const [lon, lat] = coords;
+                    west = Math.min(west, lon); east = Math.max(east, lon);
+                    south = Math.min(south, lat); north = Math.max(north, lat);
+                    seen = true;
+                    return;
+                }
+                for (const c of coords) visit(c);
+            };
+            for (const sid of Object.keys(style.sources)) {
+                if (!sid.includes('calculated')) continue;
+                const data = adapter.getSourceData && adapter.getSourceData(sid);
+                if (typeof data !== 'object' || !data) continue;
+                for (const f of data.features || []) if (f.geometry) visit(f.geometry.coordinates);
+            }
+            if (!seen) { if (tries < 40) setTimeout(attempt, 250); return; }
+            // A single point, or a tight cluster, needs padding — fitBounds on a
+            // zero-size box zooms to street level, hiding the very thing it is
+            // meant to show. A pad floor keeps a point-layer's context visible.
+            const padLon = Math.max((east - west) * 0.2, 15);
+            const padLat = Math.max((north - south) * 0.2, 10);
+            adapter.fitBounds([
+                Math.max(west - padLon, -180), Math.max(south - padLat, -85),
+                Math.min(east + padLon, 180), Math.min(north + padLat, 85),
+            ]);
+        } catch (e) { /* frame not ready yet, or a cross-origin hiccup — try again */ if (tries < 40) setTimeout(attempt, 250); }
+    };
+    frame.addEventListener('load', () => setTimeout(attempt, 500));
+}
+fitFrameToData(document.getElementById('plain-frame'));
+fitFrameToData(document.getElementById('styled-frame'));
 function show(id) {
     const doc = META[id];
     document.getElementById('demo-title').textContent = doc.label;
