@@ -804,6 +804,163 @@ function isControl(registry: any): boolean {
  * exists. webmapx's own test keeps the catalog and the generators in step; this
  * only renders what it is given.
  */
+
+/** Where the plate models sit, seen from a config two levels under the site root. */
+const PALEO = '../../config/data/paleo';
+
+/** The basemap every calculated-layer demo sits on, spelled as the tool demos spell it. */
+const DEMO_BASEMAP = {
+    id: 'osm-source',
+    type: 'raster',
+    service: 'xyz',
+    url: ['https://tiles.edugis.nl/mapproxy/osm/tiles/osm_EPSG900913/{z}/{x}/{y}.png?origin=nw'],
+    tileSize: 256,
+    maxzoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>',
+};
+
+/**
+ * A one-layer map for one calculated layer.
+ *
+ * The styling is deliberately generic — a fill, a line and a circle over the
+ * same source — because these generators return whatever geometry their subject
+ * has, and a demo that styled each one by hand would be 21 sets of paint to keep
+ * in step with the code. It shows what the layer *is*; a real config styles it
+ * for what it is being used to say.
+ *
+ * The time slider and the projection picker are here because they are what makes
+ * these layers legible: most are a function of the moment, and the ones that are
+ * not (a graticule, Tissot's circles, the UTM zones) exist to show what a
+ * projection does — which needs a projection you can change. The legend carries
+ * each layer's own description.
+ */
+function calculatedDemoConfig(doc: any): unknown {
+    // `data=` inside an internalfunc url resolves against the config's own
+    // location, and these configs sit two levels below the served config root.
+    const url = doc.example.replace(/data=data\/paleo/, `data=${PALEO}`);
+    const deepTime = doc.category === 'deep-time';
+    return {
+        version: 0,
+        project: {
+            id: `docs-calculated-${doc.id}`,
+            title: doc.label,
+            description: `Documentation demo for the calculated layer ${doc.id}.`,
+            language: 'en',
+        },
+        map: { label: doc.label, type: 'maplibre', center: [10, 20], zoom: 1 },
+        layerData: {
+            sources: [
+                DEMO_BASEMAP,
+                { id: 'calculated-source', type: 'geojson', data: url, attribution: 'Computed in the browser' },
+            ],
+            layers: [
+                {
+                    id: 'osm', type: 'raster', title: 'OpenStreetMap', source: 'osm-source',
+                    metadata: { reference: true, swatch: '#f2efe9' },
+                },
+                {
+                    id: 'calculated', type: 'style', title: `${doc.label} (computed)`,
+                    sources: { calculated: { type: 'geojson', data: url, attribution: 'Computed in the browser' } },
+                    layers: [
+                        { id: 'calculated-fill', type: 'fill', source: 'calculated',
+                          paint: { 'fill-color': 'rgba(43,108,143,0.35)', 'fill-outline-color': '#1b4a63' },
+                          metadata: { label: 'Areas' } },
+                        { id: 'calculated-line', type: 'line', source: 'calculated',
+                          paint: { 'line-color': '#1b4a63', 'line-width': 1.5 },
+                          metadata: { label: 'Lines' } },
+                        { id: 'calculated-circle', type: 'circle', source: 'calculated',
+                          paint: { 'circle-color': '#d9633c', 'circle-radius': 5, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 },
+                          metadata: { label: 'Points' } },
+                    ],
+                    metadata: { abstract: doc.summary, title: `${doc.label} (computed)` },
+                },
+            ],
+        },
+        state: { activeLayers: [{ ref: 'osm', visible: true }, { ref: 'calculated', visible: true }] },
+        tools: {
+            // `{ma}` in a deep-time url is filled in by the deep-time tool, which
+            // owns that clock — the time slider runs in dates and cannot answer
+            // in millions of years. Without it the source waits on a value that
+            // never arrives and the layer stays empty, which is exactly how these
+            // two demos first came out blank.
+            ...(deepTime ? {
+                deeptime: {
+                    type: 'deeptime', enabled: true, data: `${PALEO}/merdith2021`, to: 1000,
+                    models: [
+                        { id: 'merdith2021', label: 'Merdith 2021 — 1000 Ma', data: `${PALEO}/merdith2021`, to: 1000 },
+                        { id: 'muller2019', label: 'Müller 2019 — 250 Ma', data: `${PALEO}/muller2019`, to: 250, plates: `${PALEO}/muller2019/plates` },
+                    ],
+                },
+            } : { timeSlider: { type: 'timeSlider', enabled: true } }),
+            projection: { type: 'projection', enabled: true },
+            layerOverview: { type: 'layerOverview', enabled: true },
+            mainToolbar: {
+                type: 'toolbar', enabled: true, position: 'top-left', orientation: 'vertical',
+                items: [
+                    deepTime
+                        ? { type: 'deeptime', id: 'deeptime', enabled: true }
+                        : { type: 'timeSlider', id: 'timeSlider', enabled: true },
+                    { type: 'projection', id: 'projection', enabled: true },
+                    { type: 'layerOverview', id: 'layerOverview', enabled: true },
+                ],
+            },
+            navigation: { type: 'navigation', enabled: true, position: 'top-right' },
+            attribution: { type: 'attribution', enabled: true, position: 'edge-bottom-right' },
+        },
+    };
+}
+
+/**
+ * One demo page for all of them, picked with `?layer=`.
+ *
+ * Twenty-one pages would each be the same map with one url changed, and every
+ * one of them another page to keep in step. The picker doubles as the way to
+ * compare two layers: choosing another reloads only the frame.
+ */
+function renderCalculatedDemoPage(docs: any[]): string {
+    const options = docs.map((doc: any) =>
+        `<option value="${escapeHtml(doc.id)}">${escapeHtml(doc.label)} — ${escapeHtml(doc.id)}</option>`).join('');
+    const meta = JSON.stringify(Object.fromEntries(docs.map((doc: any) => [doc.id, { label: doc.label, summary: doc.summary, example: doc.example }])));
+
+    const body = `<header><div class="inner">
+<div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a> / <a href="./calculated-layers.html">Calculated layers</a></div>
+<h1 id="demo-title">Calculated layer</h1>
+<p id="demo-summary"></p>
+</div></header>
+<main>
+<section>
+  <p><label for="layer-picker">Layer</label> <select id="layer-picker">${options}</select></p>
+  <div class="mapwrap"><iframe id="demo-frame" title="Calculated layer demo"></iframe></div>
+  <p class="fields">Source url: <code id="demo-url"></code></p>
+  <p class="fields">The paint is the demo's, not the layer's: one fill, one line and one circle over the same source, so whatever geometry the generator returns is visible. Open the time slider to move the moment, and the projection picker to switch between Mercator and the globe — most of these layers are a function of the moment, and the ones that are not exist to show what a projection does.</p>
+</section>
+<script>
+const META = ${meta};
+const picker = document.getElementById('layer-picker');
+const frame = document.getElementById('demo-frame');
+const initial = new URLSearchParams(location.search).get('layer');
+if (initial && META[initial]) picker.value = initial;
+function show(id) {
+    const doc = META[id];
+    document.getElementById('demo-title').textContent = doc.label;
+    document.getElementById('demo-summary').textContent = doc.summary;
+    document.getElementById('demo-url').textContent = doc.example;
+    frame.src = '../testpages/preview.html?storageKey=webmapx-docs-no-override&config=./calculated/' + encodeURIComponent(id) + '.json';
+    const url = new URL(location.href);
+    url.searchParams.set('layer', id);
+    history.replaceState(null, '', url);
+}
+picker.addEventListener('change', () => show(picker.value));
+show(picker.value);
+</script>
+</main>`;
+    return page(body, {
+        title: 'Calculated layer demo',
+        description: 'A live map for each layer WebMapX computes in the browser, with the time slider and the projection picker.',
+        canonical: `${SITE}/tools/calculated-layer.html`,
+    });
+}
+
 function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx: string }): string {
     const entry = (doc: any) => {
         const params = doc.params.length
@@ -820,6 +977,7 @@ function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx:
       : 'The same picture whatever the moment.'}</p>
   ${params}
   <pre>${escapeHtml(doc.example)}</pre>
+  <p class="fields"><a href="./calculated-layer.html?layer=${encodeURIComponent(doc.id)}">Open the demo &rarr;</a></p>
 </section>`;
     };
 
@@ -978,6 +1136,13 @@ if (existsSync(analysisInputs) && existsSync(analysisResults)) {
 const calculated: any[] = Array.isArray(INTERNAL_SOURCE_DOCS) ? INTERNAL_SOURCE_DOCS : [];
 if (calculated.length) {
     writeFileSync(join(OUT_DIR, 'calculated-layers.html'), renderCalculatedLayers(calculated, INTERNAL_SOURCE_CATEGORIES ?? [], lock));
+    writeFileSync(join(OUT_DIR, 'calculated-layer.html'), renderCalculatedDemoPage(calculated));
+    // A config each, because the preview host takes a url rather than a config:
+    // one page with a picker, twenty-one small files behind it.
+    mkdirSync(join(OUT_DIR, 'calculated'), { recursive: true });
+    for (const doc of calculated) {
+        writeFileSync(join(OUT_DIR, 'calculated', `${doc.id}.json`), JSON.stringify(calculatedDemoConfig(doc), null, 2));
+    }
 } else {
     console.warn('no INTERNAL_SOURCE_DOCS in this webmapx build — skipping the calculated-layers page');
 }
