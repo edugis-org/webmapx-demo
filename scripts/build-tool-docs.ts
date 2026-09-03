@@ -971,12 +971,12 @@ show(picker.value);
 function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx: string }): string {
     const entry = (doc: any) => {
         const params = doc.params.length
-            ? `<table class="attrs"><thead><tr><th>Parameter</th><th></th></tr></thead><tbody>${doc.params.map((p: any) =>
+            ? `<table class="attrs"><thead><tr><th>Parameter</th><th>What it does</th></tr></thead><tbody>${doc.params.map((p: any) =>
                 `<tr><td><code>${escapeHtml(p.name)}</code></td><td>${inline(p.summary)}${
                     p.fallback ? ` <span class="muted">Left out: ${inline(p.fallback)}.</span>` : ''
                 }</td></tr>`).join('')}</tbody></table>`
             : '<p class="fields">No parameters.</p>';
-        return `<section id="${escapeHtml(doc.id)}">
+        return `<section class="layer" id="${escapeHtml(doc.id)}">
   <h3>${escapeHtml(doc.label)} <code>${escapeHtml(doc.id)}</code></h3>
   <p>${inline(doc.summary)}</p>
   <p class="fields">${escapeHtml(doc.geometry)}. ${doc.clock === 'always'
@@ -990,13 +990,26 @@ function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx:
 
     const groups = categories
         .filter((category: any) => docs.some((doc: any) => doc.category === category.id))
-        .map((category: any) => `<section>
+        .map((category: any) => `<section class="group">
   <h2>${escapeHtml(category.label)}</h2>
-  <p>${inline(category.blurb)}</p>
+  <p class="group-blurb">${inline(category.blurb)}</p>
   ${docs.filter((doc: any) => doc.category === category.id).map(entry).join('')}
 </section>`).join('');
 
-    const body = `<header><div class="inner">
+    const body = `<style>
+/* A group is a divider, not a bigger layer. Small, spaced, ruled and muted
+   reads as "everything under here is Sun"; a heading in the same voice as the
+   layers had readers taking "Sun" for a layer next to "Sun position". */
+.group > h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:#5b6b78;
+  border-bottom:2px solid #d7dee4;padding-bottom:.4rem;margin-bottom:.35rem}
+.group{margin-top:3.5rem}
+.group-blurb{color:#667783;font-size:.92rem;margin-bottom:.4rem}
+/* Each layer hangs off that rule, so the nesting is visible without reading. */
+.layer{margin-top:1.8rem;padding-left:1rem;border-left:3px solid #e2e8ec}
+.layer > h3{font-size:1.12rem;font-weight:700;letter-spacing:-.01em}
+.layer > h3 code{font-weight:400;font-size:.8em;color:#5b6b78}
+</style>
+<header><div class="inner">
 <div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a></div>
 <h1>Calculated layers</h1>
 <p>Layers whose data is worked out in the browser instead of fetched. A source url of <code>internalfunc://day-night</code> means “ask the code for it”: some data is a function of the moment rather than a document on a server, and fetching it would make it stale on arrival, unavailable offline, and a request for something a browser computes in a millisecond. The protocol is deliberately not <code>http</code>, so a reader of a config can see at a glance that nothing is downloaded.</p>
