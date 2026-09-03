@@ -187,14 +187,26 @@ type ToolIcon = string | { src?: string } | undefined;
 
 /** Normalises a raw <svg> so it follows the heading it sits in and both themes. */
 function inlineIconSvg(svg: string): string {
-    return `<span class="tool-icon" aria-hidden="true">${svg
+    const cleaned = svg
         .replace(/<\?xml[^>]*\?>/, '')
         .replace(/<!--[\s\S]*?-->/g, '')
-        // Sized in em so it follows the heading it sits in, and painted with
-        // currentColor so it works in both themes without a second rule.
-        .replace(/\swidth="[^"]*"/, ' width="1em"')
-        .replace(/\sheight="[^"]*"/, ' height="1em"')
-        .trim()}</span>`;
+        .trim();
+
+    // Sized in em so the icon follows the heading it sits in. The size is
+    // *set*, not substituted: a replace only works on an icon that already
+    // declares width and height, and the ones drawn for this project declare
+    // neither — they carry a viewBox and nothing else, so the old rule left
+    // them unsized and they rendered as nothing at all in the page title. The
+    // quoting varies too (`stroke-width='95'` in single quotes), which is why
+    // both forms are stripped before the em sizes go on.
+    const sized = cleaned.replace(/<svg\b([^>]*)>/, (_match, attrs: string) => {
+        const withoutSize = attrs
+            .replace(/\swidth\s*=\s*("[^"]*"|'[^']*')/gi, '')
+            .replace(/\sheight\s*=\s*("[^"]*"|'[^']*')/gi, '');
+        return `<svg${withoutSize} width="1em" height="1em">`;
+    });
+
+    return `<span class="tool-icon" aria-hidden="true">${sized}</span>`;
 }
 
 function toolIconSvg(icon: ToolIcon): string {
@@ -402,7 +414,10 @@ function renderTool(doc: ToolDoc, registry: any, lock: { webmapx: string; config
     // preview.html prefers a config saved in localStorage, and a reader who has
     // used setup.html would otherwise see their own map on every tool page.
     const map = doc.config
-        ? `<div class="mapwrap"><iframe loading="lazy" title="${escapeHtml(registry.label)} demo map"
+        // `allow="fullscreen"` so a demo carrying the fullscreen control works.
+        // Chromium grants it to a same-origin frame by default; the attribute is
+        // what stops that from being a browser-by-browser gamble.
+        ? `<div class="mapwrap"><iframe loading="lazy" allow="fullscreen" title="${escapeHtml(registry.label)} demo map"
      src="../testpages/preview.html?storageKey=webmapx-docs-no-override&config=../${doc.config}"></iframe></div>`
         : '';
 
