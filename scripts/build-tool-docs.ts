@@ -795,6 +795,94 @@ function isControl(registry: any): boolean {
 }
 
 
+
+/**
+ * The styling our own configs give these layers, harvested for the demos.
+ *
+ * webmapx does not style a calculated layer — it hands back GeoJSON, and what
+ * it looks like is entirely the config author's business. That makes "how
+ * should I style this?" the obvious next question, and `world.json` has already
+ * answered it: day length coloured by its hours with a white halo beneath, the
+ * twilight bands each their own blue. Showing that beside the unstyled data is
+ * better than inventing a second opinion here, which would drift from the
+ * configs people actually copy from.
+ *
+ * Read from disk rather than bundled: the configs are their own repository, and
+ * the site is built from whichever commit `site.lock` names. Searched in both
+ * places the build may find them, since the documentation is generated before
+ * the site is assembled and this repo's own `config/` may not exist yet.
+ */
+const STYLED_FROM = ['world.json', 'demo.json', 'deeptime.json'];
+
+function configSearchRoots(): string[] {
+    const roots = [join(ROOT, 'config')];
+    if (process.env.WEBMAPX_DIST_LIB) {
+        roots.push(resolve(process.env.WEBMAPX_DIST_LIB, '..', 'public', 'config'));
+    }
+    return roots;
+}
+
+interface StyledExample { file: string; layer: any; sources: Record<string, any>; }
+
+function harvestStyledLayers(): Map<string, StyledExample> {
+    const found = new Map<string, StyledExample>();
+    for (const root of configSearchRoots()) {
+        for (const file of STYLED_FROM) {
+            const path = join(root, file);
+            if (!existsSync(path)) continue;
+            let config: any;
+            try { config = JSON.parse(readFileSync(path, 'utf8')); } catch { continue; }
+            const data = config.layerData ?? {};
+            const topSources: Record<string, any> = {};
+            const declared = Array.isArray(data.sources)
+                ? data.sources
+                : Object.entries(data.sources ?? {}).map(([id, source]: any) => ({ ...source, id }));
+            for (const source of declared) if (source?.id) topSources[source.id] = source;
+
+            const layers = Array.isArray(data.layers) ? data.layers : Object.values(data.layers ?? {});
+            for (const layer of layers as any[]) {
+                if (!layer || typeof layer !== 'object') continue;
+                // The url may sit on the layer's own sources or on one it names
+                // at the top level; a self-contained layer is the common case.
+                const named = typeof layer.source === 'string' && topSources[layer.source]
+                    ? { [layer.source]: topSources[layer.source] }
+                    : {};
+                const sources = { ...named, ...(layer.sources ?? {}) };
+                const match = /internalfunc:\/\/([a-z-]+)/.exec(JSON.stringify(sources));
+                if (!match) continue;
+                // First config wins: world.json is the fullest, and a second
+                // opinion on the same layer is not worth a second map.
+                if (!found.has(match[1])) found.set(match[1], { file, layer, sources });
+            }
+        }
+    }
+    return found;
+}
+
+/** The same demo map, with a config's own styling in place of the plain paint. */
+function styledDemoConfig(doc: any, example: StyledExample): unknown {
+    const base = calculatedDemoConfig(doc) as any;
+    const retarget = (value: string) => value.replace(/data=data\/paleo/, `data=${PALEO}`);
+    const sources = Object.fromEntries(Object.entries(example.sources).map(([id, source]: any) => [
+        id, { ...source, ...(typeof source.data === 'string' ? { data: retarget(source.data) } : {}) },
+    ]));
+    const layer = {
+        ...example.layer,
+        // Our configs are Dutch in places; this page is not, and the layer
+        // should carry the name the reader arrived looking for.
+        title: `${doc.label} — styled as in ${example.file}`,
+        ...(example.layer.sources ? { sources } : {}),
+    };
+    base.layerData.layers = [base.layerData.layers[0], layer];
+    base.layerData.sources = [
+        base.layerData.sources[0],
+        ...Object.entries(sources).map(([id, source]: any) => ({ ...source, id })),
+    ];
+    base.state.activeLayers = [{ ref: 'osm', visible: true }, { ref: layer.id, visible: true }];
+    base.project.id = `docs-calculated-${doc.id}-styled`;
+    return base;
+}
+
 /**
  * The computed-layer reference.
  *
@@ -934,12 +1022,30 @@ function calculatedDemoConfig(doc: any): unknown {
  * one of them another page to keep in step. The picker doubles as the way to
  * compare two layers: choosing another reloads only the frame.
  */
-function renderCalculatedDemoPage(docs: any[]): string {
+function renderCalculatedDemoPage(docs: any[], styled: Map<string, StyledExample>): string {
     const options = docs.map((doc: any) =>
         `<option value="${escapeHtml(doc.id)}">${escapeHtml(doc.label)} — ${escapeHtml(doc.id)}</option>`).join('');
-    const meta = JSON.stringify(Object.fromEntries(docs.map((doc: any) => [doc.id, { label: doc.label, summary: doc.summary, example: doc.example }])));
+    const meta = JSON.stringify(Object.fromEntries(docs.map((doc: any) => {
+        const example = styled.get(doc.id);
+        return [doc.id, {
+            label: doc.label,
+            summary: doc.summary,
+            example: doc.example,
+            styledIn: example?.file ?? null,
+            paint: example ? JSON.stringify(example.layer, null, 2) : null,
+        }];
+    })));
 
-    const body = `<header><div class="inner">
+    const body = `<style>
+.two-up{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1rem}
+.two-up figure{margin:0;flex:1 1 380px;min-width:320px}
+.two-up .mapwrap{margin:0}
+.two-up figcaption{font-size:.85rem;color:#5b6b78;margin-top:.4rem}
+.two-up figcaption strong{color:#1a1a1a}
+details.paint{margin-top:1rem}
+details.paint summary{cursor:pointer;font-size:.9rem;color:#0070f3}
+</style>
+<header><div class="inner">
 <div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a> / <a href="./calculated-layers.html">Calculated layers</a></div>
 <h1 id="demo-title">Calculated layer</h1>
 <p id="demo-summary"></p>
@@ -947,26 +1053,53 @@ function renderCalculatedDemoPage(docs: any[]): string {
 <main>
 <section>
   <p><label for="layer-picker">Layer</label> <select id="layer-picker">${options}</select></p>
-  <div class="mapwrap"><iframe id="demo-frame" title="Calculated layer demo"></iframe></div>
+  <div class="two-up">
+    <figure>
+      <div class="mapwrap"><iframe id="plain-frame" title="The layer with no styling"></iframe></div>
+      <figcaption><strong>The data as it arrives.</strong> One fill, one line, one circle — enough to see the shapes and click them, and nothing more.</figcaption>
+    </figure>
+    <figure id="styled-figure" hidden>
+      <div class="mapwrap"><iframe id="styled-frame" title="The layer styled as a suggestion"></iframe></div>
+      <figcaption><strong>One way to style it</strong>, taken from <code id="styled-source"></code>. A suggestion, not a default.</figcaption>
+    </figure>
+  </div>
+  <p class="fields"><strong>WebMapX does not style these layers.</strong> A generator returns GeoJSON carrying the attributes listed in the <a href="./calculated-layers.html">reference</a>; every colour, width and rule after that is written by whoever writes the config. The map on the right is what one of our own configs chose to do with it — worth copying, and worth disagreeing with.</p>
+  <details class="paint" id="paint-details" hidden>
+    <summary>The layer definition behind that styling</summary>
+    <pre><code id="paint-json"></code></pre>
+  </details>
   <p class="fields">Source url: <code id="demo-url"></code></p>
   <p class="fields">Click a shape with the <strong>info</strong> tool to read what was computed for it — the hours of daylight on a day-length line, the EPSG code of a UTM zone, the distance along a great circle. That is where these layers keep their answer; the shape only says where it applies.</p>
-  <p class="fields">The paint is the demo's, not the layer's: one fill, one line and one circle over the same source, so whatever geometry the generator returns is visible. Open the time slider to move the moment, and the projection picker to switch between Mercator and the globe — most of these layers are a function of the moment, and the ones that are not exist to show what a projection does.</p>
 </section>
 <script>
 const META = ${meta};
 const picker = document.getElementById('layer-picker');
-const frame = document.getElementById('demo-frame');
 const initial = new URLSearchParams(location.search).get('layer');
 if (initial && META[initial]) picker.value = initial;
+function frameFor(name) {
+    // Relative to preview.html, which is what resolves it — not to this page.
+    return '../testpages/preview.html?storageKey=webmapx-docs-no-override&config=../tools/calculated/' + name + '.json';
+}
 function show(id) {
     const doc = META[id];
     document.getElementById('demo-title').textContent = doc.label;
     document.getElementById('demo-summary').textContent = doc.summary;
     document.getElementById('demo-url').textContent = doc.example;
-    // Relative to preview.html, which is what resolves it — not to this page.
-    // '/tools/calculated/x.json' spelled as './calculated/x.json' resolves
-    // against /testpages/ and 404s, which is how every demo came up empty.
-    frame.src = '../testpages/preview.html?storageKey=webmapx-docs-no-override&config=../tools/calculated/' + encodeURIComponent(id) + '.json';
+    document.getElementById('plain-frame').src = frameFor(encodeURIComponent(id));
+
+    const figure = document.getElementById('styled-figure');
+    const details = document.getElementById('paint-details');
+    if (doc.styledIn) {
+        document.getElementById('styled-source').textContent = doc.styledIn;
+        document.getElementById('styled-frame').src = frameFor(encodeURIComponent(id) + '-styled');
+        document.getElementById('paint-json').textContent = doc.paint;
+        figure.hidden = false;
+        details.hidden = false;
+    } else {
+        figure.hidden = true;
+        details.hidden = true;
+        document.getElementById('styled-frame').removeAttribute('src');
+    }
     const url = new URL(location.href);
     url.searchParams.set('layer', id);
     history.replaceState(null, '', url);
@@ -977,7 +1110,7 @@ show(picker.value);
 </main>`;
     return page(body, {
         title: 'Calculated layer demo',
-        description: 'A live map for each layer WebMapX computes in the browser, with the time slider and the projection picker.',
+        description: 'A live map for each layer WebMapX computes in the browser, unstyled beside one way of styling it.',
         canonical: `${SITE}/tools/calculated-layer.html`,
     });
 }
@@ -1176,12 +1309,18 @@ if (existsSync(analysisInputs) && existsSync(analysisResults)) {
 const calculated: any[] = Array.isArray(INTERNAL_SOURCE_DOCS) ? INTERNAL_SOURCE_DOCS : [];
 if (calculated.length) {
     writeFileSync(join(OUT_DIR, 'calculated-layers.html'), renderCalculatedLayers(calculated, INTERNAL_SOURCE_CATEGORIES ?? [], lock));
-    writeFileSync(join(OUT_DIR, 'calculated-layer.html'), renderCalculatedDemoPage(calculated));
+    const styledExamples = harvestStyledLayers();
+    console.log(`calculated layers: ${calculated.length}, ${styledExamples.size} with styling harvested from our configs`);
+    writeFileSync(join(OUT_DIR, 'calculated-layer.html'), renderCalculatedDemoPage(calculated, styledExamples));
     // A config each, because the preview host takes a url rather than a config:
     // one page with a picker, twenty-one small files behind it.
     mkdirSync(join(OUT_DIR, 'calculated'), { recursive: true });
     for (const doc of calculated) {
         writeFileSync(join(OUT_DIR, 'calculated', `${doc.id}.json`), JSON.stringify(calculatedDemoConfig(doc), null, 2));
+        const example = styledExamples.get(doc.id);
+        if (example) {
+            writeFileSync(join(OUT_DIR, 'calculated', `${doc.id}-styled.json`), JSON.stringify(styledDemoConfig(doc, example), null, 2));
+        }
     }
 } else {
     console.warn('no INTERNAL_SOURCE_DOCS in this webmapx build — skipping the calculated-layers page');
