@@ -839,6 +839,7 @@ function calculatedDemoConfig(doc: any): unknown {
     // location, and these configs sit two levels below the served config root.
     const url = doc.example.replace(/data=data\/paleo/, `data=${PALEO}`);
     const deepTime = doc.category === 'deep-time';
+    const kinds: string[] = doc.geometryKinds ?? ['polygon', 'line', 'point'];
     return {
         version: 0,
         // These demos need no key — OSM tiles and arithmetic — but the loader
@@ -865,16 +866,20 @@ function calculatedDemoConfig(doc: any): unknown {
                 {
                     id: 'calculated', type: 'style', title: `${doc.label} (computed)`,
                     sources: { calculated: { type: 'geojson', data: url, attribution: 'Computed in the browser' } },
+                    // Only the kinds this generator returns. Painting all three
+                    // over one source made the info tool report every hit twice
+                    // — the fill and the line both answer for the same feature —
+                    // and put "Areas" in the legend of a layer that draws none.
                     layers: [
-                        { id: 'calculated-fill', type: 'fill', source: 'calculated',
+                        ...(kinds.includes('polygon') ? [{ id: 'calculated-fill', type: 'fill', source: 'calculated',
                           paint: { 'fill-color': 'rgba(43,108,143,0.35)', 'fill-outline-color': '#1b4a63' },
-                          metadata: { label: 'Areas' } },
-                        { id: 'calculated-line', type: 'line', source: 'calculated',
+                          metadata: { label: 'Areas' } }] : []),
+                        ...(kinds.includes('line') || kinds.includes('polygon') ? [{ id: 'calculated-line', type: 'line', source: 'calculated',
                           paint: { 'line-color': '#1b4a63', 'line-width': 1.5 },
-                          metadata: { label: 'Lines' } },
-                        { id: 'calculated-circle', type: 'circle', source: 'calculated',
+                          metadata: { label: 'Lines' } }] : []),
+                        ...(kinds.includes('point') ? [{ id: 'calculated-circle', type: 'circle', source: 'calculated',
                           paint: { 'circle-color': '#d9633c', 'circle-radius': 5, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 },
-                          metadata: { label: 'Points' } },
+                          metadata: { label: 'Points' } }] : []),
                     ],
                     metadata: { abstract: doc.summary, title: `${doc.label} (computed)` },
                 },
@@ -897,6 +902,13 @@ function calculatedDemoConfig(doc: any): unknown {
                 },
             } : { timeSlider: { type: 'timeSlider', enabled: true } }),
             projection: { type: 'projection', enabled: true },
+            // Not decoration: every generator computes numbers the geometry
+            // cannot show. `day-length`'s five lines are parallels and nothing
+            // on screen says which is eight hours and which is sixteen; a
+            // graticule line does not say its longitude, a UTM zone does not
+            // say its EPSG code, and a great circle does not say it is 9285 km.
+            // Clicking is how a reader gets at any of it.
+            info: { type: 'info', enabled: true },
             layerOverview: { type: 'layerOverview', enabled: true },
             mainToolbar: {
                 type: 'toolbar', enabled: true, position: 'top-left', orientation: 'vertical',
@@ -905,6 +917,7 @@ function calculatedDemoConfig(doc: any): unknown {
                         ? { type: 'deeptime', id: 'deeptime', enabled: true }
                         : { type: 'timeSlider', id: 'timeSlider', enabled: true },
                     { type: 'projection', id: 'projection', enabled: true },
+                    { type: 'info', id: 'info', enabled: true },
                     { type: 'layerOverview', id: 'layerOverview', enabled: true },
                 ],
             },
@@ -936,6 +949,7 @@ function renderCalculatedDemoPage(docs: any[]): string {
   <p><label for="layer-picker">Layer</label> <select id="layer-picker">${options}</select></p>
   <div class="mapwrap"><iframe id="demo-frame" title="Calculated layer demo"></iframe></div>
   <p class="fields">Source url: <code id="demo-url"></code></p>
+  <p class="fields">Click a shape with the <strong>info</strong> tool to read what was computed for it — the hours of daylight on a day-length line, the EPSG code of a UTM zone, the distance along a great circle. That is where these layers keep their answer; the shape only says where it applies.</p>
   <p class="fields">The paint is the demo's, not the layer's: one fill, one line and one circle over the same source, so whatever geometry the generator returns is visible. Open the time slider to move the moment, and the projection picker to switch between Mercator and the globe — most of these layers are a function of the moment, and the ones that are not exist to show what a projection does.</p>
 </section>
 <script>
@@ -976,6 +990,11 @@ function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx:
                     p.fallback ? ` <span class="muted">Left out: ${inline(p.fallback)}.</span>` : ''
                 }</td></tr>`).join('')}</tbody></table>`
             : '<p class="fields">No parameters.</p>';
+        const attributes = (doc.attributes ?? []).length
+            ? `<table class="attrs"><thead><tr><th>Attribute</th><th>What it holds</th><th>Unit</th></tr></thead><tbody>${
+                doc.attributes.map((a: any) => `<tr><td><code>${escapeHtml(a.name)}</code></td><td>${inline(a.summary)}</td><td>${
+                    a.unit ? `<code>${escapeHtml(a.unit)}</code>` : ''}</td></tr>`).join('')}</tbody></table>`
+            : '';
         return `<section class="layer" id="${escapeHtml(doc.id)}">
   <h3>${escapeHtml(doc.label)} <code>${escapeHtml(doc.id)}</code></h3>
   <p>${inline(doc.summary)}</p>
@@ -983,6 +1002,7 @@ function renderCalculatedLayers(docs: any[], categories: any[], lock: { webmapx:
       ? 'Redrawn whenever the map’s clock moves.'
       : 'The same picture whatever the moment.'}</p>
   ${params}
+  ${attributes ? `<p class="fields">Every feature carries:</p>${attributes}` : ''}
   <pre>${escapeHtml(doc.example)}</pre>
   <p class="fields"><a href="./calculated-layer.html?layer=${encodeURIComponent(doc.id)}">Open the demo &rarr;</a></p>
 </section>`;
