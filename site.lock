@@ -5,7 +5,7 @@
   },
   "webmapx": {
     "repository": "https://github.com/edugis-org/webmapx.git",
-    "commit": "044de65f530263a0471591dbafa5e61fda3f1901"
+    "commit": "5b564ed21a526d5e06dae1c971c1fc56b1512158"
   },
-  "publishedAt": "2026-09-03T22:16:46.322Z"
+  "publishedAt": "2026-09-03T23:17:02.884Z"
 }
