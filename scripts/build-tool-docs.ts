@@ -470,6 +470,8 @@ interface AnalysisExample {
 const FIGURE_BOX = { west: -13.5, south: 40.5, east: 10.5, north: 62 };
 const FIGURE_W = 300;
 
+type Projector = ((lon: number, lat: number) => [number, number]) & { figureHeight: number };
+
 function projectLonLat(lon: number, lat: number): [number, number] {
     // Web Mercator, so the shapes look like the map the reader knows.
     const y = (l: number) => Math.log(Math.tan(Math.PI / 4 + (l * Math.PI / 180) / 2));
@@ -482,12 +484,51 @@ function projectLonLat(lon: number, lat: number): [number, number] {
     ];
 }
 
-function figureHeight(): number {
-    const [, bottom] = projectLonLat(FIGURE_BOX.west, FIGURE_BOX.south);
-    return Math.round(bottom);
-}
+const MERCATOR: Projector = Object.assign(projectLonLat, {
+    figureHeight: Math.round(projectLonLat(FIGURE_BOX.west, FIGURE_BOX.south)[1]),
+});
 
-function geometryPath(geometry: any): string {
+/**
+ * Lambert azimuthal equal-area on the frame's own centre.
+ *
+ * Mercator inflates area by 1/cos²(latitude), which over this frame alone makes
+ * the United Kingdom about a third larger against France than it is. For most
+ * operations that is a shape the reader recognises and nothing more; for a
+ * cartogram it contradicts the result, since the whole claim is that area is
+ * the value. Same uniform scale in both directions, so an area on the page is
+ * an area on the ground.
+ */
+const EQUAL_AREA: Projector = (() => {
+    const rad = Math.PI / 180;
+    const lon0 = (FIGURE_BOX.west + FIGURE_BOX.east) / 2 * rad;
+    const lat0 = (FIGURE_BOX.south + FIGURE_BOX.north) / 2 * rad;
+    const raw = (lon: number, lat: number): [number, number] => {
+        const p = lat * rad, l = lon * rad - lon0;
+        const k = Math.sqrt(2 / (1 + Math.sin(lat0) * Math.sin(p) + Math.cos(lat0) * Math.cos(p) * Math.cos(l)));
+        return [k * Math.cos(p) * Math.sin(l), k * (Math.cos(lat0) * Math.sin(p) - Math.sin(lat0) * Math.cos(p) * Math.cos(l))];
+    };
+    // Fit the same lon/lat frame, sampling its edges: a straight edge in lon/lat
+    // is a curve here, so the corners alone would crop.
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (let i = 0; i <= 60; i++) {
+        const t = i / 60;
+        const lon = FIGURE_BOX.west + t * (FIGURE_BOX.east - FIGURE_BOX.west);
+        const lat = FIGURE_BOX.south + t * (FIGURE_BOX.north - FIGURE_BOX.south);
+        for (const [a, b] of [[lon, FIGURE_BOX.south], [lon, FIGURE_BOX.north], [FIGURE_BOX.west, lat], [FIGURE_BOX.east, lat]] as Array<[number, number]>) {
+            const [x, y] = raw(a, b);
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+        }
+    }
+    const scale = FIGURE_W / (maxX - minX);
+    const project = (lon: number, lat: number): [number, number] => {
+        const [x, y] = raw(lon, lat);
+        return [(x - minX) * scale, (maxY - y) * scale];
+    };
+    return Object.assign(project, { figureHeight: Math.round((maxY - minY) * scale) });
+})();
+
+function geometryPath(geometry: any, project: Projector): string {
     if (!geometry) return '';
     const rings: number[][][] = geometry.type === 'MultiPolygon'
         ? geometry.coordinates.flat()
@@ -496,30 +537,30 @@ function geometryPath(geometry: any): string {
         : geometry.type === 'LineString' ? [geometry.coordinates]
         : [];
     return rings.map((ring) => ring.map((pos, i) => {
-        const [x, y] = projectLonLat(pos[0], pos[1]);
+        const [x, y] = project(pos[0], pos[1]);
         return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
     }).join('') + 'Z').join(' ');
 }
 
-function pointMarkers(fc: any): string {
+function pointMarkers(fc: any, project: Projector): string {
     const out: string[] = [];
     for (const f of fc.features ?? []) {
         const g = f.geometry;
         const points = g?.type === 'Point' ? [g.coordinates]
             : g?.type === 'MultiPoint' ? g.coordinates : [];
         for (const p of points) {
-            const [x, y] = projectLonLat(p[0], p[1]);
+            const [x, y] = project(p[0], p[1]);
             out.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" class="pt"/>`);
         }
     }
     return out.join('');
 }
 
-function figure(layers: Array<{ fc: any; cls: string }>, caption: string): string {
-    const h = figureHeight();
+function figure(layers: Array<{ fc: any; cls: string }>, caption: string, project: Projector = MERCATOR): string {
+    const h = project.figureHeight;
     const paths = layers.map(({ fc, cls }) => {
-        const d = (fc.features ?? []).map((f: any) => geometryPath(f.geometry)).filter(Boolean).join(' ');
-        return (d ? `<path d="${d}" class="${cls}"/>` : '') + pointMarkers(fc);
+        const d = (fc.features ?? []).map((f: any) => geometryPath(f.geometry, project)).filter(Boolean).join(' ');
+        return (d ? `<path d="${d}" class="${cls}"/>` : '') + pointMarkers(fc, project);
     }).join('');
     return `<figure class="map-figure">
 <svg viewBox="0 0 ${FIGURE_W} ${h}" width="${FIGURE_W}" height="${h}" role="img" aria-label="${escapeHtml(caption)}">${paths}</svg>
@@ -637,11 +678,22 @@ function exampleSection(inputs: any, ex: AnalysisExample): string {
         ? figure([{ fc: inputs.countries, cls: 'ghost' }, { fc: ex.result, cls: 'out' }],
             `out: ${ex.featureCount} feature${ex.featureCount === 1 ? '' : 's'}`)
         : `<figure class="map-figure"><div class="no-geom">no geometry —<br>a table, not a layer</div><figcaption>out: ${ex.featureCount} row${ex.featureCount === 1 ? '' : 's'}</figcaption></figure>`;
+    // A cartogram claims that area *is* the value, so it gets a third picture:
+    // the same output drawn equal-area. In Mercator the frame's own distortion
+    // is larger than the difference the cartogram was asked to show.
+    const equalAreaFigure = ex.id === 'cartogram' && ex.result?.features?.some((f: any) => f.geometry)
+        ? `<div class="arrow" aria-hidden="true">→</div>` + figure(
+            [{ fc: ex.result, cls: 'out' }], 'equal area projection', EQUAL_AREA)
+        : '';
+    const projectionNote = ex.id === 'cartogram'
+        ? `<p class="fields">Why the third picture: the first two are Web Mercator, which inflates area by 1/cos²(latitude) — within this frame alone that draws the United Kingdom about a third larger against France than it is. The cartogram itself is right (measured on the sphere, every country here comes out at 5485 m² per person, France 3.6% larger than the United Kingdom, exactly its population lead), but in Mercator the United Kingdom still *looks* the bigger of the two. A cartogram’s only claim is that area is the value, so the projection it is drawn in has to keep areas — which is what the equal-area version shows, and why the cartogram demo map opens in Equal Earth.</p>`
+        : '';
     return `
 <section id="${ex.id}">
   <h2>${escapeHtml(ex.title)}</h2>
   <p>${inline(ex.note)}</p>
-  <div class="io">${inputFigure}<div class="arrow" aria-hidden="true">→</div>${outputFigure}</div>
+  <div class="io">${inputFigure}<div class="arrow" aria-hidden="true">→</div>${outputFigure}${equalAreaFigure}</div>
+  ${projectionNote}
   <p class="fields">Result attributes: ${ex.fields.map(f => `<code>${escapeHtml(f)}</code>`).join(' ')}</p>
   ${attributeTable(ex.result, ex.fields)}
 </section>`;
