@@ -859,6 +859,16 @@ function harvestStyledLayers(): Map<string, StyledExample> {
     return found;
 }
 
+
+/** The literal `internalfunc://` url the harvested config uses, for showing beside its map. */
+function styledSourceUrl(example: StyledExample): string | null {
+    for (const source of Object.values(example.sources)) {
+        const data = (source as any)?.data;
+        if (typeof data === 'string' && data.startsWith('internalfunc://')) return data;
+    }
+    return null;
+}
+
 /** The same demo map, with a config's own styling in place of the plain paint. */
 function styledDemoConfig(doc: any, example: StyledExample): unknown {
     const base = calculatedDemoConfig(doc) as any;
@@ -1032,6 +1042,7 @@ function renderCalculatedDemoPage(docs: any[], styled: Map<string, StyledExample
             summary: doc.summary,
             example: doc.example,
             styledIn: example?.file ?? null,
+            styledUrl: example ? styledSourceUrl(example) : null,
             paint: example ? JSON.stringify(example.layer, null, 2) : null,
         }];
     })));
@@ -1067,6 +1078,7 @@ details.paint summary{cursor:pointer;font-size:.9rem;color:#0070f3}
     <div class="mapwrap"><iframe id="styled-frame" title="The layer styled as a suggestion"></iframe></div>
     <figcaption><strong>One way to style it</strong>, taken from <code id="styled-source"></code>. A suggestion, not a default.</figcaption>
   </figure>
+  <p class="fields" id="styled-url-line" hidden>That config's own source url: <code id="styled-url"></code><span id="styled-url-note"></span></p>
   <details class="paint" id="paint-details">
     <summary>The layer definition behind that styling</summary>
     <pre><code id="paint-json"></code></pre>
@@ -1093,6 +1105,15 @@ function show(id) {
         document.getElementById('styled-source').textContent = doc.styledIn;
         document.getElementById('styled-frame').src = frameFor(encodeURIComponent(id) + '-styled');
         document.getElementById('paint-json').textContent = doc.paint;
+        const urlLine = document.getElementById('styled-url-line');
+        if (doc.styledUrl) {
+            document.getElementById('styled-url').textContent = doc.styledUrl;
+            document.getElementById('styled-url-note').textContent =
+                doc.styledUrl === doc.example ? '' : ' — not the reference url above, so the map may cover a different span or count.';
+            urlLine.hidden = false;
+        } else {
+            urlLine.hidden = true;
+        }
         section.hidden = false;
     } else {
         section.hidden = true;
