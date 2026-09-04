@@ -706,7 +706,7 @@ function exampleSection(inputs: any, ex: AnalysisExample): string {
     return `
 <section id="${ex.id}">
   <h2>${escapeHtml(ex.title)}</h2>
-  <p>${inline(ex.note)}</p>
+  ${ex.note.split(/\n\s*\n/).map(para => `<p>${inline(para.trim())}</p>`).join('\n  ')}
   <div class="io">${inputFigure}<div class="arrow" aria-hidden="true">→</div>${outputFigure}${equalAreaFigure}</div>
   ${projectionNote}
   <p class="fields">Result attributes: ${ex.fields.map(f => `<code>${escapeHtml(f)}</code>`).join(' ')}</p>
