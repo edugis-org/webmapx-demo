@@ -1,4 +1,4 @@
-dist-lib/
+dist-lib
 dist/
 node_modules/
 demo/config/apikeys.json
@@ -12,7 +12,10 @@ styles/
 # Also assembled at build time, from the pinned webmapx build rather than from
 # here: the bundled preview host the tool-doc pages embed, and the hashed assets
 # it loads. Symlink them to a sibling `webmapx/dist` to work on the pages
-# locally (`npm run build` there first).
+# locally (`npm run build` there first). `dist-lib/` above is the same:
+# symlink it to a sibling `webmapx/dist-lib` (`npm run build:lib` there), or a
+# stale copy makes `build:tool-docs` report a newly added tool as "not in the
+# registry" — the workflow points WEBMAPX_DIST_LIB at the pinned build instead.
 /testpages
 /assets
 
