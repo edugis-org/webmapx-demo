@@ -1,6 +1,6 @@
 ---
 config: config/docs/tools/coordinates.json
-tagline: Where the pointer is, in the notation your reader actually uses.
+tagline: Shows pointer coordinates in the chosen format.
 status: stable
 audience: [interactive, embedder, developer]
 source:
@@ -12,28 +12,24 @@ related: [scale, info, measure]
 
 ## what
 
-A readout of the position under the pointer, updated as it moves.
+A readout of the position under the pointer.
 
-The point of it is the *format*. `4.895, 52.372` is right and unreadable;
-`52°22'19"N 4°53'42"E` is what a reader copies into a report; and a Dutch
-surveyor wants neither, but RD New metres. All three are the same place, and
-which one is correct depends entirely on who is looking.
+The important choice is the *format*. `4.895, 52.372`, `52°22'19"N
+4°53'42"E`, and Dutch RD New metres can all describe the same place. Use the
+format your readers expect.
 
 So the format is a choice, not a constant:
 
-- `lonlat` and `latlon` — decimal degrees, in either order. Getting that order
-  wrong is the oldest mistake in the subject, which is why both are named
-  rather than one being assumed.
-- `geographic-en` — degrees, minutes and seconds with English cardinals.
-- `geographic-local` — the same, with the cardinal letters of the map's
+- `lonlat` and `latlon`: decimal degrees, in either order.
+- `geographic-en`: degrees, minutes, and seconds with English cardinals.
+- `geographic-local`: the same, with the cardinal letters of the map's
   language, so a Dutch map reads `N O Z W`.
-- `crs:<EPSG code>` — any projected system, for example `crs:28992` for Dutch
-  RD New. The reading is converted for display; the map is not reprojected.
+- `crs:<EPSG code>`: any projected system, for example `crs:28992` for Dutch
+  RD New. The reading is converted for display. The map is not reprojected.
 
 ## use
 
-Move the pointer. On a touch screen, where there is no pointer to follow, the
-readout reports the centre of the map instead.
+Move the pointer. On a phone or tablet, the readout shows the center of the map.
 
 ## embed
 
@@ -43,11 +39,10 @@ notation your readers use:
     "coordinates": { "type": "coordinates", "position": "bottom-left",
                      "defaultFormat": "crs:28992" }
 
-Without it the readout starts in decimal degrees.
+Without `defaultFormat`, the readout starts in decimal degrees.
 
 ## extend
 
-A `crs:` format needs its definition available to proj4 before it can convert.
-The projections the catalog already knows are registered for you; a code from
-outside it has to be registered first, or the readout has nothing to convert
-with and says so rather than printing a wrong number.
+A `crs:` format needs a proj4 definition before it can convert. Cataloged
+projections are registered already. Register other projections before using
+them here.

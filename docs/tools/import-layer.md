@@ -1,6 +1,6 @@
 ---
 config: config/docs/tools/import-layer.json
-tagline: Paste a service URL and add what it turns out to offer.
+tagline: Adds layers from a service URL.
 status: stable
 audience: [interactive, embedder, developer]
 source:
@@ -12,42 +12,36 @@ related: [layerTree, layerOverview, settings]
 
 ## what
 
-Most map data lives behind a service that will describe itself if asked. Paste
-a URL and this tool asks: what layers are here, in what projections, under what
-names?
+Many map services publish a description of the layers they offer. Import layer
+reads that description from a URL and lists the layers it can find.
 
-It recognises **WMS**, **WMTS**, **Esri** services and plain **XYZ** tile
-templates, and it is forgiving about what you give it. A capabilities URL
-works, and so does a URL copied straight out of the browser's network tab —
-which is usually how you get one, having found a map somewhere and wondered
-what it was drawing.
+It recognizes **WMS**, **WMTS**, **Esri** services, and plain **XYZ** tile
+templates. A capabilities URL works, and so do many URLs copied from a
+browser's network tab.
 
-What comes back is a list to choose from. Picking one adds it as a normal layer:
-legend row, opacity, ordering, info queries, the lot.
+Choose from the list to add a normal layer, with a legend row, opacity, order
+and feature info where the service supports it.
 
 ## use
 
 1. Open the tool and paste the URL.
-2. It reports what the endpoint offers.
+2. The panel lists what the endpoint offers.
 3. Tick the layers you want and add them.
 
-A service that refuses is usually refusing because of **CORS** — a browser may
+A service that refuses is usually refusing because of **CORS**. A browser may
 not read a response from another origin unless that origin allows it. That is a
 decision by the service, not by the map, and no setting here can overrule it.
-Many public services do allow it; some do not.
+Many public services do allow it. Some do not.
 
 ## embed
 
 Add `import-layer` to a toolbar. Nothing to configure.
 
-Consider who your readers are before including it: on a map for a wide audience
-it invites adding layers with no attribution, no styling and no guarantee of
-staying up. On a map for people building maps it is one of the most useful
-things in the toolbar.
+Consider who your readers are before including it. On a public map it can invite
+layers with no attribution, no styling, and no uptime promise. On a map for
+authors it is useful.
 
 ## extend
 
-Discovery goes through the same source-normalisation the config loader uses, so
-a layer added this way is described exactly as a configured one is — which is
-what lets it then be saved into a permalink, or copied into a config file as a
-starting point.
+Imported layers use the same source-normalisation as configured layers. That
+keeps permalink and config export behavior the same.

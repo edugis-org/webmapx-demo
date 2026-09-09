@@ -1,6 +1,6 @@
 ---
 config: config/docs/tools/print.json
-tagline: The map on paper — with its title, its legend and a way back to the live version.
+tagline: Prints the current map view.
 status: stable
 audience: [interactive, embedder, developer]
 source:
@@ -12,19 +12,14 @@ related: [layerOverview, layerTree, measure]
 
 ## what
 
-Printing a web page containing a map generally produces something disappointing:
-the map is cut to the window it was in, the controls print along with it, and
-the legend — which is what makes the colours mean anything — is in a panel that
-is not on the paper.
+Printing a web page that contains a map often gives a poor result: the map is
+cut to the window, controls are printed too, and the legend is missing.
 
-The print tool composes a page instead. A4, portrait or landscape, with a title
-you give it and, if you want, **the legend printed beside the map** so the
-result explains itself away from the screen.
+Print composes a page instead: A4, portrait or landscape, with a title and,
+optionally, **the legend beside the map**.
 
-It also offers a **viewer link**: a permalink to the map exactly as printed,
-put on the page itself. A printed map is a dead end otherwise — this is how the
-person holding it gets back to the live one, with the same layers and the same
-view.
+It can include a **viewer link**: a permalink to the map as printed, with the
+same layers and view.
 
 ## use
 
@@ -44,6 +39,5 @@ result is carried around on paper.
 
 ## extend
 
-The composed page is built from the same legend component the panel uses, so a
-layer that shows a ramp on screen shows the same ramp on paper — there is no
-second rendering of the legend to keep in step.
+The printed page uses the same legend component as the panel, so layer swatches
+and ramps stay consistent.

@@ -12,37 +12,31 @@ related: [layerOverview, scale]
 
 ## what
 
-Map data comes with conditions, and nearly all of them are the same condition:
-say where it came from. OpenStreetMap requires it, and so do most national
-services. The attribution control is how a webmapx map keeps that promise
-without you having to remember which layer needs which line.
+Map data comes with conditions, and nearly all of them say the same thing: show
+where the data came from. OpenStreetMap requires attribution, and so do most national
+services. The attribution control shows those credits on the map.
 
-It collects the attribution from the sources that are **currently on the map**
-and shows them together. Turn a layer off and its credit goes with it; add one
-and its credit appears. There is nothing to maintain, and nothing to get out of
-date, because the text comes from the same source definitions the map is drawn
-from.
+It shows attribution for the sources that are **on the map**. Turn a layer off
+and its credit disappears. Add a layer and its credit appears. The
+text comes from the source definitions.
 
-Credits are long and maps are narrow, so it scrolls sideways rather than
-wrapping over the map, with a small ‹ › marker when there is more to see.
+Credits can be long, so the line scrolls sideways instead of covering the map.
 
-Treat it as required furniture rather than as a feature. A map without it is
-usually a licence breach.
+Treat attribution as required furniture rather than as a feature. A map without
+credits is usually a licence breach.
 
 ## use
 
-Read it; follow the links. The list changes as you add and remove layers.
+Read it and follow the links. The list changes as you add and remove layers.
 
 ## embed
 
 Add `attribution` with a `position`, conventionally `bottom-right`.
 
-The text itself belongs to each source, as its `attribution` property — that is
-where to put a credit, and every panel that needs it reads from there.
+The text itself belongs to each source, as its `attribution` property. Put the
+credit there, and every panel that needs the credit reads from there.
 
 ## extend
 
-Attributions are gathered from the live source list rather than from the config
-file, so a layer added at runtime — a drawing, an analysis result, a file
-someone dropped on the map — contributes its credit too, with nothing extra to
-wire up.
+Attributions come from the live source list. A layer added later, such as a
+drawing, analysis result, or dropped file, can show its credit too.

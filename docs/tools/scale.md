@@ -1,6 +1,6 @@
 ---
 config: config/docs/tools/scale.json
-tagline: How far it is across the screen, in units a reader recognises.
+tagline: Shows the current map scale.
 status: stable
 audience: [interactive, embedder, developer]
 source:
@@ -12,17 +12,14 @@ related: [measure, coordinates, navigation]
 
 ## what
 
-The scale bar says what a distance on the screen is worth on the ground.
+The scale bar shows what a distance on the screen is worth on the ground.
 
-It is measured, not assumed. A web map's scale changes with latitude — the same
-pixel is a shorter distance near the poles than at the equator — so a bar drawn
-from a fixed table would be wrong almost everywhere. This one asks the map what
-its current bounds actually are and sizes the bar from that, at every zoom and
-every latitude.
+Scale changes with latitude. The same pixel is a shorter ground distance near
+the poles than at the equator, so the bar is sized from the map's current
+bounds.
 
-The number is rounded to something readable: a bar reading "500 m" is worth more
-than one reading "437 m", so the bar's *length* is adjusted to land on a round
-number rather than the number being adjusted to fit a fixed length.
+The number is rounded to something readable. The bar length changes to land on
+a round value such as "500 m."
 
 A scale bar is not a ruler. For an actual measurement, with a total and an area,
 use the measure tool.
@@ -30,21 +27,19 @@ use the measure tool.
 ## use
 
 Read it. The bar shows a distance and the length on screen that distance
-occupies; it redraws as you zoom and pan.
+occupies. The scale redraws as you zoom and pan.
 
 ## embed
 
 Add `scale` with a `position`, usually `bottom-left`.
 
-- `unit` — `metric` (default), `imperial` or `nautical`. Nautical is there
+- `unit`: `metric` (default), `imperial`, or `nautical`. Nautical is there
   because a chart is read in nautical miles and converting in your head is how
   mistakes are made.
-- `max-width` — the widest the bar may be, in pixels. The rounding happens
+- `max-width`: the widest the bar may be, in pixels. The rounding happens
   inside that limit.
 
 ## extend
 
-The control asks the adapter for the map's bounds rather than reading an
-engine's own scale control, so all four engines produce the same bar from the
-same measurement — and a projection that is not Web Mercator is handled by the
-same path, since the bounds come back in the map's own terms.
+The control asks the adapter for the map's bounds. That gives the same path for
+all engines and for projections other than Web Mercator.

@@ -1,6 +1,6 @@
 ---
 config: config/docs/tools/draw.json
-tagline: Put your own points, lines and shapes on the map, with the attributes you decide they carry.
+tagline: Adds points, lines and areas to the map, with your own fields.
 status: stable
 audience: [interactive, embedder, developer]
 source:
@@ -13,113 +13,98 @@ related: [measure, info, layerOverview]
 
 ## what
 
-Draw makes the map writable. Mark a site, trace a route, outline a study area —
-and keep it, because what you draw becomes an ordinary layer: it appears in the
-legend, it can be restyled, and it can be saved and dropped back on another day.
+Draw is for adding your own map data: mark a site, trace a route, or outline a
+study area. What you draw becomes a normal layer. It appears in the legend, can
+be styled, and can be saved and opened again later.
 
-Drawing happens **into a layer**, not onto the map in general, and the layer is
-declared before the first click: a name, a geometry type, a colour, and the
-attributes its features will carry. That order is deliberate. A drawing whose
-features have no agreed fields is a picture; one with fields is data, and can be
-measured, filtered, joined and exported.
+You draw **into a layer**. Before the first point, choose the layer name, the
+geometry type, a color, and the fields for its features. With fields, the
+drawing is data: it can be measured, filtered, joined, and exported.
 
-A layer holds one geometry type — Point, LineString or Polygon — for the same
-reason a table holds one kind of row. Mixed geometry has no sensible style and
-no sensible schema.
+One layer holds one geometry type: Point, LineString, or Polygon. Keep routes,
+sites, and areas in separate layers when they need different styles or fields.
 
-Attributes come in three kinds:
+There are three kinds of attributes:
 
-- **Typed by you** — `string` and `number`, filled in as you draw.
-- **Filled in by the map** — `longitude`, `latitude`, `area`, `perimeter`,
-  `length`. These are computed from the geometry, so they cannot disagree with
-  the shape, and they update when it is edited.
-- **Kept by the tool** — `create-time` and `update-time`, stamped for you.
+- **You type them**: `string` and `number`.
+- **They come from the geometry**: `longitude`, `latitude`, `area`,
+  `perimeter`, `length`. These update when you edit the feature.
+- **They come from the edit**: `create-time` and `update-time`.
 
-Two further types, `linkURL` and `imageURL`, are read as such where features are
-displayed, so a drawn point can carry a photograph or a link to a source.
+Two more types, `linkURL` and `imageURL`, are recognized wherever features are
+shown, so a drawn point can carry a photo or a link to its source.
 
-Which types are offered depends on the geometry: a point has no area, a line no
-perimeter, and the tool does not pretend otherwise.
+Which types you can pick depends on the geometry. A point has no area and a line
+has no perimeter, so those are not offered.
 
-**Snapping** is on by default, and it is what makes adjacent shapes actually
-adjacent. As the cursor comes within a few pixels of something already drawn it
-jumps to it and shows a marker, so two parcels share a boundary exactly instead
-of nearly — and "nearly" is what produces slivers, gaps and areas that do not
-add up. It prefers a **vertex** over an **edge**: an edge has to be clearly
-closer to win, because landing on the corner someone meant is almost always
-right. Hold **Alt** to suspend it for one point without turning it off, and use
-the toggle to turn it off altogether.
+**Snapping** is on by default. When the cursor is close to a point or edge you
+already drew, it jumps there and shows a marker. Use snapping when two shapes
+should share the same border. Hold **Alt** to skip snapping for one point, or
+use the toggle to switch snapping off.
 
-**Undo and redo** cover the drawing as well as the drawn. Mid-shape, undo takes
-back the last point you placed and lets you carry on from the one before, so a
-misplaced vertex does not cost the whole outline. Once a shape is finished,
-undo re-opens it — the points come back and you can continue. Adding, editing
-and deleting a feature are all on the same history.
+**Undo and redo** work while drawing and after. In an unfinished shape, undo
+removes the last point. After a shape is finished, undo opens it again so you
+can keep editing its points.
 
 ## use
 
-1. Open the draw tool and create a layer: name it, pick its geometry type and
-   colour, and add the attributes you want.
-2. Draw. Click to place points; click each vertex of a line or polygon and
-   finish the shape to close it.
-3. Select a feature to fill in its attributes, move its vertices, or delete it.
-   A vertex handle can be picked and removed with **Delete** or **Backspace**.
-4. Draw more layers as you need them — routes and sites belong in different
-   layers, not in one.
-5. Save when you are done — see below, because there are two different saves.
+1. Open Draw and create a layer: give it a name, a geometry type, and a color,
+   and add the fields you want.
+2. Draw. Click to place points. For a line or polygon, click each corner and
+   then finish the shape.
+3. Select a feature to fill in its attributes, move its points, or delete it.
+   Select a single point and press **Delete** or **Backspace** to remove it.
+4. Make more layers when you need them. Routes and sites belong in separate
+   layers.
+5. Save when you are done. There are two different saves, see below.
 
-Keys worth knowing while drawing:
+Useful keys while drawing:
 
-- **Ctrl/Cmd+Z**, **Ctrl/Cmd+Y** — undo and redo, point by point inside an
-  unfinished shape and feature by feature outside one.
-- **Alt** (held) — suspend snapping for the point you are about to place.
-- **Delete** / **Backspace** — remove the selected vertex.
+- **Ctrl/Cmd+Z**, **Ctrl/Cmd+Y**: undo and redo. Point by point inside an
+  unfinished shape, feature by feature outside one.
+- **Alt** (held): skip snapping for the point you are about to place.
+- **Delete** / **Backspace**: remove the selected point.
 
-Every feature gets an `id` and a `name` unless you remove them, which is what
-makes a drawing addressable afterwards rather than a heap of shapes.
+Every feature gets an `id` and a `name` unless you remove them.
 
-**Saving it.** There are two routes out, and they are not the same file:
+**Saving.** There are two ways to save:
 
-- **Export GeoJSON**, in the draw tool, writes the geometry and attributes. One
-  layer gives a single `.geojson`; several layers give you the choice of one
-  combined file — every feature tagged with a `_layer` property saying where it
-  came from — or a `.zip` with one file per layer. No styling is included: this
+- **Export GeoJSON**, in the draw tool. This writes the shapes and attributes.
+  One layer gives one `.geojson`. With several layers you choose between one
+  combined file, where every feature gets a `_layer` property saying where it
+  came from, or a `.zip` with one file per layer. No styling is included: this
   is the data.
-- **Save layer(s)…**, in the legend, writes the pair a map needs to look the
-  same again: `<name>.geojson` next to `<name>_style.json`. Drop that back on a
-  map and the shapes return with their colours.
+- **Save layers…**, in the legend, writes what a map needs to look the same
+  again: `<name>.geojson` together with `<name>_style.json`. Drop those on a map
+  and the shapes come back with their colors.
 
-Both are ordinary downloads. Nothing is uploaded, and nothing leaves the
+Both are ordinary downloads. Nothing is uploaded, and nothing leaves your
 browser.
 
 ## embed
 
-Adding `draw` to a toolbar is enough — the tool brings its own dialog for
-creating layers, and needs nothing from the config.
+Add `draw` to a toolbar and you are done. The tool brings its own dialog for
+creating layers and needs nothing from the config.
 
-A drawn layer is a normal GeoJSON layer from the moment it exists, so
-everything else in the map already understands it: the legend lists it, the
-info tool reads its attributes, measure and the analysis tools take it as
-input.
+A drawn layer is a normal GeoJSON layer from the moment the layer exists, so the
+rest of the map already understands it: the legend lists it, the info tool reads
+its attributes, and measure and the analysis tools accept it as input.
 
 ## extend
 
-The tool can also draw **into a layer the map already has**, rather than into
-one it created — `borrowedSourceId` on the layer configuration is that path,
-and `allowedAttributes` restricts which fields may be added to it. That is how
-a map backed by a real dataset can let people add to it without letting them
-invent columns.
+Draw can also write **into an existing layer**. Use `borrowedSourceId` on the
+layer configuration, and `allowedAttributes` to limit which fields people may
+add. Use this when the map already has a dataset and new features must use its
+columns.
 
-The computed attribute types are the part to be careful with when extending:
-they are recalculated from the geometry rather than stored independently, so
-adding a new one means teaching the tool how to derive it — not just adding it
-to a list.
+Computed fields are recalculated from the geometry. Adding a new computed field
+means adding the calculation too, not only adding another option to the list.
 
-Snapping is `findSnap` in `src/utils/snap-utils.ts`, and it is shared rather
-than private to this tool. Two numbers govern it: a 16px threshold, and an 8px
-penalty an edge must overcome before it beats a vertex. Candidates are the
-features of the draw layers, minus the one being edited — and, while placing a
-point, minus other points, since snapping a point onto a point is rarely what
-anyone means. It pre-filters by a geographic box around the cursor before
-projecting anything, which is what keeps it usable against a layer with a very
-large number of vertices, where `project()` is the expensive part.
+Snapping is `findSnap` in `src/utils/snap-utils.ts`, shared rather than private
+to this tool. Two numbers control it: a 16px threshold, and an 8px penalty an
+edge must beat before it wins over a corner point. Candidates are the features of
+the draw layers, minus the one being edited, and minus other points while you
+place a point, since snapping a point onto a point is rarely what anyone wants.
+`findSnap` first filters by a geographic box around the cursor, before
+projecting anything. That keeps snapping fast on a layer with many vertices,
+where `project()` is the expensive part.

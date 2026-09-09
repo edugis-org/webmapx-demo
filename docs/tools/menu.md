@@ -1,6 +1,6 @@
 ---
 config: config/docs/tools/menu.json
-tagline: Several tools behind one button, as a list you can drill into.
+tagline: Puts several tools behind one menu button.
 status: stable
 audience: [interactive, embedder, developer]
 source:
@@ -12,21 +12,16 @@ related: [toolbox, settings, layerTree]
 
 ## what
 
-The other container. Same purpose as the toolbox — many tools behind one
-toolbar entry — but presented as a **list with submenus** rather than a row of
-icons, with a back button and a breadcrumb.
+Menu is a container for other tools. It puts many tools behind one toolbar
+entry, as a **list with submenus**, a back button, and a breadcrumb.
 
-Which to use depends on how many and how deep. A handful of siblings read
-better as icons; two dozen across several groups need names and a hierarchy,
-and that is a menu. Unlike the toolbox, a menu keeps its nesting.
+Use Menu when there are enough tools to need names and groups. Unlike Toolbox,
+Menu keeps nested groups.
 
-From eight entries it also offers **search across levels**, so a tool three
-groups down can be reached by typing its name rather than by remembering which
-group someone filed it under.
+From eight entries it also offers **search across levels**.
 
-It is keyboard-navigable as a menu should be: arrows, Home and End, left and
-right to leave and enter a submenu, with a roving tab stop. Escape closes the
-panel, which the panel itself handles.
+It supports keyboard navigation: arrows, Home and End, left, and right for
+submenus, and Escape to close the panel.
 
 ## use
 
@@ -42,9 +37,8 @@ submenus. Labels and icons for a group come from the group's own entry.
 ## extend
 
 Nesting is expressed in the flat DOM as a `menu-path` attribute plus a `groups`
-attribute carrying each submenu's label and icon — the container renders one
-level at a time from that, rather than from nested elements it could not slot.
+attribute with each submenu label and icon. The container renders one level at
+a time from that.
 
-A modal sub-tool inside either container skips the global tool registration it
-would otherwise take: the container owns exclusivity among its children, and a
-globally-registered sub-tool would be deactivated behind the container's back.
+A modal sub-tool inside a container skips global tool registration. The
+container controls which child is active.
