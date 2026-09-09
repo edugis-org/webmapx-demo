@@ -1,11 +1,11 @@
 {
   "configs": {
     "repository": "https://github.com/edugis-org/webmapx-configs.git",
-    "commit": "5e718014aeae27002d4451954106ff0747dd123c"
+    "commit": "16597befd3f7864ee558eb033a2b6611209955bf"
   },
   "webmapx": {
     "repository": "https://github.com/edugis-org/webmapx.git",
-    "commit": "209dd5ddb51382e8bda785272e7141eb4c53df7b"
+    "commit": "53be9abd5bdbbf29ebd16842df82f1621149bee1"
   },
-  "publishedAt": "2026-09-07T22:29:32.709Z"
+  "publishedAt": "2026-09-09T09:43:22.935Z"
 }
