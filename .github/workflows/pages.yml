@@ -70,6 +70,14 @@ jobs:
           # in the webmapx checkout does the fetching; its public/config lands
           # in the build we already copied from.
           cp -R /tmp/webmapx/dist/config/. dist/config/
+          # Example plugins (public/plugins in webmapx). A config names one by a
+          # path relative to itself, so from dist/config `../plugins/…` has to
+          # resolve here. Guarded: a site pinned to a webmapx commit from before
+          # plugins shipped has none to copy.
+          if [ -d /tmp/webmapx/dist/plugins ]; then
+            mkdir -p dist/plugins
+            cp -R /tmp/webmapx/dist/plugins/. dist/plugins/
+          fi
           # landing page and demo app from this repo
           cp index.html dist/index.html
           cp demos.js dist/demos.js

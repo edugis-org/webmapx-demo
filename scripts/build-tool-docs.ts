@@ -27,6 +27,12 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
 const DOCS_DIR = join(ROOT, 'docs', 'tools');
+/**
+ * Pages about how to *make* a map rather than about one tool — the setup page
+ * first. Free-form `## Heading` sections instead of the four fixed ones, and not
+ * checked against the registry, since they document no registry entry.
+ */
+const GUIDES_DIR = join(ROOT, 'docs', 'guides');
 const OUT_DIR = join(ROOT, 'tools');
 
 /** Where a config path in front matter is looked up, in order. */
@@ -291,6 +297,39 @@ function loadDocs(): ToolDoc[] {
                 tests: list('tests'),
                 related: list('related'),
                 sections: splitSections(body),
+            };
+        })
+        .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+interface GuideDoc {
+    id: string;
+    title: string;
+    tagline: string;
+    /** Where the thing the guide describes lives, relative to tools/. */
+    page?: string;
+    sections: Array<{ title: string; body: string }>;
+}
+
+function loadGuides(): GuideDoc[] {
+    if (!existsSync(GUIDES_DIR)) return [];
+    return readdirSync(GUIDES_DIR)
+        .filter(f => f.endsWith('.md'))
+        .map(file => {
+            const id = file.replace(/\.md$/, '');
+            const { meta, body } = parseFrontMatter(readFileSync(join(GUIDES_DIR, file), 'utf8'));
+            const sections: Array<{ title: string; body: string }> = [];
+            for (const line of body.split('\n')) {
+                const heading = /^##\s+(.+?)\s*$/.exec(line);
+                if (heading) sections.push({ title: heading[1], body: '' });
+                else if (sections.length) sections[sections.length - 1].body += line + '\n';
+            }
+            return {
+                id,
+                title: String(meta.title ?? id),
+                tagline: String(meta.tagline ?? ''),
+                page: meta.page ? String(meta.page) : undefined,
+                sections,
             };
         })
         .sort((a, b) => a.id.localeCompare(b.id));
@@ -1303,7 +1342,29 @@ ${groups}
     });
 }
 
-function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[], calculated: any[]): string {
+function slug(title: string): string {
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function renderGuide(guide: GuideDoc): string {
+    const toc = guide.sections.map(sec => `<a href="#${slug(sec.title)}">${escapeHtml(sec.title)}</a>`).join(' · ');
+    const body = `<header><div class="inner">
+<div class="crumb"><a href="../index.html">WebMapX</a> / <a href="./index.html">Tools</a></div>
+<h1>${escapeHtml(guide.title)}</h1>
+<p>${inline(guide.tagline)}</p>
+${guide.page ? `<div class="badges"><a class="badge" href="${guide.page}">Open it →</a></div>` : ''}
+</div></header>
+<main><p class="pagenav">${toc}</p>
+${guide.sections.map(sec => `<section id="${slug(sec.title)}"><h2>${escapeHtml(sec.title)}</h2>${markdown(sec.body.trim())}</section>`).join('\n')}
+</main>`;
+    return page(body, {
+        title: `${guide.title} — WebMapX`,
+        description: guide.tagline,
+        canonical: `${SITE}/tools/${guide.id}.html`,
+    });
+}
+
+function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[], calculated: any[], guides: GuideDoc[]): string {
     const card = (doc: ToolDoc) => {
         const registry = byId.get(doc.id);
         return `<tr><td><a class="tool-link" href="./${doc.id}.html">${toolIconSvg(registry.icon)}${escapeHtml(registry.label)}</a><br><code>${doc.id}</code></td><td>${inline(doc.tagline)}</td></tr>`;
@@ -1328,7 +1389,9 @@ function renderIndex(docs: ToolDoc[], byId: Map<string, any>, undocumented: any[
 <h1>Tools, controls and calculated layers</h1>
 <p>Everything WebMapX ships, one page each: a live map, what it does, how to use it, how to put it in your own map, and where its code lives.</p>
 </div></header>
-<main>${section(
+<main>${guides.length ? `<section><h2>Building a config</h2>
+<p>How to put a map together, rather than a tool inside one.</p>
+<table><tbody>${guides.map(g => `<tr><td><a class="tool-link" href="./${g.id}.html">${escapeHtml(g.title)}</a></td><td>${inline(g.tagline)}</td></tr>`).join('')}</tbody></table></section>` : ''}${section(
     'Tools',
     'Opened from a toolbar, and answered in a panel. A tool is something you go to when you have a question — measure this, tell me about that, draw here — and close again when you are done. Each one is a `tools` entry naming its `type`, plus an item in a toolbar.',
     tools, toolsPending)}${section(
@@ -1441,7 +1504,14 @@ if (calculated.length) {
 } else {
     console.warn('no INTERNAL_SOURCE_DOCS in this webmapx build — skipping the calculated-layers page');
 }
-writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(docs, byId, undocumented, calculated));
+const guides = loadGuides();
+const guideClash = guides.filter(g => byId.has(g.id));
+if (guideClash.length) {
+    console.error(`guides named like a tool, which would overwrite its page: ${guideClash.map(g => g.id).join(', ')}`);
+    process.exit(1);
+}
+for (const guide of guides) writeFileSync(join(OUT_DIR, `${guide.id}.html`), renderGuide(guide));
+writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(docs, byId, undocumented, calculated, guides));
 writeFileSync(join(OUT_DIR, 'index.json'), JSON.stringify({
     tools: docs.map(d => ({ id: d.id, label: byId.get(d.id).label, tagline: d.tagline, page: `${SITE}/tools/${d.id}.html`, json: `${SITE}/tools/${d.id}.json` })),
     undocumented: undocumented.map((t: any) => t.id),
@@ -1454,6 +1524,11 @@ writeFileSync(join(ROOT, 'llms.txt'), [
     '> Config-driven web map UI with adapters for MapLibre, OpenLayers, Leaflet and Cesium.',
     '> A map is a JSON config; every tool below is one entry in its `tools` section.',
     '',
+    ...(guides.length ? [
+        '## Building a config',
+        ...guides.map(g => `- [${g.title}](${SITE}/tools/${g.id}.html): ${g.tagline}`),
+        '',
+    ] : []),
     '## Tools',
     ...docs.map(d => `- [${byId.get(d.id).label}](${SITE}/tools/${d.id}.html): ${d.tagline} JSON: ${SITE}/tools/${d.id}.json`),
     '',
@@ -1462,7 +1537,7 @@ writeFileSync(join(ROOT, 'llms.txt'), [
     '',
 ].join('\n'));
 
-console.log(`tools documented: ${docs.length}`);
+console.log(`tools documented: ${docs.length}, guides: ${guides.length}`);
 if (undocumented.length) console.log(`no page yet: ${undocumented.map((t: any) => t.id).join(', ')}`);
 if (check && undocumented.length) {
     console.error('--check: every registry tool needs a page in docs/tools/');
