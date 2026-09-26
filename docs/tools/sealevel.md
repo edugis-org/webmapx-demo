@@ -45,10 +45,11 @@ Not for navigation: coastal land heights are only indicative.
 
 Add `sealevel` to a toolbar. Nothing else is required. The tool adds its own
 layer from the coastal zones archive (`tiles`) when the map and its catalog
-have none, and reads its curve from `data`. Both paths are config assets,
-relative to the config file.
+have none — or from the same zones as GeoJSON (`geojson`) on an engine that
+cannot read the archive — and reads its curve from `data`. All three paths
+are config assets, relative to the config file.
 
-The archive is `coastal_zones.pmtiles` (~20 MB), built from the GEBCO_2026 grid
+The archive is `coastal_zones.pmtiles` (~15 MB; the GeoJSON is 10 MB, 0.8 MB gzipped), built from the GEBCO_2026 grid
 and published as a release of
 [edugis-org/coastal_zones](https://github.com/edugis-org/coastal_zones). It is
 read with HTTP range requests, so any static host serves it — but copy it to
@@ -65,4 +66,8 @@ constant colour, and a move rewrites only the classes that change role. A
 single data-driven `fill-color` expression was re-evaluated for every feature
 of every loaded tile on each move: about 335 ms per step against 32 ms now.
 
-`pmtiles://` sources are read by the MapLibre adapter only.
+The tool is the same on every engine; only the data differs, and the adapter
+decides which (`canDrawSource`). MapLibre reads the `pmtiles://` archive.
+OpenLayers cannot, and gets the same zones as one GeoJSON file at 16′
+(`geojson`), read once into the view's projection — so the animation also runs
+in Equal Earth or Mollweide, where a world map shows areas truthfully.
