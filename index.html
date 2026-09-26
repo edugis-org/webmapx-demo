@@ -30,6 +30,11 @@
       font-size: 1.1rem;
       color: #aac;
     }
+    .hero-engines {
+      display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap;
+      align-items: center; margin: -1rem auto 2rem; font-size: .85rem; color: #aac;
+    }
+    .hero-engines .badge-engine { font-size: .75rem; }
     .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
     .btn {
       display: inline-block; padding: .65rem 1.4rem; border-radius: 6px;
@@ -161,6 +166,13 @@
 <section class="hero">
   <h1>Web<span>Map</span>X</h1>
   <p>Config-driven web map UI. Drop a JSON file, get a full map with toolbar, legend, and tools — no build step required.</p>
+  <div class="hero-engines">
+    Runs on
+    <span class="badge badge-engine">MapLibre</span>
+    <span class="badge badge-engine">OpenLayers</span>
+    <span class="badge badge-engine">Leaflet</span>
+    <span class="badge badge-engine">Cesium</span>
+  </div>
   <div class="hero-cta">
     <a class="btn btn-primary" href="testpages/setup.html">Build your config</a>
     <a class="btn btn-ghost" href="https://github.com/edugis-org/webmapx" target="_blank">GitHub</a>
@@ -216,9 +228,13 @@ WebMapX.mount('#map',
         <span class="tag tag-npm">npm</span>
         <h3>Use in a Vite / webpack project</h3>
       </div>
-      <p>Install from npm, import in your app. Tree-shaken, typed, works with any modern bundler.</p>
+      <p>Install from npm, import in your app. Tree-shaken, typed, works with any modern bundler. Add the map engine you want as a peer dependency.</p>
       <pre>npm install @edugis-org/webmapx
-          maplibre-gl</pre>
+# plus one engine:
+npm install maplibre-gl  # MapLibre
+npm install ol           # OpenLayers
+npm install leaflet      # Leaflet
+npm install cesium       # Cesium</pre>
       <pre>import { WebMapX } from
   '@edugis-org/webmapx';
 WebMapX.mount('#map',
