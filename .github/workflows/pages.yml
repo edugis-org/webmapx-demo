@@ -105,6 +105,24 @@ jobs:
           # 404 in every visitor's console.
           echo '${{ secrets.APIKEYS_JSON }}' > dist/config/apikeys.json
 
+      # Data too large to keep in git, published as release assets by the
+      # repository that builds them. Release downloads carry no CORS headers,
+      # so a browser cannot read them where they are: they are copied here and
+      # served by Pages, which answers the HTTP range requests PMTiles needs.
+      # Pinned by tag and checksum, like site.lock pins the code: a rebuilt
+      # archive reaches the site through a commit here, never by itself.
+      # Paths are where the configs expect them: `pmtiles://../data/…` from
+      # dist/config.
+      - name: Fetch coastal zones (sea level tool)
+        env:
+          COASTAL_ZONES_TAG: v2026.09.26
+          COASTAL_ZONES_SHA256: 9addd59cee51c18e1fcd04209e39a3a60960dc1baf5aa8231372db986f336397
+        run: |
+          mkdir -p dist/data
+          curl -fsSL -o dist/data/coastal_zones.pmtiles \
+            "https://github.com/edugis-org/coastal_zones/releases/download/$COASTAL_ZONES_TAG/coastal_zones.pmtiles"
+          echo "$COASTAL_ZONES_SHA256  dist/data/coastal_zones.pmtiles" | sha256sum -c -
+
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
