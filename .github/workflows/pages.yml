@@ -115,8 +115,8 @@ jobs:
       # dist/config.
       - name: Fetch coastal zones (sea level tool)
         env:
-          COASTAL_ZONES_TAG: v2026.09.26
-          COASTAL_ZONES_SHA256: 9addd59cee51c18e1fcd04209e39a3a60960dc1baf5aa8231372db986f336397
+          COASTAL_ZONES_TAG: v2026.09.26-2
+          COASTAL_ZONES_SHA256: e8f2f2e0c63fea4ec4e83a4b7f27d687e06703e8da9f9a555ec97f65daca548e
         run: |
           mkdir -p dist/data
           curl -fsSL -o dist/data/coastal_zones.pmtiles \
