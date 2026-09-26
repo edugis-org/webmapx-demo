@@ -23,7 +23,10 @@
  *
  * The script pushes, and commits site.lock — a generated file whose commit
  * *is* the publication. It never commits anything else: code someone is still
- * working on is not published by accident, it stops and says so instead.
+ * working on is not published by accident. Uncommitted files are never a
+ * reason to stop: a push cannot carry them, so they stay local by themselves,
+ * while every commit — the decision that something is ready — goes out. The
+ * script only mentions them, so nobody wonders why they are not on the site.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -62,15 +65,22 @@ function stop(lines: string[]): never {
     process.exit(1);
 }
 
+/** Mentions what stays local. Informational only: see the header. */
+function noteUncommitted(name: string, dir: string, except: string[] = []): void {
+    const lines = git(dir, ['status', '--porcelain'])
+        .split('\n')
+        .filter((line) => line.trim().length > 0 && !except.some((file) => line.endsWith(` ${file}`)));
+    if (lines.length === 0) return;
+    console.log(`${name}: uncommitted, stays local:`);
+    for (const line of lines) console.log(`  ${line}`);
+}
+
 /**
  * Pushes a repository's main branch if it is ahead, and refuses to go on if it
  * is in a state a push cannot fix. Returns the commit the remote ends up at,
  * which is what the build will actually see.
- *
- * `allowDirty` is for this repository, whose site.lock is about to change:
- * its own dirtiness is checked separately, since one specific file may differ.
  */
-function pushMain(name: string, dir: string, allowDirty = false): string {
+function pushMain(name: string, dir: string): string {
     if (!existsSync(path.join(dir, '.git'))) {
         stop([`${name}: no clone at ${dir}.`,
               'All three repositories must sit side by side for this to work.']);
@@ -81,14 +91,6 @@ function pushMain(name: string, dir: string, allowDirty = false): string {
         stop([`${name}: on branch ${branch}, not main.`,
               'The site is built from main, so publishing from another branch would',
               'ship something other than what you are looking at.']);
-    }
-
-    if (!allowDirty && git(dir, ['status', '--porcelain']).length > 0) {
-        stop([`${name}: uncommitted changes.`,
-              'Commit them (or stash them) first — a push cannot carry them, so they',
-              'would silently not be on the site. Deciding what a commit *is* stays',
-              'yours; this script only pushes what you have already decided.',
-              `  git -C ${dir} status`]);
     }
 
     git(dir, ['fetch', 'origin', 'main']);
@@ -123,17 +125,7 @@ function pushMain(name: string, dir: string, allowDirty = false): string {
 function publishPin(configsHead: string, webmapxHead: string): void {
     const current = JSON.parse(readFileSync(LOCK, 'utf8')) as SiteLock;
 
-    // Anything else uncommitted here is someone's work in progress, and this
-    // script does not decide what that is.
-    const dirty = git(HERE, ['status', '--porcelain'])
-        .split('\n')
-        .filter((line) => line.trim().length > 0 && !line.endsWith(' site.lock'));
-    if (dirty.length > 0) {
-        stop(['webmapx-demo: uncommitted changes other than site.lock.',
-              'Commit or stash them first — publishing would otherwise leave the site and',
-              'your working copy describing different things.',
-              `  git -C ${HERE} status`]);
-    }
+    noteUncommitted('webmapx-demo', HERE, ['site.lock']);
 
     const unchanged = current.configs.commit === configsHead && current.webmapx.commit === webmapxHead;
     if (unchanged) {
@@ -158,18 +150,21 @@ function publishPin(configsHead: string, webmapxHead: string): void {
         publishedAt: new Date().toISOString(),
     };
     writeFileSync(LOCK, `${JSON.stringify(lock, null, 2)}\n`);
+    // A pathspec commit: only site.lock, even if something else is staged.
     run(HERE, 'git', ['commit', '-m',
         `chore(publish): webmapx ${webmapxHead.slice(0, 9)}, configs ${configsHead.slice(0, 9)}`,
         'site.lock']);
-    pushMain('webmapx-demo', HERE, true);
+    pushMain('webmapx-demo', HERE);
 }
 
 function main(): void {
     // Configs first: the pin about to be pushed must name a commit the build can
     // fetch, and a commit is only fetchable once its repository has been pushed.
+    noteUncommitted('webmapx-configs', CONFIGS);
     const configsHead = pushMain('webmapx-configs', CONFIGS);
 
     // Then the code, at the commit the build will check out.
+    noteUncommitted('webmapx', WEBMAPX);
     const webmapxHead = pushMain('webmapx', WEBMAPX);
 
     // And last the pin naming both — whose push is what makes the site rebuild.
