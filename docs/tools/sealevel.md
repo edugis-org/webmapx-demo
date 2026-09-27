@@ -44,8 +44,8 @@ Not for navigation: coastal land heights are only indicative.
 ## embed
 
 Add `sealevel` to a toolbar. Nothing else is required. The tool adds its own
-layer from the coastal zones archive (`tiles`) when the map and its catalog
-have none — or from the same zones as GeoJSON (`geojson`) on an engine that
+layer from the coastal zones archive (`tiles`) when the map does not already
+show one — or from the same zones as GeoJSON (`geojson`) on an engine that
 cannot read the archive — and reads its curve from `data`. All three paths
 are config assets, relative to the config file.
 
@@ -56,8 +56,9 @@ read with HTTP range requests, so any static host serves it — but copy it to
 your own host: GitHub release downloads are not readable by a browser. The data
 are CC BY 4.0; credit EduGIS and GEBCO.
 
-To style or title the layer yourself, put a `coastal-zones` layer in the
-catalog; the tool then uses that one.
+A `coastal-zones` layer already on the map is adopted rather than added
+again. The tool never takes it from the catalog: which format to load is the
+engine's to decide, not the config's.
 
 ## extend
 
