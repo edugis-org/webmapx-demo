@@ -243,9 +243,15 @@ function toolIconSvg(icon: ToolIcon): string {
 
 // ── inputs ──────────────────────────────────────────────────────────────────
 
+// SITE_WEBMAPX_COMMIT / SITE_CONFIGS_COMMIT override the lock for a build that
+// is not the published one — a branch preview — so its footers name the commit
+// it was actually built from.
 function readLock(): { webmapx: string; configs: string } {
     const lock = JSON.parse(readFileSync(join(ROOT, 'site.lock'), 'utf8'));
-    return { webmapx: lock.webmapx.commit, configs: lock.configs.commit };
+    return {
+        webmapx: process.env.SITE_WEBMAPX_COMMIT || lock.webmapx.commit,
+        configs: process.env.SITE_CONFIGS_COMMIT || lock.configs.commit,
+    };
 }
 
 /** Locate the config named in front matter, in the sibling config checkout or here. */
