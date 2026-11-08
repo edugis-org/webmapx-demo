@@ -21,8 +21,9 @@ It has two modes:
 - **Hover**: move the pointer and the panel follows it, reading the vector
   features under the cursor. Nothing is committed. You are browsing.
 - **Pinned**: click, and that location is held. The panel stops following the
-  pointer, so you can read it, scroll it, and select the text. **Unpin**, or
-  **Escape**, lets go of it and returns to hovering.
+  pointer, so you can read it, scroll it, and select the text. Clicking the
+  same place again, **Unpin**, or **Escape** lets go of it and returns to
+  hovering.
 
 Hover works for vector layers only, because those features are already in the
 browser. Clicking also queries WMS layers with `GetFeatureInfo`.
@@ -39,8 +40,8 @@ map coded values to labels. For example, `pop_est` can be shown as population.
 2. Move over the map. The panel shows the features under the pointer, layer by
    layer.
 3. Click to pin a location. The panel holds still so you can read and copy it.
-4. Choose **Unpin** or press **Escape** to release it, or click elsewhere to pin
-   that instead. Clicking the same spot asks again.
+4. Click the same spot again, choose **Unpin**, or press **Escape** to release
+   it, or click elsewhere to pin that instead.
 
 For tiled vector layers, only drawn features can be queried. A feature outside
 the current view or below its zoom range cannot appear in the panel.
@@ -74,7 +75,8 @@ reads the same definitions.
 ## extend
 
 Hover and pinned mode use different query paths. Hover is throttled and
-hit-tests within a few pixels. A click uses a slightly wider tolerance.
+hit-tests within a few pixels. A click uses a slightly wider tolerance. A second
+click close to the pinned point unpins it.
 
 Escape reaches the tool through `handleEscape()` on `WebmapxBaseTool`: the panel
 asks the active tool first and closes only when it returns false.
