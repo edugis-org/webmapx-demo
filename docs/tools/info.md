@@ -13,8 +13,8 @@ related: [layerOverview, measure, draw, street-photos]
 
 ## what
 
-Info shows the data at a point on the map: feature attributes, and elevation
-where available.
+Info shows the data at a point on the map: feature attributes, elevation where
+available, and Street View where configured.
 
 It has two modes:
 
@@ -27,7 +27,8 @@ It has two modes:
 Hover works for vector layers only, because those features are already in the
 browser. Clicking also queries WMS layers with `GetFeatureInfo`.
 
-The panel also shows **elevation** where the map has terrain data.
+The panel also shows **elevation** where the map has terrain data, and a
+**Street View** link for a pinned location when the tool has a Google API key.
 
 Layer metadata can make attributes readable: translate names, add units, and
 map coded values to labels. For example, `pop_est` can be shown as population.
@@ -48,8 +49,23 @@ the current view or below its zoom range cannot appear in the panel.
 
 The tool needs no configuration to work: it queries whatever the map has.
 
-For photos of a place, use the [street photos](./street-photos.html) tool. The
-info tool's former `googleApiKey` setting is ignored.
+One option is worth setting: `googleApiKey`. With a key, a pinned location
+offers Street View. Without one, Street View does not appear at all, so leaving
+out the key is how you leave out Street View.
+
+```json
+"tools": {
+  "info": { "googleApiKey": "{key-google}" }
+}
+```
+
+The key needs the **Street View Static API** enabled in Google Cloud, and is
+visible in every visitor's browser, so restrict it to that API and to your own
+sites.
+
+The [street photos](./street-photos.html) tool is separate and has its own
+`googleApiKey`. Use it for Panoramax photos and a map of where photos exist. A
+map can have either tool, or both.
 
 Attribute display comes from the layer, not from this tool. Give a layer
 `metadata.attributes.translations` and every panel that shows those properties

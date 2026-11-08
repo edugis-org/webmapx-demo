@@ -70,7 +70,8 @@ It is visible in every visitor's browser, so restrict it to that API and to your
 own sites. A click first asks Google whether there is imagery, which is free;
 only then are images loaded, which Google bills per image.
 
-The info tool's old `googleApiKey` setting is ignored: Street View moved here.
+This key is separate from the info tool's `googleApiKey`, which puts Street View
+in the info panel.
 
 Other options are `searchDistance` (metres, default 50), and `apiUrl` and
 `viewerUrl`, which point the tool at one Panoramax instance instead of all of
